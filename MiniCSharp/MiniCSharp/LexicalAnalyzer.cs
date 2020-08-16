@@ -17,6 +17,7 @@ namespace MiniCSharp
         Regex ndouble = new Regex(@"^[0-9]+[.]?[0-9]*$");
         //^[0-9]+[.]?[0-9]*(E[+]|E)[0-9]+$
         Regex heza = new Regex(@"([0-9]+[.]?[0-9](e|e[+]|E[+]|E)?[0-9])");
+        Regex hexa = new Regex(@"0([0-9]*)?[x|X]?[0-9]*[a-fA-F]*");
         public void ToAnalyze()
         {
             string s = "sapo sapo_9 9sapo";
