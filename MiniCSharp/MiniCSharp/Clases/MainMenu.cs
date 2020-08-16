@@ -40,7 +40,7 @@ namespace Clases
         
         //Process File
         case 2:
-          ProcessFile();
+          ProcessFile(FilePath);
           break;
         
         //Exit
@@ -80,10 +80,14 @@ namespace Clases
     /// Calls the analizer, process the file and generates
     /// the output file
     /// </summary>
-    private void ProcessFile(){
-      WriteAndWait("Procesando archivo");
-      new LexicalAnalyzer().Analize();
-      WriteAndWait("Archivo Procesado correctamente");
+    private void ProcessFile(string FilePath){
+      if(FilePath != null){
+        WriteAndWait("Procesando archivo");
+        new LexicalAnalyzer().Analize(FilePath);
+        WriteAndWait("Archivo Procesado correctamente");
+      } else {
+        WriteAndWait("Debe seleccionar un archivo primero!");
+      }
     }
     
 

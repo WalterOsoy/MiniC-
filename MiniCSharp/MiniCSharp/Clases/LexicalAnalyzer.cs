@@ -34,7 +34,7 @@ namespace Clases
             var g = MiniCSharpConstants["exponet"].Matches(f);
         }
 
-        public void Analize(){
+        public void Analize(string FilePath){
           
         }
     }
