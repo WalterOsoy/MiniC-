@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Text;
 using System.Text.RegularExpressions;
 
-namespace MiniCSharp
+namespace Clases
 {
     class LexicalAnalyzer
     {
@@ -16,7 +16,7 @@ namespace MiniCSharp
         Regex id = new Regex(@"[a-zA-Z]+[a-zA-z|_|0-9]*");
         Regex ndouble = new Regex(@"^[0-9]+[.]?[0-9]*$");
         //^[0-9]+[.]?[0-9]*(E[+]|E)[0-9]+$
-        Regex heza = new Regex(@"([0-9]+[.]?[0-9](e|e[+]|E[+]|E)?[0-9])");
+        Regex hexa = new Regex(@"([0-9]+[.]?[0-9](e|e[+]|E[+]|E)?[0-9])");
         public void ToAnalyze()
         {
             string s = "sapo sapo_9 9sapo";
@@ -24,7 +24,11 @@ namespace MiniCSharp
             var c = id.Matches(s);
 
             string f = ".12 12.5 12. 12.E2 12.e+2";
-            var g = heza.Matches(f);
+            var g = hexa.Matches(f);
+        }
+
+        public void Analize(){
+          
         }
     }
 }
