@@ -4,7 +4,7 @@ using System.Windows.Forms;
 namespace Clases
 {
 
-  /// <summary>Class that prints and works with the main menu of the app</summary>
+  /// <summary>Class that prints and handles the main menu</summary>
   class MainMenu
   {
 
