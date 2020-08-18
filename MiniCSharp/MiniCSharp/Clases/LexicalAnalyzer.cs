@@ -38,12 +38,23 @@ namespace Clases
         }
 
         public void Analize(){
-          fileManager.ReadChar();
-          fileManager.WriteMatch("string", "keyword");
-          fileManager.WriteMatch("myVar", "identifier");
-          fileManager.WriteMatch("10", "intconstant", "10");//No tiene sentido pero asi esta en los ejemplos del archivo xdxd
-          fileManager.WriteError("#");
+          fileManager.WriteMatch(CallNTimes(4), "Saludo jajaja", "Testing the other method jajaja");
+          fileManager.WriteMatch(CallNTimes(5), "Los PIBES", "X2");
+          fileManager.WriteMatch(CallNTimes(2), "IO");
+          fileManager.WriteMatch(CallNTimes(2), "UST");
+          fileManager.WriteMatch(CallNTimes(10), "Vulgaridad xdxd", "X3");
+          fileManager.WriteError(CallNTimes(1));
+          fileManager.WriteMatch(CallNTimes(4), "autismo");
+
           fileManager.Close();
+        }
+
+        public string CallNTimes(int Times){
+          string myString = "";
+          for (int i = 0; i < Times; i++){
+            myString += fileManager.ReadChar();
+          }
+          return myString;
         }
     }
 }
