@@ -15,7 +15,6 @@ namespace Clases
           "return"   ,     "breack",      "New"      ,      "NewArray",     "Console", 
           "WriteLine"
           };
-
         Dictionary<string, Regex> MiniCSharpConstants = new Dictionary<string, Regex>(){
           {"identifier",  new Regex(@"[a-zA-Z]+\w*")},
           {"boolean",     new Regex(@"true|false")},
@@ -23,6 +22,10 @@ namespace Clases
           {"hexadecimal", new Regex(@"0([0-9]*)?[x|X]?[0-9|a-fA-F]*")},
           {"exponet",     new Regex(@"([0-9]+[.]?[0-9](e|e[+]|E[+]|E)?[0-9])")}
         };
+        FileManager fileManager;
+        public LexicalAnalyzer(string FilePath){
+          fileManager = new FileManager(FilePath);
+        }
 
         public void ToAnalyze()
         {
@@ -34,8 +37,13 @@ namespace Clases
             var g = MiniCSharpConstants["exponet"].Matches(f);
         }
 
-        public void Analize(string FilePath){
-          
+        public void Analize(){
+          fileManager.ReadChar();
+          fileManager.WriteMatch("string", "keyword");
+          fileManager.WriteMatch("myVar", "identifier");
+          fileManager.WriteMatch("10", "intconstant", "10");//No tiene sentido pero asi esta en los ejemplos del archivo xdxd
+          fileManager.WriteError("#");
+          fileManager.Close();
         }
     }
 }

@@ -83,7 +83,7 @@ namespace Clases
     private void ProcessFile(string FilePath){
       if(FilePath != null){
         WriteAndWait("Procesando archivo");
-        new LexicalAnalyzer().Analize(FilePath);
+        new LexicalAnalyzer(FilePath).Analize();
         WriteAndWait("Archivo Procesado correctamente");
       } else {
         WriteAndWait("Debe seleccionar un archivo primero!");
