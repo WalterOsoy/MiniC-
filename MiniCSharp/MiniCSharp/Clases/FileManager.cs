@@ -7,10 +7,7 @@ using System.Text.RegularExpressions;
 
 namespace Clases
 {
-  /// <summary>
-  /// Class that manages how to read the input file and 
-  /// how to write the output file.
-  /// </summary>
+  /// <summary>Manages how to read the input file and how to write the output file.</summary>
   class FileManager
   {
 
@@ -21,7 +18,10 @@ namespace Clases
     private Dictionary<string, int> LastMatch;
 
 
-    /// <summary>Initilizes the class requesting path of the the imput file.</summary>
+    /// <summary>
+    /// Manages how to read the input file and how to write the output file.<br/>
+    /// Output file will be the same path as input but with .out extension
+    /// </summary>
     /// <param name="FilePath">Imput file that its going to be readed.</param>
     public FileManager(string FilePath){
       sr = new StreamReader(FilePath, Encoding.UTF8);
@@ -37,8 +37,8 @@ namespace Clases
 
     #region  Public Functions
 
-    /// <summary>Reads the next usefull char (jumps white spaces and new line)</summary>
-    /// <returns>the next char of the file</returns>
+    /// <summary>Reads the next useful char (jumps white spaces and new line)</summary>
+    /// <returns>Next analizable char</returns>
     public char ReadChar(){
       EatWhiteSpaces();
       return (char)sr.Read();
@@ -46,9 +46,9 @@ namespace Clases
 
 
 
-    /// <summary>Writes a new line on the file, with a default format</summary>
-    /// <param name="MatchedString">String that was identified</param>
-    /// <param name="Type">Type of the string that was identified</param>
+    /// <summary>Writes a new line on the file with a default format<br/>and the requested params</summary>
+    /// <param name="MatchedString">String that was classified</param>
+    /// <param name="Type">Type of the string that was classified</param>
     public void WriteMatch(string MatchedString, string Type){
       string line = BuildMatchString(MatchedString, Type);
       UpdateNewMatchPosition(MatchedString.Length);
@@ -57,10 +57,10 @@ namespace Clases
 
 
 
-    /// <summary>Writes a new line on the file, with a default format</summary>
-    /// <param name="MatchedString">String that was identified</param>
-    /// <param name="Type">Type of the string that was identified</param>
-    /// <param name="value">Value of the string that was found</param>
+    /// <summary>Writes a new line on the file with a default format<br/>and the requested params</summary>
+    /// <param name="MatchedString">String that was classified</param>
+    /// <param name="Type">Type of the string that was classified</param>
+    /// <param name="value">Value of the string that was classified</param>
     public void WriteMatch(string MatchedString, string Type, string value){
       string line = BuildMatchString(MatchedString, Type, value);
       UpdateNewMatchPosition(MatchedString.Length);
@@ -90,10 +90,10 @@ namespace Clases
 
     #region  Private Functions
 
-    /// <summary>Builds the string that its going to be writed on the file with a default format.</summary>
-    /// <param name="MatchedString">String that was identified</param>
-    /// <param name="Type">Type of the string that was identified</param>
-    /// <returns>A string formatted with data</returns>
+    /// <summary>Builds the string that it's going to be written on the file with a default format.</summary>
+    /// <param name="MatchedString">String that was classified</param>
+    /// <param name="Type">Type of the string that was classified</param>
+    /// <returns>A formatted string with data</returns>
     private string BuildMatchString(string MatchedString, string Type){
       return String.Format(
         "{0}found in line {1}, in cols range {2}-{3}, of type {4}", 
@@ -107,11 +107,11 @@ namespace Clases
 
 
 
-    /// <summary>Builds the string that its going to be writed on the file with a default format.</summary>
-    /// <param name="MatchedString">String that was identified</param>
-    /// <param name="Type">Type of the string that was identified</param>
+    /// <summary>Builds the string that it's going to be written on the file with a default format.</summary>
+    /// <param name="MatchedString">String that was classified</param>
+    /// <param name="Type">Type of the string that was classified</param>
     /// <param name="value">Value of the matched string</param>
-    /// <returns>A string formatted with data</returns>
+    /// <returns>A formatted string with data</returns>
     private string BuildMatchString(string MatchedString, string Type, string value){
       return String.Format(
         "{0} (value = {1})",
@@ -122,9 +122,9 @@ namespace Clases
     
 
 
-    /// <summary>Builds the error string that its going to be writed on the file with a default format.</summary>
+    /// <summary>Builds the error string that it's going to be written on the file with a default format.</summary>
     /// <param name="UndefinedCharacter">Undefined char that causes conflict on the grammar</param>
-    /// <returns>A string formatted with data</returns>
+    /// <returns>A formatted string with data</returns>
     private string BuildErrorString(string UndefinedCharacter){
       return String.Format(
         "*** Error in line {0}*** Unrecognized char: {1} at col {2}",
@@ -136,7 +136,7 @@ namespace Clases
 
 
 
-    /// <summary>Jumps all the white spaces and new lines, updates the data of the position of the current Line and colummn</summary>
+    /// <summary>Jumps all the white spaces and new lines and updates the data of the position of the current Line and column</summary>
     private void EatWhiteSpaces(){
       char nextChar = (char)sr.Peek();
 
@@ -157,8 +157,8 @@ namespace Clases
 
 
 
-    /// <summary>Updates the beginnig column for the next match when a match its written on a file.</summary>
-    /// <param name="MatchLenght">Lenght that we will move the beginnig column to match the next match</param>
+    /// <summary>Updates the beginning column for the next match when a match it's written on a file.</summary>
+    /// <param name="MatchLenght">Length that we will move the beginning column to match the next match</param>
     private void UpdateNewMatchPosition(int MatchLenght){
       LastMatch["BeginingCol"] = LastMatch["BeginingCol"] + MatchLenght;
     }
