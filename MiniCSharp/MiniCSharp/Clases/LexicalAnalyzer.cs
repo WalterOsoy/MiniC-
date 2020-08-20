@@ -20,7 +20,7 @@ namespace Clases
           {"boolean",     new Regex(@"true|false")},
           {"double",      new Regex(@"^[0-9]+[.]?[0-9]*$")},
           {"hexadecimal", new Regex(@"0([0-9]*)?[x|X]?[0-9|a-fA-F]*")},
-          {"exponet",     new Regex(@"([0-9]+[.]?[0-9](e|e[+]|E[+]|E)?[0-9])")}
+          {"exponet",     new Regex(@"([0-9]+[.]?[0-9](e|e[+-]|E[+-]|E)?[0-9])")}
         };
         FileManager fileManager;
         public LexicalAnalyzer(string FilePath){
