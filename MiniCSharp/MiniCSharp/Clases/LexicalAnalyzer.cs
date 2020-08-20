@@ -27,16 +27,43 @@ namespace Clases
           fileManager = new FileManager(FilePath);
         }
 
-        public void ToAnalyze()
+        public void ToAnalyze(string word, bool isNewLine)
         {
-            string s = "sapo sapo_9 9sapo";
-            var b = MiniCSharpConstants["identifier"].Match(s);
-            var c = MiniCSharpConstants["identifier"].Matches(s);
+            word = "Perro(if";
+            bool complete = false;
+            do
+            {
+                char inicial = word[0];
+                if (char.IsLetter(inicial))//inicia con un caracter entonces o es una reservada o un id
+                {
+                    word = PossibleKeyWord(word);
+                }
+                else if (inicial.Equals('/') && word.Length > 1) //posible comentario
+                {
 
-            string f = ".12 12.5 12. 12.E2 12.e+2";
-            var g = MiniCSharpConstants["exponet"].Matches(f);
+                }
+                else if (char.IsDigit(inicial))//posible double, hexadecimal or exponent
+                {
+
+                }
+                else //error
+                {
+
+                }
+                if (word.Length==0)
+                {
+                    complete = true;
+                }
+            } while (complete!=true);
+
         }
-
+        public string PossibleKeyWord(string word)
+        {
+            var words = keywords.Contains(word);
+            fileManager.WriteMatch(word, "Palabra reservada");
+            word = "";
+            return word;
+        }
         public void Analize(){
           fileManager.WriteMatch(CallNTimes(4), "Saludo jajaja", "Testing the other method jajaja");
           fileManager.WriteMatch(CallNTimes(5), "Los PIBES", "X2");
