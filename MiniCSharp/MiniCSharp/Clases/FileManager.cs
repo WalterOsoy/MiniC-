@@ -37,11 +37,11 @@ namespace Clases
 
     #region  Public Functions
 
-    /// <summary>Reads the next useful char (jumps white spaces and new line)</summary>
+    /// <summary>Reads the next word on the file</summary>
     /// <returns>Next analizable char</returns>
-    public char ReadChar(){
-      EatWhiteSpaces();
-      return (char)sr.Read();
+    public string ReadNext(){
+      EatWhiteSpaces((char)sr.Peek());
+      return ReadNextWord((char)sr.Peek());
     }
 
 
@@ -51,7 +51,7 @@ namespace Clases
     /// <param name="Type">Type of the string that was classified</param>
     public void WriteMatch(string MatchedString, string Type){
       string line = BuildMatchString(MatchedString, Type);
-      UpdateNewMatchPosition(MatchedString.Length);
+      UpdateNewMatchPosition(false, MatchedString.Length);
       sw.WriteLine(line);
     }
 
@@ -63,7 +63,7 @@ namespace Clases
     /// <param name="value">Value of the string that was classified</param>
     public void WriteMatch(string MatchedString, string Type, string value){
       string line = BuildMatchString(MatchedString, Type, value);
-      UpdateNewMatchPosition(MatchedString.Length);
+      UpdateNewMatchPosition(false, MatchedString.Length);
       sw.WriteLine(line);
     }
 
@@ -73,7 +73,7 @@ namespace Clases
     /// <param name="UndefinedCharacter">Character that doesnt fit in any type</param>
     public void WriteError(string UndefinedCharacter){
       string line = BuildErrorString(UndefinedCharacter);
-      UpdateNewMatchPosition(UndefinedCharacter.Length);
+      UpdateNewMatchPosition(false, UndefinedCharacter.Length);
       sw.WriteLine(line);
     }
 
@@ -136,33 +136,46 @@ namespace Clases
 
 
 
-    /// <summary>Jumps all the white spaces and new lines and updates the data of the position of the current Line and column</summary>
-    private void EatWhiteSpaces(){
-      char nextChar = (char)sr.Peek();
-
-      if (nextChar == (int)'\r'){
+    /// <summary>Updates the beginning column for the next match when a match it's written on a file.</summary>
+    /// <param name="itsNewLine">indicates if the previous match that was done ist a new line</param>
+    /// <param name="MatchLenght">Length that we will move the beginning column to match the next match</param>
+    private void UpdateNewMatchPosition(bool itsNewLine, int MatchLenght){
+      if(itsNewLine){
         LastMatch["Line"]++;
         LastMatch["BeginingCol"] = 1;
-        //Its twice because in windows a new line its conformed by \r\n
-        sr.Read();
-        sr.Read();
-        EatWhiteSpaces();
       }
-      else if (nextChar == (int)' ' || nextChar == (int)'\t'){
-        LastMatch["BeginingCol"]++;
-        sr.Read();
-        EatWhiteSpaces();
-      }
-    }
-
-
-
-    /// <summary>Updates the beginning column for the next match when a match it's written on a file.</summary>
-    /// <param name="MatchLenght">Length that we will move the beginning column to match the next match</param>
-    private void UpdateNewMatchPosition(int MatchLenght){
-      LastMatch["BeginingCol"] = LastMatch["BeginingCol"] + MatchLenght;
+      else LastMatch["BeginingCol"] = LastMatch["BeginingCol"] + MatchLenght;
     }
     
+
+
+    
+    private string ReadNextWord(char nextChar){
+      if (nextChar == (int)'\r'){
+        UpdateNewMatchPosition(true, 0);
+        //Its twice because in windows a new line its conformed by "\r\n"
+        return string.Concat((char)sr.Read(), (char)sr.Read());
+      }
+      else{
+        string newWord = "";
+        while(nextChar != (int)' ' && nextChar != (int)'\t' && nextChar != (int)'\r'){
+          newWord += (char)sr.Read();
+          nextChar = (char)sr.Peek();
+          if (sr.Peek() == -1) return newWord;
+        }
+        return newWord;
+      }
+    }
+
+    private void EatWhiteSpaces(char lastChar){
+      while(lastChar == (int)' ' || lastChar == (int)'\t'){
+        LastMatch["BeginingCol"]++;
+        sr.Read();
+        lastChar = (char)sr.Peek();
+      }
+
+    }
+
     #endregion
   }
 }

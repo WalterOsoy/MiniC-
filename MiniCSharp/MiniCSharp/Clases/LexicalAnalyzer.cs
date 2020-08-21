@@ -65,23 +65,21 @@ namespace Clases
             return word;
         }
         public void Analize(){
-          fileManager.WriteMatch(CallNTimes(4), "Saludo jajaja", "Testing the other method jajaja");
-          fileManager.WriteMatch(CallNTimes(5), "Los PIBES", "X2");
-          fileManager.WriteMatch(CallNTimes(2), "IO");
-          fileManager.WriteMatch(CallNTimes(2), "UST");
-          fileManager.WriteMatch(CallNTimes(10), "Vulgaridad xdxd", "X3");
-          fileManager.WriteError(CallNTimes(1));
-          fileManager.WriteMatch(CallNTimes(4), "autismo");
+          fileManager.WriteMatch(fileManager.ReadNext(), "Saludo jajaja", "Testing the other method jajaja");
+          fileManager.WriteMatch(fileManager.ReadNext(), "Los PIBES", "X2");
+          fileManager.ReadNext();
+          fileManager.WriteMatch(fileManager.ReadNext(), "IO");
+          fileManager.WriteMatch(fileManager.ReadNext(), "UST");
+          fileManager.ReadNext();
+          fileManager.WriteMatch(fileManager.ReadNext(), "Vulgaridad xdxd", "X3");
+          fileManager.ReadNext();
+          fileManager.ReadNext();
+          fileManager.WriteError(fileManager.ReadNext());
+          fileManager.ReadNext();
+          fileManager.ReadNext();
+          fileManager.WriteMatch(fileManager.ReadNext(), "autismo");
 
           fileManager.Close();
-        }
-
-        public string CallNTimes(int Times){
-          string myString = "";
-          for (int i = 0; i < Times; i++){
-            myString += fileManager.ReadChar();
-          }
-          return myString;
         }
     }
 }
