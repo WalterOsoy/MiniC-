@@ -95,6 +95,7 @@ namespace Clases
     /// <summary>Terminates the app process</summary>
     private void TerminateProcess(){
       WriteAndWait("Gracias por usar nuestro sistema!\nCualquier bug que encuentre, por favor\nreportarlo en el repositorio de Github.\nGracias!!! :)");
+      
       Console.Clear();
       Environment.Exit(0);
     }

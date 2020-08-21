@@ -13,7 +13,7 @@ namespace Clases
 
     #region Variables and builder
 
-    private StreamReader sr;
+    public  StreamReader sr;
     private StreamWriter sw;
     private Dictionary<string, int> LastMatch;
 

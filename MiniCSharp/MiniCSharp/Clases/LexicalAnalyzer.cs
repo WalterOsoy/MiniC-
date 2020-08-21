@@ -15,8 +15,14 @@ namespace Clases
           "return"   ,     "breack",      "New"      ,      "NewArray",     "Console", 
           "WriteLine"
           };
+        List<string> Operators = new List<string>()
+        {
+            "+",    "-",    "*",    "/" ,   "%",    "<" ,   "<=",   ">",   ">=",    "=",    "==",   "!=",
+            "&&",   "||",   "!" ,   ";" ,   ",",    ".",    "[",    "]",    "(",    ")",    "{",    "}",    
+            "[]",   "()",   "{}"
+        };
         Dictionary<string, Regex> MiniCSharpConstants = new Dictionary<string, Regex>(){
-          {"identifier",  new Regex(@"[a-zA-Z]+\w*")},
+          {"identifier",  new Regex(@"^[a-zA-Z]+\w*$")},
           {"boolean",     new Regex(@"true|false")},
           {"double",      new Regex(@"^[0-9]+[.]?[0-9]*$")},
           {"hexadecimal", new Regex(@"0([0-9]*)?[x|X]?[0-9|a-fA-F]*")},
@@ -26,17 +32,29 @@ namespace Clases
         public LexicalAnalyzer(string FilePath){
           fileManager = new FileManager(FilePath);
         }
-
-        public void ToAnalyze(string word, bool isNewLine)
-        {
-            word = "Perro(if";
+        public void Analize()
+        {            
+            do
+            {
+                ToAnalyzeWord(fileManager.ReadNext());
+            } while (!fileManager.sr.EndOfStream);
+            fileManager.Close();
+        }
+        private void ToAnalyzeWord(string word)
+        {            
             bool complete = false;
+            bool PendingComentSingle = false;
+            bool PendingComentMulti = false;
             do
             {
                 char inicial = word[0];
                 if (char.IsLetter(inicial))//inicia con un caracter entonces o es una reservada o un id
                 {
                     word = PossibleKeyWord(word);
+                    if (word.Length !=  0)
+                    {
+                        word = PossibleID(word);
+                    }
                 }
                 else if (inicial.Equals('/') && word.Length > 1) //posible comentario
                 {
@@ -46,9 +64,18 @@ namespace Clases
                 {
 
                 }
-                else //error
+                else if (Operators.Contains(inicial.ToString())==true)
                 {
 
+                }
+                else if (word.Equals("\r\n"))
+                {
+
+                }
+                else //error
+                {
+                    fileManager.WriteError(inicial.ToString());
+                    word = word.Substring(1,word.Length-1);
                 }
                 if (word.Length==0)
                 {
@@ -58,28 +85,47 @@ namespace Clases
 
         }
         public string PossibleKeyWord(string word)
-        {
-            var words = keywords.Contains(word);
-            fileManager.WriteMatch(word, "Palabra reservada");
-            word = "";
+        {            
+            if (keywords.Contains(word))
+            {
+                fileManager.WriteMatch(word, "Palabra reservada");
+                word = "";
+            }                        
             return word;
         }
-        public void Analize(){
-          fileManager.WriteMatch(fileManager.ReadNext(), "Saludo jajaja", "Testing the other method jajaja");
-          fileManager.WriteMatch(fileManager.ReadNext(), "Los PIBES", "X2");
-          fileManager.ReadNext();
-          fileManager.WriteMatch(fileManager.ReadNext(), "IO");
-          fileManager.WriteMatch(fileManager.ReadNext(), "UST");
-          fileManager.ReadNext();
-          fileManager.WriteMatch(fileManager.ReadNext(), "Vulgaridad xdxd", "X3");
-          fileManager.ReadNext();
-          fileManager.ReadNext();
-          fileManager.WriteError(fileManager.ReadNext());
-          fileManager.ReadNext();
-          fileManager.ReadNext();
-          fileManager.WriteMatch(fileManager.ReadNext(), "autismo");
-
-          fileManager.Close();
-        }
+        public string PossibleID(string word)
+        {
+            bool match = true;
+            int size = 1;            
+            if (MiniCSharpConstants["identifier"].IsMatch(word))
+            {
+                fileManager.WriteMatch(word, "Identificador");
+                word = "";
+            }
+            else
+            {
+                do
+                {
+                    if (size <= word.Length )
+                    {                        
+                        if (!MiniCSharpConstants["identifier"].IsMatch(word.Substring(0, size)))
+                        {
+                            match = false;
+                        }
+                        else
+                        {
+                            size++;
+                        }
+                    }
+                    else
+                    {
+                        match = false;
+                    }                    
+                } while (match);
+                fileManager.WriteMatch(word.Substring(0, size-1),"Identificador");                
+                word = word.Substring(size-1 , word.Length-(size-1) );
+            }
+            return word;
+        }        
     }
 }
