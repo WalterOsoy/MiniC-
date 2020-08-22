@@ -55,22 +55,19 @@ namespace Clases
                     {
                         word = PossibleID(word);
                     }
-                }
-                else if (inicial.Equals('/') && word.Length > 1) //posible comentario
-                {
-
-                }
+                }                
                 else if (char.IsDigit(inicial))//posible double, hexadecimal or exponent
                 {
-
+                    PossibleDigit(word);
                 }
-                else if (Operators.Contains(inicial.ToString())==true)
+                else if (Operators.Contains(inicial.ToString())==true )
                 {
-
+                    word = PossibleOperators(word);
                 }
                 else if (word.Equals("\r\n"))
                 {
-
+                    //pendiente de programar logica 
+                    word = "";
                 }
                 else //error
                 {
@@ -82,7 +79,6 @@ namespace Clases
                     complete = true;
                 }
             } while (complete!=true);
-
         }
         public string PossibleKeyWord(string word)
         {            
@@ -126,6 +122,72 @@ namespace Clases
                 word = word.Substring(size-1 , word.Length-(size-1) );
             }
             return word;
-        }        
+        }
+        public string PossibleOperators(string word)
+        {
+            if (word.Length > 1)
+            {
+                if (word.Substring(0, 2)=="//" || word.Substring(0, 2) == "/*" || word.Substring(0, 2) == "*/")
+                {
+                    Console.WriteLine("comentario encontrado");
+                }
+                else if (Operators.Contains(word.Substring(0, 2)) == true)
+                {
+                    fileManager.WriteMatch(word.Substring(0, 2), "Operator");
+                    word = word.Remove(0, 2);                    
+                }
+            }
+            else
+            {
+                fileManager.WriteMatch(word.Substring(0, 1), "Operator");
+                word = word.Remove(0,1);
+            }
+            return word;
+        }
+        public string PossibleDigit(string word)
+        {            
+            int i = 1;
+            for (i = 1; i <= word.Length; i++)
+            {
+            
+                if (MiniCSharpConstants["double"].IsMatch(word.Substring(0, i)) == false)
+                {
+                    break;
+                }                
+            }
+            fileManager.WriteMatch(word.Substring(0,i-1),"Numero Decimal", "Valor: "+ word.Substring(0, i - 1));           
+            word = word.Remove(0,i-1);
+            return word;
+        }
+        public string PossibleHexadecimal(string word)
+        {
+            int i = 1;
+            for (i = 1; i <= word.Length; i++)
+            {
+
+                if (MiniCSharpConstants["hexadecimal"].IsMatch(word.Substring(0, i)) == false)
+                {
+                    break;
+                }
+            }
+            fileManager.WriteMatch(word.Substring(0, i - 1), "Numero hexadecimal", "Valor: " + word.Substring(0, i - 1));
+            word = word.Remove(0, i - 1);
+            return word;
+        }
+        public string PossibleExponet(string word)
+        {
+            int i = 1;
+            for (i = 1; i <= word.Length; i++)
+            {
+
+                if (MiniCSharpConstants["exponet"].IsMatch(word.Substring(0, i)) == false)
+                {
+                    break;
+                }
+            }
+            fileManager.WriteMatch(word.Substring(0, i - 1), "Numero exponet", "Valor: " + word.Substring(0, i - 1));
+            word = word.Remove(0, i - 1);
+            return word;
+        }
     }
 }
