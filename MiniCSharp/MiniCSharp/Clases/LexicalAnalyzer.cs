@@ -22,11 +22,12 @@ namespace Clases
             "[]",   "()",   "{}"
         };
         Dictionary<string, Regex> MiniCSharpConstants = new Dictionary<string, Regex>(){
-          {"identifier",  new Regex(@"^[a-zA-Z]+\w*$")},
-          {"boolean",     new Regex(@"true|false")},
-          {"double",      new Regex(@"^[0-9]+[.]?[0-9]*$")},
-          {"hexadecimal", new Regex(@"0([0-9]*)?[x|X]?[0-9|a-fA-F]*")},
-          {"exponet",     new Regex(@"([0-9]+[.]?[0-9](e|e[+-]|E[+-]|E)?[0-9])")}
+            {"identifier",  new Regex(@"^[a-zA-Z]+\w*$")},
+            {"boolean",     new Regex(@"true|false")},
+            {"double",      new Regex(@"^[0-9]+[.]?[0-9]*")},
+            {"hexadecimal", new Regex(@"^0([0-9]*)?[x|X]?[0-9|a-fA-F]*")},
+            {"exponet",     new Regex(@"^([0-9]+[.]?[0-9](e|e[+-]|E[+-]|E)?[0-9]+)")},
+            { "ComentMulti", new Regex(@"^[/][*].*[*][/]")}
         };
         FileManager fileManager;
         public LexicalAnalyzer(string FilePath){
@@ -42,9 +43,7 @@ namespace Clases
         }
         private void ToAnalyzeWord(string word)
         {            
-            bool complete = false;
-            bool PendingComentSingle = false;
-            bool PendingComentMulti = false;
+            bool complete = false;           
             do
             {
                 char inicial = word[0];
@@ -57,19 +56,14 @@ namespace Clases
                     }
                 }                
                 else if (char.IsDigit(inicial))//posible double, hexadecimal or exponent
-                {
-                    PossibleDigit(word);
+                {                                                            
+                    word = PossibleDigit(word);
                 }
                 else if (Operators.Contains(inicial.ToString())==true )
                 {
                     word = PossibleOperators(word);
-                }
-                else if (word.Equals("\r\n"))
-                {
-                    //pendiente de programar logica 
-                    word = "";
-                }
-                else //error
+                }                
+                else 
                 {
                     fileManager.WriteError(inicial.ToString());
                     word = word.Substring(1,word.Length-1);
@@ -91,6 +85,7 @@ namespace Clases
         }
         public string PossibleID(string word)
         {
+            bool key = false;
             bool match = true;
             int size = 1;            
             if (MiniCSharpConstants["identifier"].IsMatch(word))
@@ -103,14 +98,23 @@ namespace Clases
                 do
                 {
                     if (size <= word.Length )
-                    {                        
-                        if (!MiniCSharpConstants["identifier"].IsMatch(word.Substring(0, size)))
+                    {
+                        if (keywords.Contains(word.Substring(0, size)))
                         {
                             match = false;
+                            key = true;
+                            size++;
                         }
                         else
                         {
-                            size++;
+                            if (!MiniCSharpConstants["identifier"].IsMatch(word.Substring(0, size)))
+                            {
+                                match = false;
+                            }
+                            else
+                            {
+                                size++;
+                            }
                         }
                     }
                     else
@@ -118,7 +122,14 @@ namespace Clases
                         match = false;
                     }                    
                 } while (match);
-                fileManager.WriteMatch(word.Substring(0, size-1),"Identificador");                
+                if (key==true)
+                {
+                    fileManager.WriteMatch(word.Substring(0, size - 1), "Palabra Reservada");
+                }
+                else
+                {
+                    fileManager.WriteMatch(word.Substring(0, size - 1), "Identificador");
+                }
                 word = word.Substring(size-1 , word.Length-(size-1) );
             }
             return word;
@@ -127,66 +138,76 @@ namespace Clases
         {
             if (word.Length > 1)
             {
-                if (word.Substring(0, 2)=="//" || word.Substring(0, 2) == "/*" || word.Substring(0, 2) == "*/")
+                if (word.Substring(0, 2)=="//" )
                 {
-                    Console.WriteLine("comentario encontrado");
+                    Console.WriteLine("comentario de una linea");
                 }
+                else if (word.Substring(0, 2) == "/*")
+                {
+                    word = ComentMulti(word);
+                }                
                 else if (Operators.Contains(word.Substring(0, 2)) == true)
                 {
-                    fileManager.WriteMatch(word.Substring(0, 2), "Operator");
+                    fileManager.WriteMatch(word.Substring(0, 2), "Operador");
                     word = word.Remove(0, 2);                    
+                }
+                else
+                {
+                    fileManager.WriteMatch(word.Substring(0, 1), "Operador");
+                    word = word.Remove(0, 1);
                 }
             }
             else
             {
-                fileManager.WriteMatch(word.Substring(0, 1), "Operator");
+                fileManager.WriteMatch(word.Substring(0, 1), "Operador");
                 word = word.Remove(0,1);
             }
             return word;
         }
         public string PossibleDigit(string word)
-        {            
-            int i = 1;
-            for (i = 1; i <= word.Length; i++)
+        {
+            var digit = MiniCSharpConstants["double"].Match(word);
+            var hexa = MiniCSharpConstants["hexadecimal"].Match(word);
+            var expo = MiniCSharpConstants["exponet"].Match(word);
+            if (hexa.Length > expo.Length && hexa.Length > digit.Length)
             {
-            
-                if (MiniCSharpConstants["double"].IsMatch(word.Substring(0, i)) == false)
-                {
-                    break;
-                }                
+                fileManager.WriteMatch(hexa.Value, "Valor Hexadecimal", hexa.Value);
+                word = word.Remove(0,hexa.Length);
             }
-            fileManager.WriteMatch(word.Substring(0,i-1),"Numero Decimal", "Valor: "+ word.Substring(0, i - 1));           
-            word = word.Remove(0,i-1);
+            else if (expo.Length>hexa.Length && expo.Length> digit.Length)
+            {
+                fileManager.WriteMatch(expo.Value, "Valor Exponencial", expo.Value);
+                word = word.Remove(0, expo.Length);
+            }
+            else
+            {
+                fileManager.WriteMatch(digit.Value, "Valor Decimal", digit.Value);
+                word = word.Remove(0, digit.Length);
+            }
             return word;
         }
-        public string PossibleHexadecimal(string word)
+        public string ComentMulti(string word)
         {
-            int i = 1;
-            for (i = 1; i <= word.Length; i++)
+            bool end = false;
+            do
             {
-
-                if (MiniCSharpConstants["hexadecimal"].IsMatch(word.Substring(0, i)) == false)
+                word += fileManager.ReadNext() + " ";
+                var b = MiniCSharpConstants["ComentMulti"].IsMatch(word);
+                if (b==true)
                 {
-                    break;
+                    end = true;
                 }
-            }
-            fileManager.WriteMatch(word.Substring(0, i - 1), "Numero hexadecimal", "Valor: " + word.Substring(0, i - 1));
-            word = word.Remove(0, i - 1);
-            return word;
-        }
-        public string PossibleExponet(string word)
-        {
-            int i = 1;
-            for (i = 1; i <= word.Length; i++)
+            } while (end != true || !fileManager.sr.EndOfStream);
+            if (end= true)
             {
-
-                if (MiniCSharpConstants["exponet"].IsMatch(word.Substring(0, i)) == false)
-                {
-                    break;
-                }
+                fileManager.WriteMatch(MiniCSharpConstants["ComentMulti"].Match(word).Value,"Comentario ");
+                word = word.Remove(0, MiniCSharpConstants["ComentMulti"].Match(word).Length);
             }
-            fileManager.WriteMatch(word.Substring(0, i - 1), "Numero exponet", "Valor: " + word.Substring(0, i - 1));
-            word = word.Remove(0, i - 1);
+            else
+            {
+                fileManager.WriteError("EOF, comentario sin cierre");
+                word = "";
+            }
             return word;
         }
     }
