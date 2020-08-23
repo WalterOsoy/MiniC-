@@ -65,7 +65,10 @@ namespace Clases
                 }                
                 else 
                 {
-                    fileManager.WriteError(inicial.ToString());
+                    if (!char.IsWhiteSpace(inicial))
+                    {
+                        fileManager.WriteError(inicial.ToString());
+                    }
                     word = word.Substring(1,word.Length-1);
                 }
                 if (word.Length==0)
@@ -140,7 +143,7 @@ namespace Clases
             {
                 if (word.Substring(0, 2)=="//" )
                 {
-                    Console.WriteLine("comentario de una linea");
+                    word = ComentSingle(word);
                 }
                 else if (word.Substring(0, 2) == "/*")
                 {
@@ -191,21 +194,57 @@ namespace Clases
             bool end = false;
             do
             {
-                word += fileManager.ReadNext() + " ";
-                var b = MiniCSharpConstants["ComentMulti"].IsMatch(word);
-                if (b==true)
+                string tempo = fileManager.ReadNext();
+                if (!tempo.Contains("\r\n"))
+                {
+                    word += tempo ;
+                }                               
+                if (MiniCSharpConstants["ComentMulti"].IsMatch(word))
                 {
                     end = true;
+                    break;
                 }
-            } while (end != true || !fileManager.sr.EndOfStream);
-            if (end= true)
+                else
+                {
+                    word += " ";
+                }
+            } while (fileManager.sr.EndOfStream != true || end != false );
+            if (end == true)
             {
-                fileManager.WriteMatch(MiniCSharpConstants["ComentMulti"].Match(word).Value,"Comentario ");
+                fileManager.WriteMatch(MiniCSharpConstants["ComentMulti"].Match(word).Value,"Comentario Multilinea");
                 word = word.Remove(0, MiniCSharpConstants["ComentMulti"].Match(word).Length);
             }
             else
             {
                 fileManager.WriteError("EOF, comentario sin cierre");
+                word = "";
+            }
+            return word;
+        }
+        public string ComentSingle(string word)
+        {
+            bool end = false;
+            do
+            {
+                string tempo = fileManager.ReadNext();
+                if (!tempo.Contains("\r\n"))
+                {
+                    word += tempo;
+                    end = true;
+                    break;
+                }                
+                else
+                {
+                    word += tempo + " ";
+                }
+            } while (fileManager.sr.EndOfStream != true || end != false);
+            string[] content = word.Split("\r\n",StringSplitOptions.None);
+            fileManager.WriteMatch(content[0], "Comentario simple");
+            if(content.Length > 1){
+                word = content[1];
+            }
+            else
+            {
                 word = "";
             }
             return word;
