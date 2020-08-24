@@ -69,7 +69,7 @@ namespace Clases
       OpenFileDialog OFD = new OpenFileDialog();
       OFD.Multiselect = false;
       OFD.Title = "Select file to process";
-      OFD.Filter = "txt files (*.txt)|*.txt";
+      OFD.Filter = "frag files (*.frag)|*.frag";
       OFD.ShowDialog();
       return OFD.FileName;
     }
