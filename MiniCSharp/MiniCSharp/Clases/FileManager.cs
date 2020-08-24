@@ -25,7 +25,7 @@ namespace Clases
     /// <param name="FilePath">Imput file that its going to be readed.</param>
     public FileManager(string FilePath){
       sr = new StreamReader(FilePath, Encoding.UTF8);
-      sw = new StreamWriter(new FileStream(FilePath.Replace("txt", "out"), FileMode.Create), Encoding.UTF8);
+      sw = new StreamWriter(new FileStream(FilePath.Replace("frag", "out"), FileMode.Create), Encoding.UTF8);
       LastMatch = new Dictionary<string, int>(){
         {"Line", 1},
         {"BeginingCol", 1}
@@ -151,14 +151,19 @@ namespace Clases
 
     
     private string ReadNextWord(char nextChar){
-      if (nextChar == (int)'\r'){
-        UpdateNewMatchPosition(true, 0);
-        //Its twice because in windows a new line its conformed by "\r\n"
-        return string.Concat((char)sr.Read(), (char)sr.Read());
+      if (nextChar == '\r' || nextChar == '\n'){
+        if(nextChar == '\r'){
+          UpdateNewMatchPosition(true, default);
+          //Its twice because in windows a new line its conformed by "\r\n"
+          return string.Concat((char)sr.Read(), (char)sr.Read());
+        }else{
+          UpdateNewMatchPosition(true, default);
+          return string.Concat("\r" + (char)sr.Read());
+        }
       }
       else{
         string newWord = "";
-        while(nextChar != (int)' ' && nextChar != (int)'\t' && nextChar != (int)'\r'){
+        while(nextChar != ' ' && nextChar != '\t' && nextChar != '\r'  && nextChar != '\n'){
           newWord += (char)sr.Read();
           nextChar = (char)sr.Peek();
           if (sr.Peek() == -1) return newWord;
