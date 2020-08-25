@@ -12,13 +12,13 @@ namespace Clases
           "void"     ,     "int"   ,      "double"   ,      "bool"    ,     "string" ,
           "class"    ,     "const" ,      "interface",      "null"    ,     "this"   ,
           "for"      ,     "while" ,      "foreach"  ,      "if"      ,     "else"   ,
-          "return"   ,     "breack",      "New"      ,      "NewArray",     "Console", 
+          "return"   ,     "breack",      "New"      ,      "NewArray",     "Console",
           "WriteLine"
           };
         List<string> Operators = new List<string>()
         {
             "+",    "-",    "*",    "/" ,   "%",    "<" ,   "<=",   ">",   ">=",    "=",    "==",   "!=",
-            "&&",   "||",   "!" ,   ";" ,   ",",    ".",    "[",    "]",    "(",    ")",    "{",    "}",    
+            "&&",   "||",   "!" ,   ";" ,   ",",    ".",    "[",    "]",    "(",    ")",    "{",    "}",
             "[]",   "()",   "{}"
         };
         Dictionary<string, Regex> MiniCSharpConstants = new Dictionary<string, Regex>(){
@@ -27,70 +27,89 @@ namespace Clases
             {"double",      new Regex(@"^[0-9]+[.]?[0-9]*")},
             {"hexadecimal", new Regex(@"^0([0-9]*)?[x|X]?[0-9|a-fA-F]*")},
             {"exponet",     new Regex(@"^([0-9]+[.]?[0-9]*(e|e[+-]|E[+-]|E)?[0-9]+)")},
-            { "ComentMulti", new Regex(@"^[/][*].*[*][/]")}
+            { "ComentMulti", new Regex(@"^[/][*].*[*][/]")},
+            { "string", new Regex("^[\"].*[\"]")}
         };
         FileManager fileManager;
-        public LexicalAnalyzer(string FilePath){
-          fileManager = new FileManager(FilePath);
+        public LexicalAnalyzer(string FilePath) {
+            fileManager = new FileManager(FilePath);
         }
         public void Analize()
-        {            
+        {
             do
             {
                 ToAnalyzeWord(fileManager.ReadNext());
             } while (!fileManager.sr.EndOfStream);
             fileManager.Close();
         }
+        /// <summary>
+        /// reconoce el primer caracter del string que se resive para poder sacar un analisis presiminar del contenido 
+        /// </summary>
+        /// <param name="word">palabra leia del archivo</param>
         private void ToAnalyzeWord(string word)
-        {            
-            bool complete = false;           
+        {
+            bool complete = false;
             do
             {
                 char inicial = word[0];
                 if (char.IsLetter(inicial))//inicia con un caracter entonces o es una reservada o un id
                 {
                     word = PossibleKeyWord(word);
-                    if (word.Length !=  0)
+                    if (word.Length != 0)
                     {
                         word = PossibleID(word);
                     }
-                }                
+                }
                 else if (char.IsDigit(inicial))//posible double, hexadecimal or exponent
-                {                                                            
+                {
                     word = PossibleDigit(word);
                 }
-                else if (Operators.Contains(inicial.ToString())==true )
+                else if (Operators.Contains(inicial.ToString()) == true)
                 {
                     word = PossibleOperators(word);
-                }                
-                else 
+                }
+                else if (inicial == 34)
+                {
+                    word = text(word);
+                }
+                else
                 {
                     if (!char.IsWhiteSpace(inicial))
                     {
                         fileManager.WriteError(inicial.ToString());
                     }
-                    word = word.Substring(1,word.Length-1);
+                    word = word.Substring(1, word.Length - 1);
                 }
-                if (word.Length==0)
+                if (word.Length == 0)
                 {
                     complete = true;
                 }
-            } while (complete!=true);
+            } while (complete != true);
         }
-        public string PossibleKeyWord(string word)
-        {            
+        /// <summary>
+        /// compara la string resivido contra la lista de palabras reservadas
+        /// </summary>
+        /// <param name="word">palabra leia del archivo</param>
+        /// <returns>retorna es sobrante de la plara que no hace match</returns>
+        private string PossibleKeyWord(string word)
+        {
             if (keywords.Contains(word))
             {
                 fileManager.WriteMatch(word, "Palabra reservada");
                 word = "";
-            }                        
+            }
             return word;
         }
-        public string PossibleID(string word)
+        /// <summary>
+        /// compara la string resivido contra la expresion regular de identificadores
+        /// </summary>
+        /// <param name="word">palabra leia del archivo</param>
+        /// <returns>retorna es sobrante de la plara que no hace match</returns>
+        private string PossibleID(string word)
         {
             bool key = false;
             bool match = true;
-            int size = 1;            
+            int size = 1;
             if (MiniCSharpConstants["identifier"].IsMatch(word))
             {
                 fileManager.WriteMatch(word, "Identificador");
@@ -100,7 +119,7 @@ namespace Clases
             {
                 do
                 {
-                    if (size <= word.Length )
+                    if (size <= word.Length)
                     {
                         if (keywords.Contains(word.Substring(0, size)))
                         {
@@ -123,9 +142,9 @@ namespace Clases
                     else
                     {
                         match = false;
-                    }                    
+                    }
                 } while (match);
-                if (key==true)
+                if (key == true)
                 {
                     fileManager.WriteMatch(word.Substring(0, size - 1), "Palabra Reservada");
                 }
@@ -133,26 +152,31 @@ namespace Clases
                 {
                     fileManager.WriteMatch(word.Substring(0, size - 1), "Identificador");
                 }
-                word = word.Substring(size-1 , word.Length-(size-1) );
+                word = word.Substring(size - 1, word.Length - (size - 1));
             }
             return word;
         }
-        public string PossibleOperators(string word)
+        /// <summary>
+        /// compara la string resivido contra la lista de expresiones regulares
+        /// </summary>
+        /// <param name="word">palabra leia del archivo</param>
+        /// <returns>retorna es sobrante de la plara que no hace match</returns>
+        private string PossibleOperators(string word)
         {
             if (word.Length > 1)
             {
-                if (word.Substring(0, 2)=="//" )
+                if (word.Substring(0, 2) == "//")
                 {
                     word = ComentSingle(word);
                 }
                 else if (word.Substring(0, 2) == "/*")
                 {
                     word = ComentMulti(word);
-                }                
+                }
                 else if (Operators.Contains(word.Substring(0, 2)) == true)
                 {
                     fileManager.WriteMatch(word.Substring(0, 2), "Operador");
-                    word = word.Remove(0, 2);                    
+                    word = word.Remove(0, 2);
                 }
                 else
                 {
@@ -163,11 +187,16 @@ namespace Clases
             else
             {
                 fileManager.WriteMatch(word.Substring(0, 1), "Operador");
-                word = word.Remove(0,1);
+                word = word.Remove(0, 1);
             }
             return word;
         }
-        public string PossibleDigit(string word)
+        /// <summary>
+        /// compara la string resivido contra las 3 expresion regular de numeros para identificar a cual pertenece
+        /// </summary>
+        /// <param name="word">palabra leia del archivo</param>
+        /// <returns>retorna es sobrante de la plara que no hace match</returns>
+        private string PossibleDigit(string word)
         {
             var digit = MiniCSharpConstants["double"].Match(word);
             var hexa = MiniCSharpConstants["hexadecimal"].Match(word);
@@ -175,9 +204,9 @@ namespace Clases
             if (hexa.Length > expo.Length && hexa.Length > digit.Length)
             {
                 fileManager.WriteMatch(hexa.Value, "Valor Hexadecimal", hexa.Value);
-                word = word.Remove(0,hexa.Length);
+                word = word.Remove(0, hexa.Length);
             }
-            else if (expo.Length>hexa.Length && expo.Length> digit.Length)
+            else if (expo.Length > hexa.Length && expo.Length > digit.Length)
             {
                 fileManager.WriteMatch(expo.Value, "Valor Exponencial", expo.Value);
                 word = word.Remove(0, expo.Length);
@@ -189,7 +218,12 @@ namespace Clases
             }
             return word;
         }
-        public string ComentMulti(string word)
+        /// <summary>
+        /// compara la string resivido contra la expresion regular de Comentario multiple
+        /// </summary>
+        /// <param name="word">palabra leia del archivo</param>
+        /// <returns>retorna es sobrante de la plara que no hace match</returns>
+        private string ComentMulti(string word)
         {
             bool end = false;
             do
@@ -197,8 +231,8 @@ namespace Clases
                 string tempo = fileManager.ReadNext();
                 if (!tempo.Contains("\r\n"))
                 {
-                    word += tempo ;
-                }                               
+                    word += tempo;
+                }
                 if (MiniCSharpConstants["ComentMulti"].IsMatch(word))
                 {
                     end = true;
@@ -208,10 +242,10 @@ namespace Clases
                 {
                     word += " ";
                 }
-            } while (fileManager.sr.EndOfStream != true || end != false );
+            } while (fileManager.sr.EndOfStream != true || end != false);
             if (end == true)
             {
-                fileManager.WriteMatch(MiniCSharpConstants["ComentMulti"].Match(word).Value,"Comentario Multilinea");
+                //fileManager.WriteMatch(MiniCSharpConstants["ComentMulti"].Match(word).Value, "Comentario Multilinea");
                 word = word.Remove(0, MiniCSharpConstants["ComentMulti"].Match(word).Length);
             }
             else
@@ -221,32 +255,77 @@ namespace Clases
             }
             return word;
         }
-        public string ComentSingle(string word)
+        /// <summary>
+        /// compara la string resivido contra la expresion regular de Comentario simple
+        /// </summary>
+        /// <param name="word">palabra leia del archivo</param>
+        /// <returns>retorna es sobrante de la plara que no hace match</returns>
+        private string ComentSingle(string word)
         {
             bool end = false;
             do
             {
                 string tempo = fileManager.ReadNext();
-                if (!tempo.Contains("\r\n"))
+                if (tempo.Contains("\r\n"))
                 {
-                    word += " "+tempo;
+                    word += " " + tempo;
                     end = true;
                     break;
-                }                
+                }
                 else
                 {
-                    word += tempo + " ";
+                    word += " " + tempo;
                 }
             } while (fileManager.sr.EndOfStream != true || end != false);
-            string[] content = word.Split("\r\n",StringSplitOptions.None);
-            fileManager.WriteMatch(content[0], "Comentario simple");
-            if(content.Length > 1){
+            string[] content = word.Split("\r\n", StringSplitOptions.None);
+            //fileManager.WriteMatch(content[0], "Comentario simple");
+            if (content.Length > 1) {
                 word = content[1];
             }
             else
             {
                 word = "";
             }
+            return word;
+        }
+        /// <summary>
+        /// compara la string resivido contra la expresion regular de string
+        /// </summary>
+        /// <param name="word">palabra leia del archivo</param>
+        /// <returns>retorna es sobrante de la plara que no hace match</returns>
+        private string text(string word)
+        {
+            bool end = false;
+            do
+            {
+                string tempo = fileManager.ReadNext();
+                if (tempo.Contains("\""))
+                {
+                    end = true;
+                    word += " " + tempo;
+                    break;
+                }
+                else if (tempo.Contains("\r\n"))
+                {
+                    word += " "+tempo;
+                    break;
+                }
+                else
+                {
+                    word += " " + tempo;
+                }
+            } while (fileManager.sr.EndOfStream != true);
+            if (MiniCSharpConstants["string"].IsMatch(word)==true)
+            {
+                fileManager.WriteMatch(MiniCSharpConstants["string"].Match(word).Value, "Cadena de texto");
+                word = word.Remove(0, MiniCSharpConstants["string"].Match(word).Length);
+            }
+            else
+            {
+                fileManager.WriteError("Strings sin terminar, falta una \" de cierre");
+                word = "";
+            }
+            word.Trim();
             return word;
         }
     }
