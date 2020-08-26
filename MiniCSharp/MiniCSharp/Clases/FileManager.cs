@@ -10,7 +10,6 @@ namespace Clases
   /// <summary>Manages how to read the input file and how to write the output file.</summary>
   class FileManager
   {
-
     #region Variables and builder
 
     public  StreamReader sr;
@@ -96,7 +95,7 @@ namespace Clases
     /// <returns>A formatted string with data</returns>
     private string BuildMatchString(string MatchedString, string Type){
       return String.Format(
-        "{0}found in line {1}, in cols range {2}-{3}, of type {4}", 
+        "{0}encontrado en la linea {1}, en el rango de columnas {2}-{3}, de tipo {4}", 
         MatchedString.PadRight(12, ' '),
         LastMatch["Line"], 
         LastMatch["BeginingCol"],
@@ -114,7 +113,7 @@ namespace Clases
     /// <returns>A formatted string with data</returns>
     private string BuildMatchString(string MatchedString, string Type, string value){
       return String.Format(
-        "{0} (value = {1})",
+        "{0} (valor = {1})",
         BuildMatchString(MatchedString, Type),
         value
       );
@@ -149,7 +148,9 @@ namespace Clases
     
 
 
-    
+    /// <summary>Reads the next word in the file, new line separators count as a words</summary>
+    /// <param name="nextChar">next char to evalueate if its a white space</param>
+    /// <returns>next word in the file</returns>
     private string ReadNextWord(char nextChar){
       if (nextChar == '\r' || nextChar == '\n'){
         if(nextChar == '\r'){
@@ -172,6 +173,10 @@ namespace Clases
       }
     }
 
+
+
+    /// <summary>Jumps the withe spaces '\t' and ' ' and updates the LastMatch["BeginingCol"] position</summary>
+    /// <param name="lastChar">Last readed char to evalueate if it was a blank space</param>
     private void EatWhiteSpaces(char lastChar){
       while(lastChar == (int)' ' || lastChar == (int)'\t'){
         LastMatch["BeginingCol"]++;
