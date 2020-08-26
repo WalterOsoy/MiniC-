@@ -28,7 +28,9 @@ namespace Clases
             {"hexadecimal", new Regex(@"^0([0-9]*)?[x|X]?[0-9|a-fA-F]*")},
             {"exponet",     new Regex(@"^([0-9]+[.]?[0-9]*(e|e[+-]|E[+-]|E)?[0-9]+)")},
             { "ComentMulti", new Regex(@"^[/][*].*[*][/]")},
-            { "string", new Regex("^[\"].*[\"]")}
+            { "string", new Regex("^[\"].*[\"]")},
+            { "bool", new Regex("^(true|false)")}
+
         };
         FileManager fileManager;
         public LexicalAnalyzer(string FilePath) {
@@ -52,7 +54,12 @@ namespace Clases
             do
             {
                 char inicial = word[0];
-                if (char.IsLetter(inicial))//inicia con un caracter entonces o es una reservada o un id
+                if (MiniCSharpConstants["bool"].IsMatch(word) == true)
+                {
+                    fileManager.WriteMatch(MiniCSharpConstants["bool"].Match(word).Value, "booleano");
+                    word = word.Remove(0, MiniCSharpConstants["bool"].Match(word).Length);
+                }
+                else if (char.IsLetter(inicial))//inicia con un caracter entonces o es una reservada o un id
                 {
                     word = PossibleKeyWord(word);
                     if (word.Length != 0)
@@ -71,7 +78,7 @@ namespace Clases
                 else if (inicial == 34)
                 {
                     word = text(word);
-                }
+                }                
                 else
                 {
                     if (!char.IsWhiteSpace(inicial))
