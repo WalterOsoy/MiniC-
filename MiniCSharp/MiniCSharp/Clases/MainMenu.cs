@@ -82,9 +82,10 @@ namespace Clases
     /// </summary>
     private void ProcessFile(string FilePath){
       if(FilePath != null && FilePath != ""){
-        Console.WriteLine("Procesando archivo");
+        Console.WriteLine("Procesando archivo...");
         new LexicalAnalyzer(FilePath).Analize();
-        WriteAndWait("Archivo Procesado correctamente");
+        Console.WriteLine("Archivo Procesado");
+        WriteAndWait("Archivo de salida: " + FilePath.Replace("frag", "out"));
       } else {
         WriteAndWait("Debe seleccionar un archivo primero!");
       }
@@ -94,7 +95,13 @@ namespace Clases
     
     /// <summary>Terminates the app process</summary>
     private void TerminateProcess(){
-      WriteAndWait("Gracias por usar nuestro sistema!\nCualquier bug que encuentre, por favor\nreportarlo en el repositorio de Github.\nGracias!!! :)");
+      WriteAndWait(
+        "Gracias por usar nuestro sistema!\n" +
+        "Cualquier bug que encuentre, por favor\n" +
+        "reportarlo en el repositorio de Github.\n" +
+        "Gracias!!! :)\n" +
+        "https://github.com/WalterOsoy/MiniCSharp"
+      );
       
       Console.Clear();
       Environment.Exit(0);
