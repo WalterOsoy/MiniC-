@@ -26,7 +26,6 @@ Cuenta con un menú principal es cual nos da tres opciones:
 ### Subir archivo
 * Abre el explorador de archivos y nos permite seleccionar el archivo que deseamos procesar. El archivo debe tener extensión .frag
 <br/>
-<br/>
 
 ![Imagen de opción 1](/Utils/Opcion1.png)
 
@@ -35,7 +34,6 @@ Cuenta con un menú principal es cual nos da tres opciones:
 ### Procesar archivo
 * Procesa el archivo, valida, clasifica los tokens que lo conforman y genera un archivo de salida .out con los tokens clasificados. Cuando encuentra un carácter desconocido, imprime el error en el archivo de salida y la consola.
 <br/>
-<br/>
 
 ![Imagen de opción 2](/Utils/Opcion2.png)
 
@@ -43,7 +41,6 @@ Cuenta con un menú principal es cual nos da tres opciones:
 
 ### Salir del programa
 * Termina el programa y todos sus procesos con un mensaje de despedida.
-<br/>
 <br/>
 
 ![Imagen de opción 3](/Utils/Opcion3.png)
