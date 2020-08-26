@@ -81,7 +81,7 @@ namespace Clases
     /// the output file
     /// </summary>
     private void ProcessFile(string FilePath){
-      if(FilePath != null){
+      if(FilePath != null && FilePath != ""){
         Console.WriteLine("Procesando archivo");
         new LexicalAnalyzer(FilePath).Analize();
         WriteAndWait("Archivo Procesado correctamente");

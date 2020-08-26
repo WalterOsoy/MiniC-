@@ -73,6 +73,7 @@ namespace Clases
     public void WriteError(string UndefinedCharacter){
       string line = BuildErrorString(UndefinedCharacter);
       UpdateNewMatchPosition(false, UndefinedCharacter.Length);
+      Console.WriteLine(line);
       sw.WriteLine(line);
     }
 
