@@ -1,4 +1,6 @@
-﻿using System;
+﻿using System.Runtime.InteropServices.WindowsRuntime;
+using System.Reflection.Metadata.Ecma335;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Text;
@@ -32,17 +34,19 @@ namespace Clases
             { "bool", new Regex("^(true|false)")}
 
         };
+        private bool isCorrect =true;
         FileManager fileManager;
         public LexicalAnalyzer(string FilePath) {
             fileManager = new FileManager(FilePath);
         }
-        public void Analize()
+        public bool Analize()
         {
             do
             {
                 ToAnalyzeWord(fileManager.ReadNext());
             } while (!fileManager.sr.EndOfStream);
             fileManager.Close();
+            return isCorrect;
         }
         /// <summary>
         /// reconoce el primer caracter del string que se resive para poder sacar un analisis presiminar del contenido 
@@ -124,7 +128,7 @@ namespace Clases
                 if (id.Length>31)
                 {
                     fileManager.WriteMatch(id.Value.Substring(0,31)+" ", "Identificador");
-                    fileManager.WriteError("identificador excede el largo permitido");
+                    fileManager.WriteError("identificador excede el largo permitido");                    
                 }
                 else
                 {
@@ -193,6 +197,7 @@ namespace Clases
                 {
                     word = word.Remove(0, 2);
                     fileManager.WriteError("comentario sin iniciar");
+                    isCorrect=false;
                 }
                 else if (Operators.Contains(word.Substring(0, 2)) == true)
                 {
@@ -272,6 +277,7 @@ namespace Clases
             else
             {
                 fileManager.WriteError("EOF, comentario sin cierre");
+                isCorrect=false;
                 word = "";
             }
             return word;
@@ -314,13 +320,13 @@ namespace Clases
         /// </summary>
         /// <param name="word">palabra leia del archivo</param>
         /// <returns>retorna es sobrante de la plara que no hace match</returns>
-        private string text(string word)
+        private string text(string word)                    
         {
             do
             {
                 string tempo = fileManager.ReadNext();
                 if (tempo.Contains("\""))
-                {
+                {        
                     word += " " + tempo;
                     break;
                 }
@@ -342,6 +348,7 @@ namespace Clases
             else
             {
                 fileManager.WriteError("Strings sin terminar, falta una \" de cierre");
+                isCorrect=false;
                 word = "";
             }
             word.Trim();
