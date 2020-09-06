@@ -316,13 +316,11 @@ namespace Clases
         /// <returns>retorna es sobrante de la plara que no hace match</returns>
         private string text(string word)
         {
-            bool end = false;
             do
             {
                 string tempo = fileManager.ReadNext();
                 if (tempo.Contains("\""))
                 {
-                    end = true;
                     word += " " + tempo;
                     break;
                 }
