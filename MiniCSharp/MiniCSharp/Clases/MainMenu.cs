@@ -82,9 +82,10 @@ namespace Clases
     /// </summary>
     private void ProcessFile(string FilePath){
       if(FilePath != null && FilePath != ""){
-        Console.WriteLine("Procesando archivo...");
-        new LexicalAnalyzer(FilePath).Analize();
-        Console.WriteLine("Archivo Procesado");
+        bool success;
+        AnalizeLexicon(FilePath, out success);
+        if(success) AnalizeSintax(FilePath);
+        else Console.WriteLine("Se encontro uno o más errores mientras se analizaba el Lexico, finalizando programa");
         WriteAndWait("Archivo de salida: " + FilePath.Replace("frag", "out"));
       } else {
         WriteAndWait("Debe seleccionar un archivo primero!");
@@ -145,6 +146,21 @@ namespace Clases
       Console.ReadKey();
     }
     
+
+    private void AnalizeLexicon(string FilePath, out bool succed){
+      Console.Clear();
+      Console.WriteLine("Analizando Lexico...");
+      succed = new LexicalAnalyzer(FilePath).Analize();
+      Console.WriteLine("Archivo Analizdo");
+    }
+
+    private void AnalizeSintax(string FilePath, out bool succed){
+      Console.Clear();
+      Console.WriteLine("Analizando Sintaxis...");
+      succed = new SintacticalAnalizer(FilePath).Analize();
+      Console.WriteLine("Archivo Analizdo");
+    }
+
     #endregion
 
   }

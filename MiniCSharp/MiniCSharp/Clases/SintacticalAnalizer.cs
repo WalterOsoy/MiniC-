@@ -4,10 +4,8 @@ namespace Clases
 {
   class SintacticalAnalizer
   {
-    
-    static void Main(string[] args)
-    {
-      new MainMenu().Run();
+    public SintacticalAnalizer(string FilePath, string TokensPath){
+      
     }
   }
 }
