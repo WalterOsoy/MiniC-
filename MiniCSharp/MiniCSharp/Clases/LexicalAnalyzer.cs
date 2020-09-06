@@ -22,7 +22,7 @@ namespace Clases
             "[]",   "()",   "{}"
         };
         Dictionary<string, Regex> MiniCSharpConstants = new Dictionary<string, Regex>(){
-            {"identifier",  new Regex(@"^[a-zA-Z]+\w*$")},
+            {"identifier",  new Regex(@"^[a-zA-Z]+\w*")},
             {"boolean",     new Regex(@"true|false")},
             {"double",      new Regex(@"^[0-9]+[.]?[0-9]*")},
             {"hexadecimal", new Regex(@"^0([0-9]*)?[x|X]?[0-9|a-fA-F]*")},
@@ -119,8 +119,17 @@ namespace Clases
             int size = 1;
             if (MiniCSharpConstants["identifier"].IsMatch(word))
             {
-                fileManager.WriteMatch(word, "Identificador");
-                word = "";
+                var id = MiniCSharpConstants["identifier"].Match(word);
+                word = word.Remove(0, id.Length);
+                if (id.Length>31)
+                {
+                    fileManager.WriteMatch(id.Value.Substring(0,31)+" ", "Identificador");
+                    fileManager.WriteError("identificador excede el largo permitido");
+                }
+                else
+                {
+                    fileManager.WriteMatch(id.Value, "Identificador");
+                }                               
             }
             else
             {
@@ -179,6 +188,11 @@ namespace Clases
                 else if (word.Substring(0, 2) == "/*")
                 {
                     word = ComentMulti(word);
+                }
+                else if (word.Substring(0, 2) == "*/")
+                {
+                    word = word.Remove(0, 2);
+                    fileManager.WriteError("comentario sin iniciar");
                 }
                 else if (Operators.Contains(word.Substring(0, 2)) == true)
                 {
