@@ -320,8 +320,8 @@ namespace Clases
         /// </summary>
         /// <param name="word">palabra leia del archivo</param>
         /// <returns>retorna es sobrante de la plara que no hace match</returns>
-        private string text(string word)
-        {            
+        private string text(string word)                    
+        {
             do
             {
                 string tempo = fileManager.ReadNext();
