@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Text;
 using System.Text.RegularExpressions;
+using DataStructures;
 
 namespace Clases
 {
@@ -15,7 +16,7 @@ namespace Clases
           "class"    ,     "const" ,      "interface",      "null"    ,     "this"   ,
           "for"      ,     "while" ,      "foreach"  ,      "if"      ,     "else"   ,
           "return"   ,     "breack",      "New"      ,      "NewArray",     "Console",
-          "WriteLine"
+          "WriteLine",     "Print"
           };
         List<string> Operators = new List<string>()
         {
@@ -36,16 +37,19 @@ namespace Clases
         };
         private bool isCorrect =true;
         FileManager fileManager;
+
+        Queue<Token> tokensQueue = new Queue<Token>();
         public LexicalAnalyzer(string FilePath) {
             fileManager = new FileManager(FilePath);
         }
-        public bool Analize()
+        public bool Analize(out Queue<Token> tokensQueue)
         {
             do
             {
                 ToAnalyzeWord(fileManager.ReadNext());
             } while (!fileManager.sr.EndOfStream);
             fileManager.Close();
+            tokensQueue = this.tokensQueue;
             return isCorrect;
         }
         /// <summary>
