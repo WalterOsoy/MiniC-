@@ -3,6 +3,7 @@ using System.Text.RegularExpressions;
 using System;
 using System.Collections.Generic;
 using DataStructures;
+using System.Linq;
 
 namespace Clases
 {
@@ -11,7 +12,7 @@ namespace Clases
 
     Queue<Token> tokensQueue;
     public SintacticalAnalizer(out Queue<Token> tokensQueue){
-      this.tokensQueue = tokensQueue;
+      tokensQueue = new Queue<Token>(this.tokensQueue);
     }
 
 
@@ -195,9 +196,9 @@ namespace Clases
     #endregion
     
 
-    private bool MatchType(string tokenType){
-      if(queue.peek().Type == tokenType){
-        queue.dequeue();
+    private bool MatchType(string tokenType){      
+      if(tokensQueue.Peek().type == tokenType){
+        tokensQueue.Dequeue();
         return true;
       }
       else {
@@ -207,7 +208,7 @@ namespace Clases
     }
 
     private bool MatchLiteral(string[] stringLiteral){
-      if(stringLiteral.contains(tokensQueue.Peek().Value)){
+      if(stringLiteral.Contains(tokensQueue.Peek().Value)){
         tokensQueue.Dequeue();
         return true;
       }

@@ -1,8 +1,8 @@
 namespace DataStructures
 {
-  class Token
+  public class Token
   {
-    string text;
-    string type;
+    public string Value{ get; set; }
+    public string type { get; set; }
   }
 }
