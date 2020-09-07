@@ -141,6 +141,7 @@ namespace Clases
                 else
                 {
                     fileManager.WriteMatch(id.Value, "Identificador");
+                    tokensQueue.Enqueue(new Token { type = "Identificador", Value = id.Value});
                 }                               
             }
             else
@@ -175,10 +176,12 @@ namespace Clases
                 if (key == true)
                 {
                     fileManager.WriteMatch(word.Substring(0, size - 1), "Palabra Reservada");
+                    tokensQueue.Enqueue(new Token { type = "Palabra Reservada", Value = word.Substring(0, size - 1) });
                 }
                 else
                 {
                     fileManager.WriteMatch(word.Substring(0, size - 1), "Identificador");
+                    tokensQueue.Enqueue(new Token { type = "Identificador", Value = word.Substring(0, size - 1) });
                 }
                 word = word.Substring(size - 1, word.Length - (size - 1));
             }
@@ -210,17 +213,20 @@ namespace Clases
                 else if (Operators.Contains(word.Substring(0, 2)) == true)
                 {
                     fileManager.WriteMatch(word.Substring(0, 2), "Operador");
+                    tokensQueue.Enqueue(new Token { type = "Operador", Value = word.Substring(0,2)});
                     word = word.Remove(0, 2);
                 }
                 else
                 {
                     fileManager.WriteMatch(word.Substring(0, 1), "Operador");
+                    tokensQueue.Enqueue(new Token { type = "Operador", Value = word.Substring(0, 1) });
                     word = word.Remove(0, 1);
                 }
             }
             else
             {
                 fileManager.WriteMatch(word.Substring(0, 1), "Operador");
+                tokensQueue.Enqueue(new Token { type = "Operador", Value = word.Substring(0, 1) });
                 word = word.Remove(0, 1);
             }
             return word;
@@ -238,16 +244,19 @@ namespace Clases
             if (hexa.Length > expo.Length && hexa.Length > digit.Length)
             {
                 fileManager.WriteMatch(hexa.Value, "Valor Hexadecimal", hexa.Value);
+                tokensQueue.Enqueue(new Token { type = "Valor Hexadecimal", Value = hexa.Value });
                 word = word.Remove(0, hexa.Length);
             }
             else if (expo.Length > hexa.Length && expo.Length > digit.Length)
             {
                 fileManager.WriteMatch(expo.Value, "Valor Exponencial", expo.Value);
+                tokensQueue.Enqueue(new Token { type = "Valor Exponencial", Value = expo.Value });
                 word = word.Remove(0, expo.Length);
             }
             else
             {
                 fileManager.WriteMatch(digit.Value, "Valor Decimal", digit.Value);
+                tokensQueue.Enqueue(new Token { type = "Valor Decimal", Value = digit.Value });
                 word = word.Remove(0, digit.Length);
             }
             return word;
@@ -351,6 +360,7 @@ namespace Clases
             if (MiniCSharpConstants["string"].IsMatch(word)==true)
             {
                 fileManager.WriteMatch(MiniCSharpConstants["string"].Match(word).Value, "Cadena de texto");
+                tokensQueue.Enqueue(new Token { type = "Cadena de texto", Value = MiniCSharpConstants["string"].Match(word).Value });
                 word = word.Remove(0, MiniCSharpConstants["string"].Match(word).Length);
             }
             else
