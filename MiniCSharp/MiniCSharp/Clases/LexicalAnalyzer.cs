@@ -6,6 +6,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Text;
 using System.Text.RegularExpressions;
 using DataStructures;
+using System.Collections.Concurrent;
 
 namespace Clases
 {
@@ -65,6 +66,7 @@ namespace Clases
                 if (MiniCSharpConstants["bool"].IsMatch(word) == true)
                 {
                     fileManager.WriteMatch(MiniCSharpConstants["bool"].Match(word).Value, "booleano");
+                    tokensQueue.Enqueue(new Token { type = "booleano", Value = MiniCSharpConstants["bool"].Match(word).Value });
                     word = word.Remove(0, MiniCSharpConstants["bool"].Match(word).Length);
                 }
                 else if (char.IsLetter(inicial))//inicia con un caracter entonces o es una reservada o un id
@@ -111,6 +113,7 @@ namespace Clases
             if (keywords.Contains(word))
             {
                 fileManager.WriteMatch(word, "Palabra reservada");
+                tokensQueue.Enqueue(new Token { type = "Palabra reservada", Value = word });
                 word = "";
             }
             return word;
@@ -132,6 +135,7 @@ namespace Clases
                 if (id.Length>31)
                 {
                     fileManager.WriteMatch(id.Value.Substring(0,31)+" ", "Identificador");
+                    tokensQueue.Enqueue(new Token { type = "Identificador", Value = id.Value.Substring(0, 31) });
                     fileManager.WriteError("identificador excede el largo permitido");                    
                 }
                 else
