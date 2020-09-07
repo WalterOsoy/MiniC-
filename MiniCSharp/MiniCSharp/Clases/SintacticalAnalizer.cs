@@ -1,3 +1,4 @@
+using System.Text.RegularExpressions;
 using System;
 using System.Collections.Generic;
 using DataStructures;
@@ -97,10 +98,14 @@ namespace Clases
     }
 
     #warning Ver por que Matched esta asignado y en la validacion del if se utiliza otro metodo
-    private bool ParseFrms(){
-      bool Matched = ParseVar();
-      if(ParseVarPrim()) return MatchLiteral(new string[]{","});
-      else return true;
+    private bool ParseFrms(){      
+      if(ParseVar()){
+        if(ParseVarPrim()){
+          return MatchLiteral(new string[]{","});
+        }
+        return false;
+      }
+      return true;//Returns true because this accepts nullable values Є      
     }
     
     
@@ -120,14 +125,16 @@ namespace Clases
               if(ParseSt()){
                 return ParseIstPrim();
               }
-            }          
+              return false;
+            }
+            return false;
           }
+          return false;
         }
+        return false;
       }
       return false;
-    }
-    
-
+    }    
     private bool ParseIstPrim(){
       if (MatchLiteral(new string[]{"else"})) return ParseSt();
       else return true;
@@ -207,14 +214,17 @@ namespace Clases
     
     
     private bool ParseExpr3(){
-      bool Matched = false;
-      return Matched;
+      bool Matched = ParseExpr4();
+      if(Matched) 
+        return ParseExpr3Prim();
+      return false;
     }
     
     
     private bool ParseExpr3Prim(){
       if (MatchLiteral(new string[]{"<"})){
-        if (ParseExpr4()) return ParseExpr3Prim();
+        if (ParseExpr4()) 
+          return ParseExpr3Prim();
         else return false;
       } else if (MatchLiteral(new string[]{"<="})){
         if (ParseExpr4()) return ParseExpr3Prim();
@@ -230,11 +240,11 @@ namespace Clases
     
     
     private bool ParseExpr4(){
-      bool Matched = false;
-      return Matched;
+      bool Matched = ParseExpr5();
+      if(Matched)
+        return ParseExpr4Prim();
+      return false;
     }
-    
-    
     private bool ParseExpr4Prim(){
       if (MatchLiteral(new string[]{"+"})){
         if (ParseExpr5()) return ParseExpr4Prim();
@@ -244,14 +254,12 @@ namespace Clases
         else return false;
       } else return true;
     }
-    
-    
     private bool ParseExpr5(){
-      bool Matched = false;
-      return Matched;
+      bool Matched = ParseExpr6();
+      if(Matched)
+        return ParseExpr5Prim();
+      return false;
     }
-    
-    
     private bool ParseExpr5Prim(){
       if (MatchLiteral(new string[]{"*"})){
         if (ParseExpr6()) return ParseExpr5Prim();
@@ -261,11 +269,39 @@ namespace Clases
         else return false;
       } else return true;
     }
-    
-    
     private bool ParseExpr6(){
-      bool Matched = false;
-      return Matched;
+      if(ParseExpr()){
+        return true;
+      }else if(MatchLiteral(new string[]{"New"})) {
+        if(MatchLiteral(new string[]{"("})){
+          if(MatchType("Identificador")){
+            if(MatchLiteral(new string[]{")"})){
+              return true;
+            }
+          }
+        }
+        return false;
+      }else if(MatchLiteral(new string[]{"this"})){
+        return true;
+      }else if(MatchLiteral(new string[]{"("})){
+        if(ParseExpr()){
+          return MatchLiteral(new string[]{")"});
+        }
+      }else if(MatchLiteral(new string[]{"-"})){
+        return ParseExpr();
+      }else if(MatchLiteral(new string[]{"!"})){
+        return ParseExpr();
+      }else if(ParseLval()){
+        if(MatchLiteral(new string[]{"="})){
+          return ParseExpr();
+        }
+        return false;
+      }else if(ParseConst()){
+        return true;
+      }else if(ParseLval()){
+        return true;
+      }
+      return false;
     }
     
     
@@ -286,8 +322,22 @@ namespace Clases
     
     
     private bool ParseConst(){
-      bool Matched = false;
-      return Matched;
+      if(MatchType("Valor Hexadecimal")){
+        return true;
+      } else if(MatchType("Valor Hexadecimal")){
+        return true;
+      }else if(MatchType("Valor Exponencial")){
+        return true;
+      }else if(MatchType("Valor Decimal")){
+        return true;
+      }else if(MatchType("booleano")){
+        return true;
+      }else if(MatchType("Cadena de texto")){
+        return true;
+      }else if(MatchLiteral(new string[]{"null"})){
+        return true;
+      }
+      return false;
     }
 
     #endregion
