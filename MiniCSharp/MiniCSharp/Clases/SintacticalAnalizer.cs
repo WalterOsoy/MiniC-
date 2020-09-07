@@ -1,8 +1,7 @@
-using System.Reflection.Metadata.Ecma335;
-using System.Text.RegularExpressions;
 using System;
 using System.Collections.Generic;
 using DataStructures;
+using System.Linq;
 
 namespace Clases
 {
@@ -10,7 +9,7 @@ namespace Clases
   {
 
     Queue<Token> tokensQueue;
-    public SintacticalAnalizer(out Queue<Token> tokensQueue){
+    public SintacticalAnalizer(ref Queue<Token> tokensQueue){
       this.tokensQueue = tokensQueue;
     }
 
@@ -22,16 +21,9 @@ namespace Clases
     #region Tokens
 
     private bool ParsePrg(){
-      bool Matched = ParseVarD();
-
-      if (Matched) {
-        return ParseD();
-      }
-      else{
-        Matched = ParseFuncD();
-        if (Matched) return ParseD();
-        else return false;
-      }
+      if (ParseVarD()) return ParseD();
+      else if (ParseFuncD()) return ParseD();
+      else return false;
     }
 
     private bool ParseD(){
@@ -47,11 +39,12 @@ namespace Clases
       }
     }
     
+
     private bool ParseVarD(){
-      bool Matched = ParseVar();
-      if (Matched) return MatchLiteral(new string[]{","});
+      if (ParseVar()) return MatchLiteral(new string[]{";"});
       else return false;
     }
+
 
     private bool ParseVar(){
       bool Matched = ParseType();
@@ -60,40 +53,67 @@ namespace Clases
       else
         return true;//Returns true because this accepts nullable values Є
     }
+    
+    
     private bool ParseVarPrim(){
-      bool Matched = false;
-      return Matched;
+      if (ParseVar()) return ParseVarPrim();
+      else return true;
     }
+
+
     private bool ParseType(){
       bool Matched = ParseTypePrim();
       if(Matched) return ParseTypeBiPrim();
       return false;
     }
+    
+    
     private bool ParseTypePrim(){
-      bool Matched = false;
-      return Matched;
+      if (MatchLiteral(new string[]{"int", "double", "bool", "string"})) return true;
+      else return MatchType("Identificador");
     }
+
+
     private bool ParseTypeBiPrim(){
       bool Matched = MatchLiteral(new string[]{"[]"});
       if(Matched) return ParseTypeBiPrim();
       return true;//Returns true because this accepts nullable values Є      
     }
+    
+    
     private bool ParseFuncD(){
-      bool Matched = false;
-      return Matched;
+      if (ParseType()){
+        if (MatchType("Identificador"))
+          if (ParseFrms())
+            if(ParseSt())
+              return true;
+      } else if (MatchLiteral(new string[]{"void"})){
+        if (MatchType("Identificador"))
+          if (ParseFrms())
+            if(ParseSt())
+              return true;
+      }
+      return false;
     }
+
+    #warning Ver por que Matched esta asignado y en la validacion del if se utiliza otro metodo
     private bool ParseFrms(){
       bool Matched = ParseVar();
       if(ParseVarPrim()) return MatchLiteral(new string[]{","});
-      else return true;//Returns true because this accepts nullable values Є      
+      else return true;
     }
+    
+    
     private bool ParseSt(){
-      bool Matched = false;
-      return Matched;
+      if (ParseIst()) return true;
+      else if (ParseRst()) return true;
+      else if (ParseExpr()) return MatchLiteral(new string[]{";"});
+      else return false;
     }
+
+
     private bool ParseIst(){
-      bool Matched = MatchLiteral(new string[]{"if"});
-      if(Matched){
+      if(MatchLiteral(new string[]{"if"})){
         if(MatchLiteral(new string[]{"("})){
           if(ParseExpr()){
             if(MatchLiteral(new string[]{")"})){                
@@ -106,10 +126,14 @@ namespace Clases
       }
       return false;
     }
+    
+
     private bool ParseIstPrim(){
-      bool Matched = false;
-      return Matched;
+      if (MatchLiteral(new string[]{"else"})) return ParseSt();
+      else return true;
     }
+
+
     private bool ParseRst(){
       bool Matched = MatchLiteral(new string[]{"Return"});
       if(Matched){ 
@@ -118,10 +142,14 @@ namespace Clases
       }
       return false;
     }
+    
+    
     private bool ParseRstPrim(){
-      bool Matched = false;
-      return Matched;
+      ParseExpr();
+      return true;
     }
+
+
     private bool ParseExpr(){
       bool Matched = ParseExpr1();
       if(Matched){
@@ -129,10 +157,17 @@ namespace Clases
       }
       return false;
     }
+    
+    
     private bool ParseExprPrim(){
-      bool Matched = false;
-      return Matched;
+      if (MatchLiteral(new string[]{"||"})){
+        if (ParseExpr1()) return ParseExprPrim();
+        else return false;
+      }
+      return true;
     }
+  
+  
     private bool ParseExpr1(){
       bool Matched = ParseExpr2();
       if(Matched){
@@ -140,10 +175,17 @@ namespace Clases
       }
       return false;
     }
+    
+    
     private bool ParseExpr1Prim(){
-      bool Matched = false;
-      return Matched;
+      if (MatchLiteral(new string[]{"&&"})){
+        if (ParseExpr2()) return ParseExpr1Prim();
+        else return false;
+      }
+      return true;
     }
+    
+    
     private bool ParseExpr2(){
       bool Matched = ParseExpr3();
       if(Matched){
@@ -151,42 +193,98 @@ namespace Clases
       }
       return false;
     }
+    
+    
     private bool ParseExpr2Prim(){
-      bool Matched = false;
-      return Matched;
+      if (MatchLiteral(new string[]{"=="})){
+        if (ParseExpr3()) return ParseExpr2Prim();
+        else return false;
+      } else if (MatchLiteral(new string[]{"!="})){
+        if (ParseExpr3()) return ParseExpr2Prim();
+        else return false;
+      } else return true;
     }
+    
+    
     private bool ParseExpr3(){
       bool Matched = false;
       return Matched;
     }
+    
+    
     private bool ParseExpr3Prim(){
-      bool Matched = false;
-      return Matched;
+      if (MatchLiteral(new string[]{"<"})){
+        if (ParseExpr4()) return ParseExpr3Prim();
+        else return false;
+      } else if (MatchLiteral(new string[]{"<="})){
+        if (ParseExpr4()) return ParseExpr3Prim();
+        else return false;
+      } if (MatchLiteral(new string[]{">"})){
+        if (ParseExpr4()) return ParseExpr3Prim();
+        else return false;
+      } else if (MatchLiteral(new string[]{">="})){
+        if (ParseExpr4()) return ParseExpr3Prim();
+        else return false;
+      } else return true;
     }
+    
+    
     private bool ParseExpr4(){
       bool Matched = false;
       return Matched;
     }
+    
+    
     private bool ParseExpr4Prim(){
-      bool Matched = false;
-      return Matched;
+      if (MatchLiteral(new string[]{"+"})){
+        if (ParseExpr5()) return ParseExpr4Prim();
+        else return false;
+      } else if (MatchLiteral(new string[]{"-"})){
+        if (ParseExpr5()) return ParseExpr4Prim();
+        else return false;
+      } else return true;
     }
+    
+    
     private bool ParseExpr5(){
       bool Matched = false;
       return Matched;
     }
+    
+    
     private bool ParseExpr5Prim(){
-      bool Matched = false;
-      return Matched;
+      if (MatchLiteral(new string[]{"*"})){
+        if (ParseExpr6()) return ParseExpr5Prim();
+        else return false;
+      } else if (MatchLiteral(new string[]{"/"})){
+        if (ParseExpr6()) return ParseExpr5Prim();
+        else return false;
+      } else return true;
     }
+    
+    
     private bool ParseExpr6(){
       bool Matched = false;
       return Matched;
     }
+    
+    
     private bool ParseLval(){
-      bool Matched = false;
-      return Matched;
+      if (MatchType("Identificador")) return true;
+      else if (ParseExpr()){ 
+        if (MatchLiteral(new string[]{"."})) 
+          if(MatchType("Identificador"))
+            return true;
+      } else if (ParseExpr()){
+        if (MatchLiteral(new string[]{"["}))
+          if (ParseExpr())
+            if(MatchLiteral(new string[]{"]"}))
+              return true;
+      }
+      return false;
     }
+    
+    
     private bool ParseConst(){
       bool Matched = false;
       return Matched;
@@ -196,8 +294,8 @@ namespace Clases
     
 
     private bool MatchType(string tokenType){
-      if(queue.peek().Type == tokenType){
-        queue.dequeue();
+      if(tokensQueue.Peek().type == tokenType){
+        tokensQueue.Dequeue();
         return true;
       }
       else {
@@ -207,7 +305,7 @@ namespace Clases
     }
 
     private bool MatchLiteral(string[] stringLiteral){
-      if(stringLiteral.contains(tokensQueue.Peek().Value)){
+      if(stringLiteral.Contains(tokensQueue.Peek().Value)){
         tokensQueue.Dequeue();
         return true;
       }
