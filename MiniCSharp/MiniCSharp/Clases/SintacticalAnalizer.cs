@@ -27,9 +27,19 @@ namespace Clases
     #region Tokens
 
     private bool ParsePrg(){
-      if (ParseVarD()) return ParseD();
-      else if (ParseFuncD()) return ParseD();
-      else return false;
+      if (ParseVarD()) {
+        if(ParseD()){
+          tokensQueue.Dequeue();
+          return true;
+        }
+      }
+      if (ParseFuncD()) {
+        if(ParseD()){
+          tokensQueue.Dequeue();
+          return true;
+        }
+      }
+      return false;
     }
 
     private bool ParseD(){
@@ -52,12 +62,12 @@ namespace Clases
     }
 
 
-    private bool ParseVar(){
-      bool Matched = ParseType();
-      if (Matched) 
-        return MatchType("Identificador");
-      else
+    private bool ParseVar(){      
+      if (ParseType()) 
+        return true;
+      else if(MatchType("Identificador"))
         return true;//Returns true because this accepts nullable values Є
+      else  return false;
     }
     
     
@@ -325,7 +335,7 @@ namespace Clases
 
     private bool MatchType(string tokenType){
       if(tokensQueue.Peek().type == tokenType){
-        tokensQueue.Dequeue();
+        //tokensQueue.Dequeue();
         return true;
       }
       else {
@@ -336,7 +346,7 @@ namespace Clases
 
     private bool MatchLiteral(string[] stringLiteral){
       if(stringLiteral.Contains(tokensQueue.Peek().Value)){
-        tokensQueue.Dequeue();
+        //tokensQueue.Dequeue();
         return true;
       }
       else {
