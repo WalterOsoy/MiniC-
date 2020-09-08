@@ -11,14 +11,19 @@ namespace Clases
 
     Queue<Token> tokensQueue;
     public SintacticalAnalizer(ref Queue<Token> tokensQueue){
-      this.tokensQueue = tokensQueue;
+      this.tokensQueue = new Queue<Token>(tokensQueue);
     }
 
 
     public bool Analize(){
-
+      while (this.tokensQueue.Count != 0){
+        ParsePrg();
+      }
       return true;
-    }    
+    }
+
+
+
     #region Tokens
 
     private bool ParsePrg(){
@@ -97,7 +102,6 @@ namespace Clases
       return false;
     }
 
-    #warning Ver por que Matched esta asignado y en la validacion del if se utiliza otro metodo
     private bool ParseFrms(){      
       if(ParseVar()){
         if(ParseVarPrim()){
@@ -119,19 +123,11 @@ namespace Clases
 
     private bool ParseIst(){
       if(MatchLiteral(new string[]{"if"})){
-        if(MatchLiteral(new string[]{"("})){
-          if(ParseExpr()){
-            if(MatchLiteral(new string[]{")"})){                
-              if(ParseSt()){
+        if(MatchLiteral(new string[]{"("}))
+          if(ParseExpr())
+            if(MatchLiteral(new string[]{")"}))     
+              if(ParseSt())
                 return ParseIstPrim();
-              }
-              return false;
-            }
-            return false;
-          }
-          return false;
-        }
-        return false;
       }
       return false;
     }    
@@ -158,11 +154,8 @@ namespace Clases
 
 
     private bool ParseExpr(){
-      bool Matched = ParseExpr1();
-      if(Matched){
-        return ParseExprPrim();
-      }
-      return false;
+      if(ParseExpr1()) return ParseExprPrim();
+      else return false;
     }
     
     
@@ -176,11 +169,8 @@ namespace Clases
   
   
     private bool ParseExpr1(){
-      bool Matched = ParseExpr2();
-      if(Matched){
-        return ParseExpr1Prim();
-      }
-      return false;
+      if(ParseExpr2()) return ParseExpr1Prim();
+      else return false;
     }
     
     
@@ -194,11 +184,8 @@ namespace Clases
     
     
     private bool ParseExpr2(){
-      bool Matched = ParseExpr3();
-      if(Matched){
-        return ParseExpr2Prim();
-      }
-      return false;
+      if(ParseExpr3()) return ParseExpr2Prim();
+      else return false;
     }
     
     
@@ -214,10 +201,8 @@ namespace Clases
     
     
     private bool ParseExpr3(){
-      bool Matched = ParseExpr4();
-      if(Matched) 
-        return ParseExpr3Prim();
-      return false;
+      if(ParseExpr4()) return ParseExpr3Prim();
+      else return false;
     }
     
     
@@ -240,10 +225,8 @@ namespace Clases
     
     
     private bool ParseExpr4(){
-      bool Matched = ParseExpr5();
-      if(Matched)
-        return ParseExpr4Prim();
-      return false;
+      if(ParseExpr5()) return ParseExpr4Prim();
+      else return false;
     }
     private bool ParseExpr4Prim(){
       if (MatchLiteral(new string[]{"+"})){
@@ -255,10 +238,8 @@ namespace Clases
       } else return true;
     }
     private bool ParseExpr5(){
-      bool Matched = ParseExpr6();
-      if(Matched)
-        return ParseExpr5Prim();
-      return false;
+      if(ParseExpr6()) return ParseExpr5Prim();
+      else return false;
     }
     private bool ParseExpr5Prim(){
       if (MatchLiteral(new string[]{"*"})){
@@ -341,7 +322,6 @@ namespace Clases
     }
 
     #endregion
-    
 
     private bool MatchType(string tokenType){
       if(tokensQueue.Peek().type == tokenType){

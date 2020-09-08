@@ -24,7 +24,7 @@ namespace Clases
     /// <param name="FilePath">Imput file that its going to be readed.</param>
     public FileManager(string FilePath){
       sr = new StreamReader(FilePath, Encoding.UTF8);
-      sw = new StreamWriter(new FileStream(FilePath.Replace("frag", "out"), FileMode.Create), Encoding.UTF8);
+      sw = new StreamWriter(new FileStream(changeName(FilePath), FileMode.Create), Encoding.UTF8);
       LastMatch = new Dictionary<string, int>(){
         {"Line", 1},
         {"BeginingCol", 1}
@@ -185,6 +185,16 @@ namespace Clases
         lastChar = (char)sr.Peek();
       }
 
+    }
+
+
+
+    private string changeName(string FileName){
+      string[] nameSplitted = FileName.Split('.');
+      nameSplitted[nameSplitted.Length -1] = ".out";
+      string newName = "";
+      foreach (string item in nameSplitted) newName += item;
+      return newName;
     }
 
     #endregion
