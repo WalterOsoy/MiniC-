@@ -17,8 +17,13 @@ namespace Clases
 
 
     public bool Analize(){
+      int LastHash = tokensList[0].GetHashCode();
       while (this.tokensList.Count != 0){
         ParsePrg();
+        if (LastHash == tokensList[0].GetHashCode()){
+          logError(tokensList[0].Value, false);
+          tokensList.RemoveAt(0);
+        }
       }
       return true;
     }
@@ -322,10 +327,7 @@ namespace Clases
         tokensList.RemoveAt(0);
         return true;
       }
-      else {
-        Console.WriteLine("Error, ya no se que hacer, {1} no es {0}, no se con cual quedarme", tokenType, tokensList[0].type);
-        return false;
-      }
+      else return false;
     }
 
     private bool MatchLiteral(string[] stringLiteral){
@@ -334,10 +336,21 @@ namespace Clases
         tokensList.RemoveAt(0);
         return true;
       }
+      else return false;
+    }
+  
+
+    private bool NextParse(Func<bool> ParseFunc, bool reQueue){
+      if (ParseFunc()) return true; 
       else {
-        Console.WriteLine("Error, ya no se que hacer, {1} no es [{0}], no se con cual quedarme", String.Join(", ", stringLiteral), tokensList[0].Value);
+        logError(tokensList[0].Value, reQueue);
         return false;
       }
+    }
+    
+    private void logError(string Token, bool reQueue){
+      Console.WriteLine("Se encontro un token inesperado {0}", Token);
+      if (reQueue) tokensList.Insert(0, tempStack.Pop();
     }
   }
 }
