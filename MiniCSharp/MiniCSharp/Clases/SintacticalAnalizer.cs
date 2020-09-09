@@ -21,7 +21,7 @@ namespace Clases
       while (this.tokensList.Count != 0){
         ParsePrg();
         if (LastHash == tokensList[0].GetHashCode()){
-          logError(tokensList[0].Value, false);
+          logError(tokensList[0].Value);
           tokensList.RemoveAt(0);
         }
       }
@@ -33,11 +33,11 @@ namespace Clases
     #region Tokens
 
     private bool ParsePrg(){
-      if (ParseVarD()) {
-        if(ParseD()) return true;
+      if (NextParse(ParseVarD, true)) {
+        if(NextParse(ParseD, false)) return true;
       }
-      else if (ParseFuncD()) {
-        if(ParseD()) return true;
+      else if (NextParse(ParseFuncD, true)) {
+        if(NextParse(ParseD, false)) return true;
       }
       return false;
     }
@@ -340,17 +340,21 @@ namespace Clases
     }
   
 
+    /// <summary>Tries to parse the next function</summary>
+    /// <param name="ParseFunc">Parse Function</param>
+    /// <param name="reQueue">Add again in the list the last pulled out item</param>
+    /// <returns>if parse was successfull</returns>
     private bool NextParse(Func<bool> ParseFunc, bool reQueue){
       if (ParseFunc()) return true; 
       else {
-        logError(tokensList[0].Value, reQueue);
+        if(reQueue) tokensList.Insert(0, tempStack.Pop());
+        logError(tokensList[0].Value);
         return false;
       }
     }
-    
-    private void logError(string Token, bool reQueue){
+
+    private void logError(string Token){
       Console.WriteLine("Se encontro un token inesperado {0}", Token);
-      if (reQueue) tokensList.Insert(0, tempStack.Pop();
     }
   }
 }
