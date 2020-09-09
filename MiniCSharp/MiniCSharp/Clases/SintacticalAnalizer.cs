@@ -254,9 +254,7 @@ namespace Clases
       } else return true;
     }
     private bool ParseExpr6(){
-      if(ParseExpr()){
-        return true;
-      }else if(MatchLiteral(new string[]{"New"})) {
+      if(MatchLiteral(new string[]{"New"})) {
         if(MatchLiteral(new string[]{"("})){
           if(MatchType("Identificador")){
             if(MatchLiteral(new string[]{")"})){
@@ -306,44 +304,38 @@ namespace Clases
     
     
     private bool ParseConst(){
-      if(MatchType("Valor Hexadecimal")){
-        return true;
-      } else if(MatchType("Valor Hexadecimal")){
-        return true;
-      }else if(MatchType("Valor Exponencial")){
-        return true;
-      }else if(MatchType("Valor Decimal")){
-        return true;
-      }else if(MatchType("booleano")){
-        return true;
-      }else if(MatchType("Cadena de texto")){
-        return true;
-      }else if(MatchLiteral(new string[]{"null"})){
-        return true;
-      }
-      return false;
+      if(MatchType("Valor Hexadecimal"))          return true;
+      else if(MatchType("Valor Hexadecimal"))     return true;
+      else if(MatchType("Valor Exponencial"))     return true;
+      else if(MatchType("Valor Decimal"))         return true;
+      else if(MatchType("booleano"))              return true;
+      else if(MatchType("Cadena de texto"))       return true;
+      else if(MatchLiteral(new string[]{"null"})) return true;
+      else return false;
     }
 
     #endregion
 
     private bool MatchType(string tokenType){
       if(tokensList[0].type == tokenType){
-        //tokensList.DeList();
+        tempStack.Push(tokensList[0]);
+        tokensList.RemoveAt(0);
         return true;
       }
       else {
-        Console.WriteLine("Error, ya no se que hacer, no se con cual quedarme");
+        Console.WriteLine("Error, ya no se que hacer, {1} no es {0}, no se con cual quedarme", tokenType, tokensList[0].type);
         return false;
       }
     }
 
     private bool MatchLiteral(string[] stringLiteral){
       if(stringLiteral.Contains(tokensList[0].Value)){
-        //tokensList.DeList();
+        tempStack.Push(tokensList[0]);
+        tokensList.RemoveAt(0);
         return true;
       }
       else {
-        Console.WriteLine("Error, ya no se que hacer, no se con cual quedarme");
+        Console.WriteLine("Error, ya no se que hacer, {1} no es [{0}], no se con cual quedarme", String.Join(", ", stringLiteral), tokensList[0].Value);
         return false;
       }
     }
