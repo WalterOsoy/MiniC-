@@ -39,18 +39,18 @@ namespace Clases
         private bool isCorrect =true;
         FileManager fileManager;
 
-        Queue<Token> tokensQueue = new Queue<Token>();
+        List<Token> tokenslist = new List<Token>();
         public LexicalAnalyzer(string FilePath) {
             fileManager = new FileManager(FilePath);
         }
-        public bool Analize(out Queue<Token> tokensQueue)
+        public bool Analize(out List<Token> tokenslist)
         {
             do
             {
                 ToAnalyzeWord(fileManager.ReadNext());
             } while (!fileManager.sr.EndOfStream);
             fileManager.Close();
-            tokensQueue = this.tokensQueue;
+            tokenslist = this.tokenslist;
             return isCorrect;
         }
         /// <summary>
@@ -66,7 +66,7 @@ namespace Clases
                 if (MiniCSharpConstants["bool"].IsMatch(word) == true)
                 {
                     fileManager.WriteMatch(MiniCSharpConstants["bool"].Match(word).Value, "booleano");
-                    tokensQueue.Enqueue(new Token { type = "booleano", Value = MiniCSharpConstants["bool"].Match(word).Value });
+                    tokenslist.Add(new Token { type = "booleano", Value = MiniCSharpConstants["bool"].Match(word).Value });
                     word = word.Remove(0, MiniCSharpConstants["bool"].Match(word).Length);
                 }
                 else if (char.IsLetter(inicial))//inicia con un caracter entonces o es una reservada o un id
@@ -113,7 +113,7 @@ namespace Clases
             if (keywords.Contains(word))
             {
                 fileManager.WriteMatch(word, "Palabra reservada");
-                tokensQueue.Enqueue(new Token { type = "Palabra reservada", Value = word });
+                tokenslist.Add(new Token { type = "Palabra reservada", Value = word });
                 word = "";
             }
             return word;
@@ -135,13 +135,13 @@ namespace Clases
                 if (id.Length>31)
                 {
                     fileManager.WriteMatch(id.Value.Substring(0,31)+" ", "Identificador");
-                    tokensQueue.Enqueue(new Token { type = "Identificador", Value = id.Value.Substring(0, 31) });
+                    tokenslist.Add(new Token { type = "Identificador", Value = id.Value.Substring(0, 31) });
                     fileManager.WriteError("identificador excede el largo permitido");                    
                 }
                 else
                 {
                     fileManager.WriteMatch(id.Value, "Identificador");
-                    tokensQueue.Enqueue(new Token { type = "Identificador", Value = id.Value});
+                    tokenslist.Add(new Token { type = "Identificador", Value = id.Value});
                 }                               
             }
             else
@@ -176,12 +176,12 @@ namespace Clases
                 if (key == true)
                 {
                     fileManager.WriteMatch(word.Substring(0, size - 1), "Palabra Reservada");
-                    tokensQueue.Enqueue(new Token { type = "Palabra Reservada", Value = word.Substring(0, size - 1) });
+                    tokenslist.Add(new Token { type = "Palabra Reservada", Value = word.Substring(0, size - 1) });
                 }
                 else
                 {
                     fileManager.WriteMatch(word.Substring(0, size - 1), "Identificador");
-                    tokensQueue.Enqueue(new Token { type = "Identificador", Value = word.Substring(0, size - 1) });
+                    tokenslist.Add(new Token { type = "Identificador", Value = word.Substring(0, size - 1) });
                 }
                 word = word.Substring(size - 1, word.Length - (size - 1));
             }
@@ -213,20 +213,20 @@ namespace Clases
                 else if (Operators.Contains(word.Substring(0, 2)) == true)
                 {
                     fileManager.WriteMatch(word.Substring(0, 2), "Operador");
-                    tokensQueue.Enqueue(new Token { type = "Operador", Value = word.Substring(0,2)});
+                    tokenslist.Add(new Token { type = "Operador", Value = word.Substring(0,2)});
                     word = word.Remove(0, 2);
                 }
                 else
                 {
                     fileManager.WriteMatch(word.Substring(0, 1), "Operador");
-                    tokensQueue.Enqueue(new Token { type = "Operador", Value = word.Substring(0, 1) });
+                    tokenslist.Add(new Token { type = "Operador", Value = word.Substring(0, 1) });
                     word = word.Remove(0, 1);
                 }
             }
             else
             {
                 fileManager.WriteMatch(word.Substring(0, 1), "Operador");
-                tokensQueue.Enqueue(new Token { type = "Operador", Value = word.Substring(0, 1) });
+                tokenslist.Add(new Token { type = "Operador", Value = word.Substring(0, 1) });
                 word = word.Remove(0, 1);
             }
             return word;
@@ -244,19 +244,19 @@ namespace Clases
             if (hexa.Length > expo.Length && hexa.Length > digit.Length)
             {
                 fileManager.WriteMatch(hexa.Value, "Valor Hexadecimal", hexa.Value);
-                tokensQueue.Enqueue(new Token { type = "Valor Hexadecimal", Value = hexa.Value });
+                tokenslist.Add(new Token { type = "Valor Hexadecimal", Value = hexa.Value });
                 word = word.Remove(0, hexa.Length);
             }
             else if (expo.Length > hexa.Length && expo.Length > digit.Length)
             {
                 fileManager.WriteMatch(expo.Value, "Valor Exponencial", expo.Value);
-                tokensQueue.Enqueue(new Token { type = "Valor Exponencial", Value = expo.Value });
+                tokenslist.Add(new Token { type = "Valor Exponencial", Value = expo.Value });
                 word = word.Remove(0, expo.Length);
             }
             else
             {
                 fileManager.WriteMatch(digit.Value, "Valor Decimal", digit.Value);
-                tokensQueue.Enqueue(new Token { type = "Valor Decimal", Value = digit.Value });
+                tokenslist.Add(new Token { type = "Valor Decimal", Value = digit.Value });
                 word = word.Remove(0, digit.Length);
             }
             return word;
@@ -360,7 +360,7 @@ namespace Clases
             if (MiniCSharpConstants["string"].IsMatch(word)==true)
             {
                 fileManager.WriteMatch(MiniCSharpConstants["string"].Match(word).Value, "Cadena de texto");
-                tokensQueue.Enqueue(new Token { type = "Cadena de texto", Value = MiniCSharpConstants["string"].Match(word).Value });
+                tokenslist.Add(new Token { type = "Cadena de texto", Value = MiniCSharpConstants["string"].Match(word).Value });
                 word = word.Remove(0, MiniCSharpConstants["string"].Match(word).Length);
             }
             else
