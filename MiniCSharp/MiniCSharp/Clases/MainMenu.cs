@@ -84,8 +84,8 @@ namespace Clases
     private void ProcessFile(string FilePath){
       if(FilePath != null && FilePath != ""){
         bool success;
-        AnalizeLexicon(FilePath, out success, out Queue<Token> tokensQueue);
-        if(success) AnalizeSintax(FilePath, out success, ref tokensQueue);
+        AnalizeLexicon(FilePath, out success, out List<Token> tokensList);
+        if(success) AnalizeSintax(FilePath, out success, ref tokensList);
         else Console.WriteLine("Se encontro uno o más errores mientras se analizaba el Lexico, finalizando programa");
         WriteAndWait("Archivo de salida: " + FilePath.Replace("frag", "out"));
       } else {
@@ -148,17 +148,17 @@ namespace Clases
     }
     
 
-    private void AnalizeLexicon(string FilePath, out bool succed, out Queue<Token> tokensQueue){
+    private void AnalizeLexicon(string FilePath, out bool succed, out List<Token> tokensList){
       Console.Clear();
       Console.WriteLine("Analizando Lexico...");
-      succed = new LexicalAnalyzer(FilePath).Analize(out tokensQueue);
+      succed = new LexicalAnalyzer(FilePath).Analize(out tokensList);
       Console.WriteLine("Archivo Analizdo");
     }
 
-    private void AnalizeSintax(string FilePath, out bool succed, ref Queue<Token> tokensQueue){
+    private void AnalizeSintax(string FilePath, out bool succed, ref List<Token> tokensList){
       Console.Clear();
       Console.WriteLine("Analizando Sintaxis...");
-      succed = new SintacticalAnalizer(ref tokensQueue).Analize();
+      succed = new SintacticalAnalizer(ref tokensList).Analize();
       Console.WriteLine("Archivo Analizdo");
     }
 

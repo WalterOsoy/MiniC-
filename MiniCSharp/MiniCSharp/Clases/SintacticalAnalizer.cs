@@ -8,15 +8,16 @@ namespace Clases
 {
   class SintacticalAnalizer
   {
+    List<Token> tokensList;
+    Stack<Token> tempStack = new Stack<Token>();
 
-    Queue<Token> tokensQueue;
-    public SintacticalAnalizer(ref Queue<Token> tokensQueue){
-      this.tokensQueue = new Queue<Token>(tokensQueue);
+    public SintacticalAnalizer(ref List<Token> tokensList){
+      this.tokensList = new List<Token>(tokensList);
     }
 
 
     public bool Analize(){
-      while (this.tokensQueue.Count != 0){
+      while (this.tokensList.Count != 0){
         ParsePrg();
       }
       return true;
@@ -28,16 +29,10 @@ namespace Clases
 
     private bool ParsePrg(){
       if (ParseVarD()) {
-        if(ParseD()){
-          tokensQueue.Dequeue();
-          return true;
-        }
+        if(ParseD()) return true;
       }
-      if (ParseFuncD()) {
-        if(ParseD()){
-          tokensQueue.Dequeue();
-          return true;
-        }
+      else if (ParseFuncD()) {
+        if(ParseD()) return true;
       }
       return false;
     }
@@ -63,11 +58,9 @@ namespace Clases
 
 
     private bool ParseVar(){      
-      if (ParseType()) 
-        return true;
-      else if(MatchType("Identificador"))
-        return true;//Returns true because this accepts nullable values Є
-      else  return false;
+      if (ParseType()) return true;
+      else if(MatchType("Identificador")) return true;
+      else return false;
     }
     
     
@@ -334,8 +327,8 @@ namespace Clases
     #endregion
 
     private bool MatchType(string tokenType){
-      if(tokensQueue.Peek().type == tokenType){
-        //tokensQueue.Dequeue();
+      if(tokensList[0].type == tokenType){
+        //tokensList.DeList();
         return true;
       }
       else {
@@ -345,8 +338,8 @@ namespace Clases
     }
 
     private bool MatchLiteral(string[] stringLiteral){
-      if(stringLiteral.Contains(tokensQueue.Peek().Value)){
-        //tokensQueue.Dequeue();
+      if(stringLiteral.Contains(tokensList[0].Value)){
+        //tokensList.DeList();
         return true;
       }
       else {
