@@ -57,14 +57,13 @@ namespace Clases
     
 
     private bool ParseVarD(){
-      if (ParseVar()) return MatchLiteral(new string[]{";"});
+      if (NextParse(ParseVar, true)) return MatchLiteral(new string[]{";"});
       else return false;
     }
 
 
     private bool ParseVar(){      
-      if (ParseType()) return true;
-      else if(MatchType("Identificador")) return true;
+      if (ParseType()) return MatchType("Identificador");
       else return false;
     }
     
@@ -236,6 +235,7 @@ namespace Clases
       if(ParseExpr5()) return ParseExpr4Prim();
       else return false;
     }
+    
     private bool ParseExpr4Prim(){
       if (MatchLiteral(new string[]{"+"})){
         if (ParseExpr5()) return ParseExpr4Prim();
@@ -249,6 +249,8 @@ namespace Clases
       if(ParseExpr6()) return ParseExpr5Prim();
       else return false;
     }
+    
+    
     private bool ParseExpr5Prim(){
       if (MatchLiteral(new string[]{"*"})){
         if (ParseExpr6()) return ParseExpr5Prim();
@@ -258,6 +260,8 @@ namespace Clases
         else return false;
       } else return true;
     }
+
+
     private bool ParseExpr6(){
       if(MatchLiteral(new string[]{"New"})) {
         if(MatchLiteral(new string[]{"("})){
@@ -344,10 +348,14 @@ namespace Clases
     /// <param name="ParseFunc">Parse Function</param>
     /// <param name="reQueue">Add again in the list the last pulled out item</param>
     /// <returns>if parse was successfull</returns>
-    private bool NextParse(Func<bool> ParseFunc, bool reQueue){
+    private bool NextParse(Func<bool> ParseFunc, bool reQueue, int reintegros){
       if (ParseFunc()) return true; 
       else {
-        if(reQueue) tokensList.Insert(0, tempStack.Pop());
+
+        if(reQueue) 
+          for(int i = 0; i < reintegros; i++) 
+            tokensList.Insert(0, tempStack.Pop());
+        
         logError(tokensList[0].Value);
         return false;
       }
