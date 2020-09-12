@@ -40,8 +40,9 @@ namespace Clases
                 //Hace un log del error, remueve el primer dato he intanta con el siguente
                 logError(tokensList[0].Value);
                 tokensList.RemoveAt(0);
-              }
+              }                
             } while (this.tokensList.Count != 0);
+            Console.WriteLine("Analisis sintactico completo ");
             return true;
 
         }
@@ -163,7 +164,7 @@ namespace Clases
             result = ParseTypePrim();
             if (result.allok)
             {
-                level = result.CountLevel;
+                level += result.CountLevel;
                 result = ParseTypeBiPrim();
                 if (result.allok)
                 {
@@ -972,25 +973,32 @@ namespace Clases
 
         private ResultParse MatchType(string tokenType)
         {
-            if (tokensList[0].type == tokenType)
+            if (tokensList.Count!=0)
             {
-                tempStack.Push(tokensList[0]);
-                tokensList.RemoveAt(0);
-                return new ResultParse() { allok = true, CountLevel = 1 };
+                if (tokensList[0].type == tokenType)
+                {
+                    tempStack.Push(tokensList[0]);
+                    tokensList.RemoveAt(0);
+                    return new ResultParse() { allok = true, CountLevel = 1 };
+                }
+                else return new ResultParse() { allok = false, CountLevel = 0 };
             }
-            else return new ResultParse() { allok = false, CountLevel = 0 };
+            else            
+                return new ResultParse() { allok = false, CountLevel = 0 };          
         }
 
         private ResultParse MatchLiteral(string[] stringLiteral)
         {
-          if (tokensList.Count == 0)
-            if (stringLiteral.Contains(tokensList[0].Value))
-            {
-                tempStack.Push(tokensList[0]);
-                tokensList.RemoveAt(0);
-                return new ResultParse() { allok = true, CountLevel = 1 };
-            }
+            if (tokensList.Count != 0)
+                if (stringLiteral.Contains(tokensList[0].Value))
+                {
+                    tempStack.Push(tokensList[0]);
+                    tokensList.RemoveAt(0);
+                    return new ResultParse() { allok = true, CountLevel = 1 };
+                }
+                else return new ResultParse() { allok = false, CountLevel = 0 };
             else return new ResultParse() { allok = false, CountLevel = 0 };
+
         }
 
 
@@ -1010,9 +1018,16 @@ namespace Clases
         //  }
         //}
 
-        private void reinsert(int levels){
-          for(int i = 0; i < levels; i++) 
-            tokensList.Insert(0, tempStack.Pop());
+        private void reinsert(int levels)
+        {
+            for (int i = 0; i < levels; i++)
+            {
+                if (tempStack.Count!=0)
+                {
+                    tokensList.Insert(0, tempStack.Pop());
+                }
+            }
+
         }
 
         private void logError(string Token)

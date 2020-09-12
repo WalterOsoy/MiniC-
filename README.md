@@ -44,3 +44,13 @@ Cuenta con un menú principal es cual nos da tres opciones:
 <br/>
 
 ![Imagen de opción 3](/Utils/Opcion3.png)
+
+### Analizador 
+* La gramatica trabajada es la siguiente:
+<br/>
+
+![Imagen 4](/Utils/Gramatica.jpeg)
+
+<br/>
+
+El programa al encontrar un error es que descarta desde el inicio de la linea hasta el elemento que causa conflictos. 
