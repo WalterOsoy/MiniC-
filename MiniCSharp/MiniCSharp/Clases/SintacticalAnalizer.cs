@@ -17,17 +17,33 @@ namespace Clases
 
         public bool Analize()
         {
+            // int LastHash = tokensList[0].GetHashCode();
+            // while (this.tokensList.Count != 0)
+            // {
+            //     ResultParse result = ParsePrg();
+            //     if (LastHash == tokensList[0].GetHashCode())
+            //     {
+            //         logError(tokensList[0].Value);
+            //         tokensList.RemoveAt(0);
+            //     }
+            // }
+            // return true;
+
+
             int LastHash = tokensList[0].GetHashCode();
             while (this.tokensList.Count != 0)
             {
-                ResultParse result = ParsePrg();
-                if (LastHash == tokensList[0].GetHashCode())
-                {
-                    logError(tokensList[0].Value);
-                    tokensList.RemoveAt(0);
-                }
+              ResultParse result = ParsePrg();
+              if (!result.allok){
+                //Hace un backtracking hasta el estado inicial
+                reinsert(result.CountLevel);
+                //Hace un log del error, remueve el primer dato he intanta con el siguente
+                logError(tokensList[0].Value);
+                tokensList.RemoveAt(0);
+              }
             }
             return true;
+
         }
 
         #region Tokens
@@ -786,13 +802,17 @@ namespace Clases
         //  else {
 
         //    if(reQueue) 
-        //      for(int i = 0; i < reintegros; i++) 
-        //        tokensList.Insert(0, tempStack.Pop());
+        //      
 
         //    logError(tokensList[0].Value);
         //    return false;
         //  }
         //}
+
+        private void reinsert(int levels){
+          for(int i = 0; i < levels; i++) 
+            tokensList.Insert(0, tempStack.Pop());
+        }
 
         private void logError(string Token)
         {
