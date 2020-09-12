@@ -381,52 +381,117 @@ namespace Clases
 
         private ResultParse ParseExpr()
         {
-            if (ParseExpr1()) return ParseExprPrim();
-            else return false;
+            int level = 0;
+            ResultParse result;
+            result = ParseExpr1();
+            if (result.allok) 
+            {
+                level += result.CountLevel;
+                result = ParseExprPrim();
+                if (result.allok)
+                {
+                    return new ResultParse() { allok = result.allok, CountLevel = level + 1 };
+                }
+            }
+            return new ResultParse() { allok = result.allok, CountLevel = level };
         }
 
 
         private ResultParse ParseExprPrim()
         {
-            if (MatchLiteral(new string[] { "||" }))
+            int level = 0;
+            ResultParse result;
+            result = MatchLiteral(new string[] { "||" });
+            if (result.allok)
             {
-                if (ParseExpr1()) return ParseExprPrim();
-                else return false;
+                level += result.CountLevel;
+                result = ParseExpr1();
+                if (result.allok)
+                {
+                    level += result.CountLevel;
+                    result =ParseExprPrim();
+                    if (result.allok)
+                    {
+                        return new ResultParse() { allok = result.allok, CountLevel = level + 1 };
+                    }
+                }
+                else return new ResultParse() { allok = result.allok, CountLevel = level };
             }
-            return true;
+            return new ResultParse() { allok = true, CountLevel = level + 1 };
         }
 
 
         private ResultParse ParseExpr1()
         {
-            if (ParseExpr2()) return ParseExpr1Prim();
-            else return false;
+            int level = 0;
+            ResultParse result;
+            result = ParseExpr2();
+            if (result.allok)
+            {
+                level += result.CountLevel;
+                result = ParseExpr1Prim();
+                if (result.allok)
+                {
+                    return new ResultParse() { allok = result.allok, CountLevel = level + 1 };
+                }
+            }
+            return new ResultParse() { allok = result.allok, CountLevel = level };
         }
 
 
         private ResultParse ParseExpr1Prim()
         {
-            if (MatchLiteral(new string[] { "&&" }))
+            int level = 0;
+            ResultParse result;
+            result = MatchLiteral(new string[] { "&&" });
+            if (result.allok)
             {
-                if (ParseExpr2()) return ParseExpr1Prim();
-                else return false;
+                level += result.CountLevel;
+                result = ParseExpr2();
+                if (result.allok)
+                {
+                    level += result.CountLevel;
+                    result = ParseExpr1Prim();
+                    if (result.allok)
+                    {
+                        return new ResultParse() { allok = result.allok, CountLevel = level + 1 };
+                    }
+                }
+                else return new ResultParse() { allok = result.allok, CountLevel = level };
             }
-            return true;
+            return new ResultParse() { allok = true, CountLevel = level + 1 };
         }
 
 
         private ResultParse ParseExpr2()
         {
-            if (ParseExpr3()) return ParseExpr2Prim();
-            else return false;
+            int level = 0;
+            ResultParse result;
+            result = ParseExpr3();
+            if (result.allok)
+            {
+                level += result.CountLevel;
+                result = ParseExpr2Prim();
+                if (result.allok)
+                {
+                    return new ResultParse() { allok = result.allok, CountLevel = level + 1 };
+                }
+            }
+            return new ResultParse() { allok = result.allok, CountLevel = level };
         }
 
 
         private ResultParse ParseExpr2Prim()
         {
-            if (MatchLiteral(new string[] { "==" }))
+            int level = 0;
+            ResultParse result;
+            result = MatchLiteral(new string[] { "==" });
+            if (result.allok)
             {
-                if (ParseExpr3()) return ParseExpr2Prim();
+                if (ParseExpr3())
+                {
+                    return ParseExpr2Prim();
+                }
                 else return false;
             }
             else if (MatchLiteral(new string[] { "!=" }))
@@ -440,8 +505,19 @@ namespace Clases
 
         private ResultParse ParseExpr3()
         {
-            if (ParseExpr4()) return ParseExpr3Prim();
-            else return false;
+            int level = 0;
+            ResultParse result;
+            result = ParseExpr4();
+            if (result.allok)
+            {
+                level += result.CountLevel;
+                result = ParseExpr3Prim();
+                if (result.allok)
+                {
+                    return new ResultParse() { allok = result.allok, CountLevel = level + 1 };
+                }
+            }
+            return new ResultParse() { allok = result.allok, CountLevel = level };
         }
 
 
@@ -474,8 +550,19 @@ namespace Clases
 
         private ResultParse ParseExpr4()
         {
-            if (ParseExpr5()) return ParseExpr4Prim();
-            else return false;
+            int level = 0;
+            ResultParse result;
+            result = ParseExpr5();
+            if (result.allok)
+            {
+                level += result.CountLevel;
+                result = ParseExpr4Prim();
+                if (result.allok)
+                {
+                    return new ResultParse() { allok = result.allok, CountLevel = level + 1 };
+                }
+            }
+            return new ResultParse() { allok = result.allok, CountLevel = level };
         }
 
         private ResultParse ParseExpr4Prim()
@@ -494,8 +581,19 @@ namespace Clases
         }
         private ResultParse ParseExpr5()
         {
-            if (ParseExpr6()) return ParseExpr5Prim();
-            else return false;
+            int level = 0;
+            ResultParse result;
+            result = ParseExpr6();
+            if (result.allok)
+            {
+                level += result.CountLevel;
+                result = ParseExpr5Prim();
+                if (result.allok)
+                {
+                    return new ResultParse() { allok = result.allok, CountLevel = level + 1 };
+                }
+            }
+            return new ResultParse() { allok = result.allok, CountLevel = level };
         }
 
 
