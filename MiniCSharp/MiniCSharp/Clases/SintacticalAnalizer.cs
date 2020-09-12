@@ -20,7 +20,7 @@ namespace Clases
             int LastHash = tokensList[0].GetHashCode();
             while (this.tokensList.Count != 0)
             {
-                ParsePrg();
+                ResultParse result = ParsePrg();
                 if (LastHash == tokensList[0].GetHashCode())
                 {
                     logError(tokensList[0].Value);
@@ -488,18 +488,35 @@ namespace Clases
             result = MatchLiteral(new string[] { "==" });
             if (result.allok)
             {
-                if (ParseExpr3())
+                level += result.CountLevel;
+                result = ParseExpr3();
+                if (result.allok)
                 {
-                    return ParseExpr2Prim();
+                    level += result.CountLevel;
+                    result = ParseExpr2Prim();
+                    if (result.allok) {
+                        return new ResultParse() { allok = result.allok, CountLevel = level + 1 };
+                    }
                 }
-                else return false;
+                return new ResultParse() { allok = false, CountLevel = level };
             }
-            else if (MatchLiteral(new string[] { "!=" }))
+            result = MatchLiteral(new string[] { "!=" });
+            if (result.allok)
             {
-                if (ParseExpr3()) return ParseExpr2Prim();
-                else return false;
+                level += result.CountLevel;
+                result = ParseExpr3();
+                if (result.allok)
+                {
+                    level += result.CountLevel;
+                    result = ParseExpr2Prim();
+                    if (result.allok)
+                    {
+                        return new ResultParse() { allok = result.allok, CountLevel = level + 1 };
+                    }
+                }
+                else return new ResultParse() { allok = false, CountLevel = level };
             }
-            else return true;
+            else return new ResultParse() { allok = result.allok, CountLevel = level + 1 };
         }
 
 
