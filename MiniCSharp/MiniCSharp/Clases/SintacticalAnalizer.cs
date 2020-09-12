@@ -31,7 +31,7 @@ namespace Clases
 
 
             int LastHash = tokensList[0].GetHashCode();
-            while (this.tokensList.Count != 0)
+            do 
             {
               ResultParse result = ParsePrg();
               if (!result.allok){
@@ -41,7 +41,7 @@ namespace Clases
                 logError(tokensList[0].Value);
                 tokensList.RemoveAt(0);
               }
-            }
+            } while (this.tokensList.Count != 0);
             return true;
 
         }
@@ -983,6 +983,7 @@ namespace Clases
 
         private ResultParse MatchLiteral(string[] stringLiteral)
         {
+          if (tokensList.Count == 0)
             if (stringLiteral.Contains(tokensList[0].Value))
             {
                 tempStack.Push(tokensList[0]);
