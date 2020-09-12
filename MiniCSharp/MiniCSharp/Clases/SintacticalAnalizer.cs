@@ -197,45 +197,71 @@ namespace Clases
 
         private ResultParse ParseFuncD()
         {
-            if (ParseType())
+            int level = 0;
+            ResultParse result;
+            result = ParseType();
+            if (result.allok)
             {
-                if (MatchType("Identificador"))
+                level += result.CountLevel;
+                result = MatchType("Identificador");
+                if (result.allok)
                 {
-                    if (MatchLiteral(new string[]{ "("}))
+                    level += result.CountLevel;
+                    result = MatchLiteral(new string[] { "(" });
+                    if (result.allok)
                     {
-                        if (ParseFrms())
+                        level += result.CountLevel;
+                        result = ParseFrms();
+                        if (result.allok)
                         {
-                            if (MatchLiteral(new string[]{ ")"}))
+                            level += result.CountLevel;
+                            result = MatchLiteral(new string[] { ")" });
+                            if (result.allok)
                             {
-                                if (ParseSt())
+                                level += result.CountLevel;
+                                result = ParseSt();
+                                if (result.allok)
                                 {
-                                    return true;
+                                    return new ResultParse() { allok = result.allok, CountLevel = level + 1 };
                                 }
                             }
                         }
                     }
                 }
-            }
-            else if (MatchLiteral(new string[] { "void" }))
+                return new ResultParse() { allok = false, CountLevel = level };
+            }            
+            result = MatchLiteral(new string[] { "void" });
+            if (result.allok)
             {
-                if (MatchType("Identificador"))
+                level += result.CountLevel;
+                result = MatchType("Identificador");
+                if (result.allok)
                 {
-                    if (MatchLiteral(new string[] { "(" }))
+                    level += result.CountLevel;
+                    result = MatchLiteral(new string[] { "(" });
+                    if (result.allok)
                     {
-                        if (ParseFrms())
+                        level += result.CountLevel;
+                        result = ParseFrms();
+                        if (result.allok)
                         {
-                            if (MatchLiteral(new string[] { ")" }))
+                            level += result.CountLevel;
+                            result = MatchLiteral(new string[] { ")" });
+                            if (result.allok)
                             {
-                                if (ParseSt())
+                                level += result.CountLevel;
+                                result = ParseSt();
+                                if (result.allok)
                                 {
-                                    return true;
+                                    return new ResultParse() { allok = result.allok, CountLevel = level + 1 };
                                 }
                             }
                         }
                     }
                 }
+                return new ResultParse() { allok = false, CountLevel = level };
             }
-            return false;
+            return new ResultParse() { allok = false, CountLevel = level };
         }
 
         private ResultParse ParseFrms()
@@ -514,9 +540,9 @@ namespace Clases
                         return new ResultParse() { allok = result.allok, CountLevel = level + 1 };
                     }
                 }
-                else return new ResultParse() { allok = false, CountLevel = level };
+                return new ResultParse() { allok = false, CountLevel = level };
             }
-            else return new ResultParse() { allok = result.allok, CountLevel = level + 1 };
+            return new ResultParse() { allok = true, CountLevel = level + 1 };
         }
 
 
@@ -540,28 +566,73 @@ namespace Clases
 
         private ResultParse ParseExpr3Prim()
         {
-            if (MatchLiteral(new string[] { "<" }))
+            int level = 0;
+            ResultParse result;
+            result = MatchLiteral(new string[] { "<" });
+            if (result.allok)
             {
-                if (ParseExpr4())
-                    return ParseExpr3Prim();
-                else return false;
+                level += result.CountLevel;
+                result = ParseExpr4();
+                if (result.allok)
+                {
+                    level += result.CountLevel;
+                    result = ParseExpr3Prim();
+                    if (result.allok)
+                    {
+                        return new ResultParse() { allok = result.allok, CountLevel = level + 1 };
+                    }
+                }
+                else return new ResultParse() { allok = false, CountLevel = level };
             }
-            else if (MatchLiteral(new string[] { "<=" }))
+            result = MatchLiteral(new string[] { "<=" });
+            if (result.allok)
             {
-                if (ParseExpr4()) return ParseExpr3Prim();
-                else return false;
+                level += result.CountLevel;
+                result = ParseExpr4();
+                if (result.allok)
+                {
+                    level += result.CountLevel;
+                    result = ParseExpr3Prim();
+                    if (result.allok)
+                    {
+                        return new ResultParse() { allok = result.allok, CountLevel = level + 1 };
+                    }
+                }
+                return new ResultParse() { allok = false, CountLevel = level };
             }
-            if (MatchLiteral(new string[] { ">" }))
+            result = MatchLiteral(new string[] { ">" });
+            if (result.allok)
             {
-                if (ParseExpr4()) return ParseExpr3Prim();
-                else return false;
+                level += result.CountLevel;
+                result = ParseExpr4();
+                if (result.allok)
+                {
+                    level += result.CountLevel;
+                    result = ParseExpr3Prim();
+                    if (result.allok)
+                    {
+                        return new ResultParse() { allok = result.allok, CountLevel = level + 1 };
+                    }
+                }
+                return new ResultParse() { allok = false, CountLevel = level };
             }
-            else if (MatchLiteral(new string[] { ">=" }))
+            result = MatchLiteral(new string[] { ">=" });
+            if (result.allok)
             {
-                if (ParseExpr4()) return ParseExpr3Prim();
-                else return false;
+                level += result.CountLevel;
+                result = ParseExpr4();
+                if (result.allok)
+                {
+                    level += result.CountLevel;
+                    result = ParseExpr3Prim();
+                    if (result.allok)
+                    {
+                        return new ResultParse() { allok = result.allok, CountLevel = level + 1 };
+                    }
+                }
+                return new ResultParse() { allok = false, CountLevel = level };
             }
-            else return true;
+            return new ResultParse() { allok = true, CountLevel = level + 1};
         }
 
 
@@ -584,17 +655,41 @@ namespace Clases
 
         private ResultParse ParseExpr4Prim()
         {
-            if (MatchLiteral(new string[] { "+" }))
+            int level = 0;
+            ResultParse result;
+            result = MatchLiteral(new string[] { "+" });
+            if (result.allok)
             {
-                if (ParseExpr5()) return ParseExpr4Prim();
-                else return false;
+                level += result.CountLevel;
+                result = ParseExpr5();
+                if (result.allok)
+                {
+                    level += result.CountLevel;
+                    result = ParseExpr4Prim();
+                    if (result.allok)
+                    {
+                        return new ResultParse() { allok = result.allok, CountLevel = level + 1 };
+                    }
+                }
+                return new ResultParse() { allok = false, CountLevel = level };
             }
-            else if (MatchLiteral(new string[] { "-" }))
+            result = MatchLiteral(new string[] { "-" });
+            if (result.allok)
             {
-                if (ParseExpr5()) return ParseExpr4Prim();
-                else return false;
+                level += result.CountLevel;
+                result = ParseExpr5();
+                if (result.allok)
+                {
+                    level += result.CountLevel;
+                    result = ParseExpr4Prim();
+                    if (result.allok)
+                    {
+                        return new ResultParse() { allok = result.allok, CountLevel = level + 1 };
+                    }
+                }
+                return new ResultParse() { allok = false, CountLevel = level };
             }
-            else return true;
+            return new ResultParse() { allok = true, CountLevel = level + 1 };
         }
         private ResultParse ParseExpr5()
         {
@@ -616,72 +711,141 @@ namespace Clases
 
         private ResultParse ParseExpr5Prim()
         {
-            if (MatchLiteral(new string[] { "*" }))
+            int level = 0;
+            ResultParse result;
+            result = MatchLiteral(new string[] { "*" });
+            if (result.allok)
             {
-                if (ParseExpr6()) return ParseExpr5Prim();
-                else return false;
+                level += result.CountLevel;
+                result = ParseExpr6();
+                if (result.allok)
+                {
+                    level += result.CountLevel;
+                    result = ParseExpr5Prim();
+                    if (result.allok)
+                    {
+                        return new ResultParse() { allok = result.allok, CountLevel = level + 1 };
+                    }
+                }
+                return new ResultParse() { allok = false, CountLevel = level };
             }
-            else if (MatchLiteral(new string[] { "/" }))
+            result = MatchLiteral(new string[] { "/" });
+            if (result.allok)
             {
-                if (ParseExpr6()) return ParseExpr5Prim();
-                else return false;
+                level += result.CountLevel;
+                result = ParseExpr6();
+                if (result.allok)
+                {
+                    level += result.CountLevel;
+                    result = ParseExpr5Prim();
+                    if (result.allok)
+                    {
+                        return new ResultParse() { allok = result.allok, CountLevel = level + 1 };
+                    }
+                }
+                return new ResultParse() { allok = false, CountLevel = level };
             }
-            else return true;
+            return new ResultParse() { allok = true, CountLevel = level + 1 };
         }
 
 
         private ResultParse ParseExpr6()
         {
-            if (MatchLiteral(new string[] { "New" }))
+            int level = 0;
+            ResultParse result;
+            result = MatchLiteral(new string[] { "New" });
+            if (result.allok)
             {
-                if (MatchLiteral(new string[] { "(" }))
+                level += result.CountLevel;
+                result = MatchLiteral(new string[] { "(" });
+                if (result.allok)
                 {
-                    if (MatchType("Identificador"))
+                    level += result.CountLevel;
+                    result = MatchType("Identificador");
+                    if (result.allok)
                     {
-                        if (MatchLiteral(new string[] { ")" }))
+                        level += result.CountLevel;
+                        result = MatchLiteral(new string[] { ")" });
+                        if (result.allok)
                         {
-                            return true;
+                            return new ResultParse() { allok = result.allok, CountLevel = level + 1 };
                         }
                     }
                 }
-                return false;
+                return new ResultParse() { allok = false, CountLevel = level };
             }
-            else if (MatchLiteral(new string[] { "this" }))
+            result = MatchLiteral(new string[] { "this" });
+            if (result.allok)
             {
-                return true;
+                return new ResultParse() { allok = result.allok, CountLevel = level + 1 };
             }
-            else if (MatchLiteral(new string[] { "(" }))
+            result = MatchLiteral(new string[] { "(" });
+            if (result.allok)
             {
-                if (ParseExpr())
+                level += result.CountLevel;
+                result = ParseExpr();
+                if (result.allok)
                 {
-                    return MatchLiteral(new string[] { ")" });
+                    level += result.CountLevel;
+                    result = MatchLiteral(new string[] { ")" });
+                    if (result.allok)
+                    {
+                        return new ResultParse() { allok = result.allok, CountLevel = level + 1 };
+                    }
                 }
+                return new ResultParse() { allok = false, CountLevel = level };
             }
-            else if (MatchLiteral(new string[] { "-" }))
+            result = MatchLiteral(new string[] { "-" });
+            if (result.allok)
             {
-                return ParseExpr();
-            }
-            else if (MatchLiteral(new string[] { "!" }))
-            {
-                return ParseExpr();
-            }
-            else if (ParseLval())
-            {
-                if (MatchLiteral(new string[] { "=" }))
+                level += result.CountLevel;
+                result = ParseExpr();
+                if (result.allok)
                 {
-                    return ParseExpr();
+                    return new ResultParse() { allok = result.allok, CountLevel = level + 1 };
                 }
-                return false;
+                return new ResultParse() { allok = false, CountLevel = level };
             }
-            else if (ParseConst())
+            result = MatchLiteral(new string[] { "!" });
+            if (result.allok)
             {
-                return true;
+                level += result.CountLevel;
+                result = ParseExpr();
+                if (result.allok)
+                {
+                    return new ResultParse() { allok = result.allok, CountLevel = level + 1 };
+                }
+                return new ResultParse() { allok = false, CountLevel = level };
             }
-            else if (ParseLval())
+            result = ParseLval();
+            if (result.allok)
             {
-                return true;
+                level += result.CountLevel;
+                result = MatchLiteral(new string[] { "=" });
+                if (result.allok)
+                {
+                    level += result.CountLevel;
+                    result = ParseExpr();
+                    if (result.allok)
+                    {
+                        return new ResultParse() { allok = result.allok, CountLevel = level + 1 };
+                    }
+                }
+                return new ResultParse() { allok = false, CountLevel = level };
             }
-            return false;
+            result = ParseConst();
+            if (result.allok)
+            {
+                level += result.CountLevel;
+                return new ResultParse() { allok = result.allok, CountLevel = level + 1 };
+            }
+            result = ParseLval();
+            if (result.allok)
+            {
+                level += result.CountLevel;
+                return new ResultParse() { allok = result.allok, CountLevel = level + 1 };
+            }
+            return new ResultParse() { allok = false, CountLevel = level };
         }
 
 
