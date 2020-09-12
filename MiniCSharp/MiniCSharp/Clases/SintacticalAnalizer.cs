@@ -36,7 +36,7 @@ namespace Clases
               ResultParse result = ParsePrg();
               if (!result.allok){
                 //Hace un backtracking hasta el estado inicial
-                reinsert(result.CountLevel);
+                
                 //Hace un log del error, remueve el primer dato he intanta con el siguente
                 logError(tokensList[0].Value);
                 tokensList.RemoveAt(0);
@@ -59,7 +59,7 @@ namespace Clases
                 if (result.allok)
                     return new ResultParse() { allok = true, CountLevel = level + 1 };
                 return new ResultParse() { allok = false, CountLevel = level };
-            }
+            } else reinsert(result.CountLevel);
             result = ParseFuncD();
             if (result.allok)
             {
@@ -67,7 +67,7 @@ namespace Clases
                 result = ParseD();
                 if (result.allok) return new ResultParse() { allok = true, CountLevel = level + 1 };
                 new ResultParse() { allok = false, CountLevel = level  };
-            }
+            } else reinsert(result.CountLevel);
             return new ResultParse() { allok = false, CountLevel = level }; ;
         }
 
@@ -80,25 +80,26 @@ namespace Clases
             {
                 level += result.CountLevel;
                 result = ParseD();
-                return new ResultParse() { allok = result.allok, CountLevel = level  };//------- revisar el return 
-            }
-            else
-            {
-                result = ParseFuncD();
                 if (result.allok)
                 {
-                    level += result.CountLevel;
-                    result = ParseD();
-                    if (result.allok)
-                    {
-                        return new ResultParse() { allok = result.allok, CountLevel = level + 1};
-                    }
-                    return new ResultParse() { allok = result.allok, CountLevel = level };
+                  return new ResultParse() { allok = result.allok, CountLevel = level + 1 };//------- revisar el return 
+                } 
+                return new ResultParse() { allok = result.allok, CountLevel = level };//------- revisar el return 
+            } else reinsert(result.CountLevel);
+            
+            result = ParseFuncD();
+            if (result.allok)
+            {
+                level += result.CountLevel;
+                result = ParseD();
+                if (result.allok)
+                {
+                    return new ResultParse() { allok = result.allok, CountLevel = level + 1};
                 }
-                return new ResultParse() { allok = true, CountLevel = level + 1 }; //Returns true because this accepts nullable values Є
-            }
+                return new ResultParse() { allok = result.allok, CountLevel = level };
+            } else reinsert(result.CountLevel);
+            return new ResultParse() { allok = true, CountLevel = level }; //Returns true because this accepts nullable values Є
         }
-
 
         private ResultParse ParseVarD()
         {
@@ -116,6 +117,7 @@ namespace Clases
             }
             return new ResultParse() { allok = result.allok, CountLevel = level }; 
         }
+        
         private ResultParse ParseVar()
         {
             int level = 0;
@@ -149,8 +151,8 @@ namespace Clases
                     return new ResultParse() { allok = result.allok, CountLevel = level + 1 };
                 }
                 return new ResultParse() { allok = result.allok, CountLevel = level };
-            }
-            return new ResultParse() { allok = true, CountLevel = level + 1 };
+            } else reinsert(result.CountLevel);
+            return new ResultParse() { allok = true, CountLevel = level };
         }
 
 
@@ -169,7 +171,7 @@ namespace Clases
                 }
                 return new ResultParse() { allok = result.allok, CountLevel = level };
             }
-            return new ResultParse() { allok = result.allok, CountLevel = level + 1 };
+            return new ResultParse() { allok = result.allok, CountLevel = level };
         }
 
 
@@ -182,13 +184,15 @@ namespace Clases
             {
                 level += result.CountLevel;
                 return new ResultParse() { allok = result.allok, CountLevel = level + 1 };
-            }
+            } else reinsert(result.CountLevel);
+
             result = MatchType("Identificador");
             if (result.allok)
             {
                 level += result.CountLevel;
                 return new ResultParse() { allok = result.allok, CountLevel = level + 1 };
-            }
+            } else reinsert(result.CountLevel);
+
             return new ResultParse() { allok = result.allok, CountLevel = level };
         }
 
@@ -206,8 +210,9 @@ namespace Clases
                 {
                     return new ResultParse() { allok = result.allok, CountLevel = level + 1 };
                 }
-            }
-            return new ResultParse() { allok = true, CountLevel = level + 1}; //Returns true because this accepts nullable values Є      
+            } else reinsert(result.CountLevel);
+
+            return new ResultParse() { allok = true, CountLevel = level }; //Returns true because this accepts nullable values Є      
         }
 
 
@@ -245,7 +250,8 @@ namespace Clases
                     }
                 }
                 return new ResultParse() { allok = false, CountLevel = level };
-            }            
+            } else reinsert(result.CountLevel);
+            
             result = MatchLiteral(new string[] { "void" });
             if (result.allok)
             {
@@ -276,7 +282,7 @@ namespace Clases
                     }
                 }
                 return new ResultParse() { allok = false, CountLevel = level };
-            }
+            } else reinsert(result.CountLevel);
             return new ResultParse() { allok = false, CountLevel = level };
         }
 
@@ -299,10 +305,10 @@ namespace Clases
                     }                    
                 }
                 return new ResultParse() { allok = result.allok, CountLevel = level };
-            }
-            return new ResultParse() { allok = true, CountLevel = level +1};//Returns true because this accepts nullable values Є      
-        }
+            } else reinsert(result.CountLevel);
 
+            return new ResultParse() { allok = true, CountLevel = level };//Returns true because this accepts nullable values Є      
+        }
 
         private ResultParse ParseSt()
         {
@@ -312,12 +318,14 @@ namespace Clases
             if (result.allok)
             {
                 return new ResultParse() { allok = result.allok, CountLevel = level + 1 };
-            }
+            } else reinsert(result.CountLevel);
+
             result = ParseRst();
             if (result.allok)
             {
                 return new ResultParse() { allok = result.allok, CountLevel = level + 1 };
-            }
+            } else reinsert(result.CountLevel);
+
             result = ParseExpr();
             if (result.allok)
             {
@@ -327,7 +335,8 @@ namespace Clases
                 {
                     return new ResultParse() { allok = result.allok, CountLevel = level + 1 };
                 } 
-            }
+            } else reinsert(result.CountLevel);
+
             return new ResultParse() { allok = false, CountLevel = level };
         }
 
@@ -368,6 +377,7 @@ namespace Clases
             }
             return new ResultParse() { allok = false, CountLevel = level };
         }
+        
         private ResultParse ParseIstPrim()
         {
             int level = 0;
@@ -382,8 +392,9 @@ namespace Clases
                     return new ResultParse() { allok = result.allok, CountLevel = level + 1 };
                 }
                 return new ResultParse() { allok = result.allok, CountLevel = level };
-            }
-            return new ResultParse() { allok = true, CountLevel = level + 1 };
+            } else reinsert(result.CountLevel);
+
+            return new ResultParse() { allok = true, CountLevel = level };
         }
 
 
@@ -408,6 +419,7 @@ namespace Clases
             }
             return new ResultParse() { allok = false, CountLevel = level };
         }
+        
         private ResultParse ParseRstPrim()
         {
             int level = 0;
@@ -416,8 +428,9 @@ namespace Clases
             if (result.allok)
             {
                 return new ResultParse() { allok = result.allok, CountLevel = level + 1 };
-            }
-            return new ResultParse() { allok = true, CountLevel = level + 1 };
+            } else reinsert(result.CountLevel);
+
+            return new ResultParse() { allok = true, CountLevel = level };
         }
 
 
@@ -458,8 +471,9 @@ namespace Clases
                     }
                 }
                 else return new ResultParse() { allok = result.allok, CountLevel = level };
-            }
-            return new ResultParse() { allok = true, CountLevel = level + 1 };
+            } else reinsert(result.CountLevel);
+
+            return new ResultParse() { allok = true, CountLevel = level };
         }
 
 
@@ -500,8 +514,9 @@ namespace Clases
                     }
                 }
                 else return new ResultParse() { allok = result.allok, CountLevel = level };
-            }
-            return new ResultParse() { allok = true, CountLevel = level + 1 };
+            } else reinsert(result.CountLevel);
+
+            return new ResultParse() { allok = true, CountLevel = level };
         }
 
 
@@ -541,7 +556,8 @@ namespace Clases
                     }
                 }
                 return new ResultParse() { allok = false, CountLevel = level };
-            }
+            } else reinsert(result.CountLevel);
+
             result = MatchLiteral(new string[] { "!=" });
             if (result.allok)
             {
@@ -557,8 +573,9 @@ namespace Clases
                     }
                 }
                 return new ResultParse() { allok = false, CountLevel = level };
-            }
-            return new ResultParse() { allok = true, CountLevel = level + 1 };
+            } else reinsert(result.CountLevel);
+
+            return new ResultParse() { allok = true, CountLevel = level };
         }
 
 
@@ -599,7 +616,8 @@ namespace Clases
                     }
                 }
                 else return new ResultParse() { allok = false, CountLevel = level };
-            }
+            } else reinsert(result.CountLevel);
+
             result = MatchLiteral(new string[] { "<=" });
             if (result.allok)
             {
@@ -615,7 +633,8 @@ namespace Clases
                     }
                 }
                 return new ResultParse() { allok = false, CountLevel = level };
-            }
+            } else reinsert(result.CountLevel);
+
             result = MatchLiteral(new string[] { ">" });
             if (result.allok)
             {
@@ -631,7 +650,8 @@ namespace Clases
                     }
                 }
                 return new ResultParse() { allok = false, CountLevel = level };
-            }
+            } else reinsert(result.CountLevel);
+
             result = MatchLiteral(new string[] { ">=" });
             if (result.allok)
             {
@@ -647,8 +667,9 @@ namespace Clases
                     }
                 }
                 return new ResultParse() { allok = false, CountLevel = level };
-            }
-            return new ResultParse() { allok = true, CountLevel = level + 1};
+            } else reinsert(result.CountLevel);
+
+            return new ResultParse() { allok = true, CountLevel = level };
         }
 
 
@@ -688,7 +709,8 @@ namespace Clases
                     }
                 }
                 return new ResultParse() { allok = false, CountLevel = level };
-            }
+            } else reinsert(result.CountLevel);
+
             result = MatchLiteral(new string[] { "-" });
             if (result.allok)
             {
@@ -704,8 +726,9 @@ namespace Clases
                     }
                 }
                 return new ResultParse() { allok = false, CountLevel = level };
-            }
-            return new ResultParse() { allok = true, CountLevel = level + 1 };
+            } else reinsert(result.CountLevel);
+
+            return new ResultParse() { allok = true, CountLevel = level };
         }
         private ResultParse ParseExpr5()
         {
@@ -744,7 +767,8 @@ namespace Clases
                     }
                 }
                 return new ResultParse() { allok = false, CountLevel = level };
-            }
+            } else reinsert(result.CountLevel);
+
             result = MatchLiteral(new string[] { "/" });
             if (result.allok)
             {
@@ -760,8 +784,9 @@ namespace Clases
                     }
                 }
                 return new ResultParse() { allok = false, CountLevel = level };
-            }
-            return new ResultParse() { allok = true, CountLevel = level + 1 };
+            } else reinsert(result.CountLevel);
+
+            return new ResultParse() { allok = true, CountLevel = level };
         }
 
 
@@ -789,12 +814,14 @@ namespace Clases
                     }
                 }
                 return new ResultParse() { allok = false, CountLevel = level };
-            }
+            } else reinsert(result.CountLevel);
+
             result = MatchLiteral(new string[] { "this" });
             if (result.allok)
             {
                 return new ResultParse() { allok = result.allok, CountLevel = level + 1 };
-            }
+            } else reinsert(result.CountLevel);
+
             result = MatchLiteral(new string[] { "(" });
             if (result.allok)
             {
@@ -810,7 +837,8 @@ namespace Clases
                     }
                 }
                 return new ResultParse() { allok = false, CountLevel = level };
-            }
+            } else reinsert(result.CountLevel);
+
             result = MatchLiteral(new string[] { "-" });
             if (result.allok)
             {
@@ -821,7 +849,8 @@ namespace Clases
                     return new ResultParse() { allok = result.allok, CountLevel = level + 1 };
                 }
                 return new ResultParse() { allok = false, CountLevel = level };
-            }
+            } else reinsert(result.CountLevel);
+
             result = MatchLiteral(new string[] { "!" });
             if (result.allok)
             {
@@ -832,7 +861,8 @@ namespace Clases
                     return new ResultParse() { allok = result.allok, CountLevel = level + 1 };
                 }
                 return new ResultParse() { allok = false, CountLevel = level };
-            }
+            } else reinsert(result.CountLevel);
+
             result = ParseLval();
             if (result.allok)
             {
@@ -848,19 +878,22 @@ namespace Clases
                     }
                 }
                 return new ResultParse() { allok = false, CountLevel = level };
-            }
+            } else reinsert(result.CountLevel);
+
             result = ParseConst();
             if (result.allok)
             {
                 level += result.CountLevel;
                 return new ResultParse() { allok = result.allok, CountLevel = level + 1 };
-            }
+            } else reinsert(result.CountLevel);
+
             result = ParseLval();
             if (result.allok)
             {
                 level += result.CountLevel;
                 return new ResultParse() { allok = result.allok, CountLevel = level + 1 };
-            }
+            } else reinsert(result.CountLevel);
+
             return new ResultParse() { allok = false, CountLevel = level };
         }
 
@@ -875,7 +908,8 @@ namespace Clases
             {
                 level += result.CountLevel;
                 return new ResultParse() { allok = true, CountLevel = level + 1 };
-            }
+            } else reinsert(result.CountLevel);
+
             result = ParseExpr();
             if (result.allok)
             {
@@ -888,7 +922,8 @@ namespace Clases
                         return new ResultParse() { allok = true, CountLevel = level + 1 };
                 }
                 return new ResultParse() { allok = false, CountLevel = level };
-            }
+            } else reinsert(result.CountLevel);
+
             result = ParseExpr();
             if (result.allok)
             {
@@ -907,7 +942,8 @@ namespace Clases
                     }
                 }
                 return new ResultParse() { allok = false, CountLevel = level };
-            }
+            } else reinsert(result.CountLevel);
+            
             return new ResultParse() { allok = false, CountLevel = 0 };
         }
 
