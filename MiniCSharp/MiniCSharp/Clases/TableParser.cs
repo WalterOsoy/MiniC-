@@ -90,6 +90,7 @@ namespace Clases
                 }
             }
         }
+        
         private Dictionary<string, string> readHeaders(StreamReader sr)
         {
             string[] headers = Regex.Split(sr.ReadLine(), ",(?=(?:[^\"]*\"[^\"]*\")*(?![^\"]*\"))", RegexOptions.IgnorePatternWhitespace);
