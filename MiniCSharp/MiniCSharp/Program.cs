@@ -31,7 +31,8 @@ namespace MiniCSharp
       //       Console.Write(Line.PadRight(15, ' '));
       //     }
       //   }
-      // }
+      //   Console.WriteLine();
+      }
     }
   }
 }
