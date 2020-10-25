@@ -5,6 +5,8 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Text;
 using System.Text.RegularExpressions;
+using DataStructures;
+using System.Collections.Concurrent;
 
 namespace Clases
 {
@@ -15,7 +17,7 @@ namespace Clases
           "class"    ,     "const" ,      "interface",      "null"    ,     "this"   ,
           "for"      ,     "while" ,      "foreach"  ,      "if"      ,     "else"   ,
           "return"   ,     "breack",      "New"      ,      "NewArray",     "Console",
-          "WriteLine"
+          "WriteLine",     "Print"
           };
         List<string> Operators = new List<string>()
         {
@@ -36,16 +38,19 @@ namespace Clases
         };
         private bool isCorrect =true;
         FileManager fileManager;
+
+        List<Token> tokenslist = new List<Token>();
         public LexicalAnalyzer(string FilePath) {
             fileManager = new FileManager(FilePath);
         }
-        public bool Analize()
+        public bool Analize(out List<Token> tokenslist)
         {
             do
             {
                 ToAnalyzeWord(fileManager.ReadNext());
             } while (!fileManager.sr.EndOfStream);
             fileManager.Close();
+            tokenslist = this.tokenslist;
             return isCorrect;
         }
         /// <summary>
@@ -61,6 +66,7 @@ namespace Clases
                 if (MiniCSharpConstants["bool"].IsMatch(word) == true)
                 {
                     fileManager.WriteMatch(MiniCSharpConstants["bool"].Match(word).Value, "booleano");
+                    tokenslist.Add(new Token { type = "bool", Value = MiniCSharpConstants["bool"].Match(word).Value });
                     word = word.Remove(0, MiniCSharpConstants["bool"].Match(word).Length);
                 }
                 else if (char.IsLetter(inicial))//inicia con un caracter entonces o es una reservada o un id
@@ -107,6 +113,7 @@ namespace Clases
             if (keywords.Contains(word))
             {
                 fileManager.WriteMatch(word, "Palabra reservada");
+                tokenslist.Add(new Token { type = word, Value = word });
                 word = "";
             }
             return word;
@@ -128,11 +135,13 @@ namespace Clases
                 if (id.Length>31)
                 {
                     fileManager.WriteMatch(id.Value.Substring(0,31)+" ", "Identificador");
+                    tokenslist.Add(new Token { type = "ident", Value = id.Value.Substring(0, 31) });
                     fileManager.WriteError("identificador excede el largo permitido");                    
                 }
                 else
                 {
                     fileManager.WriteMatch(id.Value, "Identificador");
+                    tokenslist.Add(new Token { type = "ident", Value = id.Value});
                 }                               
             }
             else
@@ -167,10 +176,12 @@ namespace Clases
                 if (key == true)
                 {
                     fileManager.WriteMatch(word.Substring(0, size - 1), "Palabra Reservada");
+                    tokenslist.Add(new Token { type = word.Substring(0, size - 1), Value = word.Substring(0, size - 1) });
                 }
                 else
                 {
                     fileManager.WriteMatch(word.Substring(0, size - 1), "Identificador");
+                    tokenslist.Add(new Token { type = "ident", Value = word.Substring(0, size - 1) });
                 }
                 word = word.Substring(size - 1, word.Length - (size - 1));
             }
@@ -202,17 +213,20 @@ namespace Clases
                 else if (Operators.Contains(word.Substring(0, 2)) == true)
                 {
                     fileManager.WriteMatch(word.Substring(0, 2), "Operador");
+                    tokenslist.Add(new Token { type = word.Substring(0,2), Value = word.Substring(0,2)});
                     word = word.Remove(0, 2);
                 }
                 else
                 {
                     fileManager.WriteMatch(word.Substring(0, 1), "Operador");
+                    tokenslist.Add(new Token { type = word.Substring(0, 1), Value = word.Substring(0, 1) });
                     word = word.Remove(0, 1);
                 }
             }
             else
             {
                 fileManager.WriteMatch(word.Substring(0, 1), "Operador");
+                tokenslist.Add(new Token { type = word.Substring(0, 1), Value = word.Substring(0, 1) });
                 word = word.Remove(0, 1);
             }
             return word;
@@ -230,16 +244,19 @@ namespace Clases
             if (hexa.Length > expo.Length && hexa.Length > digit.Length)
             {
                 fileManager.WriteMatch(hexa.Value, "Valor Hexadecimal", hexa.Value);
+                tokenslist.Add(new Token { type = "double", Value = hexa.Value });
                 word = word.Remove(0, hexa.Length);
             }
             else if (expo.Length > hexa.Length && expo.Length > digit.Length)
             {
                 fileManager.WriteMatch(expo.Value, "Valor Exponencial", expo.Value);
+                tokenslist.Add(new Token { type = "double", Value = expo.Value });
                 word = word.Remove(0, expo.Length);
             }
             else
             {
                 fileManager.WriteMatch(digit.Value, "Valor Decimal", digit.Value);
+                tokenslist.Add(new Token { type = "int", Value = digit.Value });
                 word = word.Remove(0, digit.Length);
             }
             return word;
@@ -343,6 +360,7 @@ namespace Clases
             if (MiniCSharpConstants["string"].IsMatch(word)==true)
             {
                 fileManager.WriteMatch(MiniCSharpConstants["string"].Match(word).Value, "Cadena de texto");
+                tokenslist.Add(new Token { type = "string", Value = MiniCSharpConstants["string"].Match(word).Value });
                 word = word.Remove(0, MiniCSharpConstants["string"].Match(word).Length);
             }
             else

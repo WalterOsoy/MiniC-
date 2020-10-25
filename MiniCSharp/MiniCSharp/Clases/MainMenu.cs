@@ -1,5 +1,7 @@
 using System;
+using System.Collections.Generic;
 using System.Windows.Forms;
+using DataStructures;
 
 namespace Clases
 {
@@ -83,7 +85,8 @@ namespace Clases
     private void ProcessFile(string FilePath){
       if(FilePath != null && FilePath != ""){
         Console.WriteLine("Procesando archivo...");
-        new LexicalAnalyzer(FilePath).Analize();
+        new LexicalAnalyzer(FilePath).Analize(out List<Token> tokensList);
+        new TableParser(ref tokensList).parse();
         Console.WriteLine("Archivo Procesado");
         WriteAndWait("Archivo de salida: " + FilePath.Replace("frag", "out"));
       } else {

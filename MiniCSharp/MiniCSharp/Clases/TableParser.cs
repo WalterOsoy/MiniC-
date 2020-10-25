@@ -13,24 +13,21 @@ namespace Clases
     {
         List<Token> tokensList;
         Stack<int> stack;
-        Stack<Token> symbol;
+        Stack<string> symbol;
         string action;
-        private string path;
-        private Dictionary<int, Dictionary<string, string>> table;
-        public TableParser(string path, ref List<Token> tokensList)
+        Dictionary<int, Dictionary<string, string>> table;
+        Dictionary<int, Dictionary<string, List<string>>> grammar;
+        string getnumbre = @"[0-9]+";
+        public TableParser(ref List<Token> tokensList)
         {            
-            this.path = path;
-            table = new Dictionary<int, Dictionary<string, string>>();
-            readTable();
-            this.tokensList = new List<Token>(tokensList);
+            this.tokensList = tokensList;
+            table = new Dictionary<int, Dictionary<string, string>>();            
+            grammar = new Dictionary<int, Dictionary<string, List<string>>>();
+            new DataLoader(ref table, ref grammar);
             stack = new Stack<int>();
-            symbol = new Stack<Token>();
+            symbol = new Stack<string>();
+            stack.Push(0);
             action = "";
-        }
-
-        public Dictionary<int, Dictionary<string, string>> getTable()
-        {
-            return table;
         }
         public void parse()
         {
@@ -40,10 +37,10 @@ namespace Clases
             {
                 int fila = stack.Peek();
                 Token entrada = tokensList[0];
-                action = table[fila][entrada.Value];
+                action = table[fila][entrada.type];
                 switch (action[0])
                 {
-                    case 's'://desplazamiento
+                    case 's'://desplazamiento                        
                         Displacement();
                         break;
                     case 'r'://reduccion 
@@ -56,69 +53,46 @@ namespace Clases
                     case 'e'://error
                         complete = false;
                         end = true;
-                        break;
-                    default://ir a 
-                        GoTo();
-                        break;
+                        break;                    
                 }
             } while (end != true);
+            if(complete){//all okey
+                Console.WriteLine("");
+            }else{//error
+
+            }
         }
         private void Displacement()
-        {   
-            
+        {               
+            stack.Push(Convert.ToInt32(Regex.Match(action, getnumbre).ToString()));
+            symbol.Push(tokensList[0].type);
+            tokensList.RemoveAt(0);
         }
         private void Reduction()
         {
-
+            int num = Convert.ToInt32(Regex.Match(action, getnumbre).ToString());            
+            List<string> production = new List<string>(grammar[num].Keys);
+            List<string> elemens = new List<string>(grammar[num][production[0]]);
+            //quita la cantidad de elementos en la pila segun la cantidad de elementos en la produccion 
+            for (int i = 0; i < elemens.Count; i++)
+            {
+                stack.Pop();
+            }
+            //quita la cantidad de elementos en los simbolos segun la cantidad de elementos en la produccion 
+            for (int i = 0; i < elemens.Count; i++)
+            {
+                symbol.Pop();
+            }
+            //inserta la produccion 
+            symbol.Push(production[0]);
+            GoTo();
         }
         private void GoTo()
         {
-
-        }
-        private void readTable()
-        {
-            using (StreamReader sr = new StreamReader(path))
-            {
-                Dictionary<string, string> headersTemplate = readHeaders(sr);
-                string Line = "";
-                int state = 0;
-
-                while ((Line = sr.ReadLine()) != null)
-                {
-                    table.Add(state, readContent(Line, new Dictionary<string, string>(headersTemplate)));
-                    state++;
-                }
-            }
-        }
-        
-        private Dictionary<string, string> readHeaders(StreamReader sr)
-        {
-            string[] headers = Regex.Split(sr.ReadLine(), ",(?=(?:[^\"]*\"[^\"]*\")*(?![^\"]*\"))", RegexOptions.IgnorePatternWhitespace);
-            Dictionary<string, string> rtrnDict = new Dictionary<string, string>();
-            foreach (string header in headers) rtrnDict.Add(CheckValue(header), "");
-            return rtrnDict;
-        }
-        private Dictionary<string, string> readContent(string Line, Dictionary<string, string> template)
-        {
-            string[] lineValues = Line.Split(',');
-            int count = 0;
-            List<string> keys = new List<string>(template.Keys);
-
-            foreach (var key in keys)
-            {
-                if (lineValues[count] == "") template[key] = "error";
-                else template[key] = lineValues[count];
-                count++;
-            }
-
-            return template;
-        }
-        private string CheckValue(string value)
-        {
-            return (Regex.IsMatch(value, @"([\S]*\,[\S]*)+"))
-              ? value.Trim('"')
-              : value;
-        }
-        
+            int fila = stack.Peek();
+            string entrada = symbol.Peek();
+            action = table[fila][entrada];
+            stack.Push(Convert.ToInt32(action));
+        }        
     }
 }
