@@ -28,6 +28,7 @@ namespace Clases
             symbol = new Stack<string>();
             stack.Push(0);
             action = "";
+            tokensList.Add(new Token{type="$",Value="$"});
         }
         public void parse()
         {
@@ -43,7 +44,7 @@ namespace Clases
                 switch (action[0])
                 {
                     case 's'://desplazamiento                        
-                        Displacement();
+                        Displacement(false);
                         break;
                     case 'r'://reduccion 
                         Reduction();
@@ -56,10 +57,10 @@ namespace Clases
                         action = table[stack.Peek()]["Ɛ"];
                         switch (action[0])
                         {
-                            case 's':
-                                Displacement();
+                            case 's':                                
+                                Displacement(true);
                                 break;
-                            case 'r':
+                            case 'r':                                
                                 Reduction();
                                 break;
                             case 'e':
@@ -76,11 +77,15 @@ namespace Clases
                 Console.WriteLine("Error en el parse en: "+ tokensList[0].Value +" - > "+ fila+", "+entrada.type+", "+entrada.Value);
             }
         }
-        private void Displacement()
-        {               
-            stack.Push(Convert.ToInt32(Regex.Match(action, getnumbre).ToString()));
-            symbol.Push(tokensList[0].type);
-            tokensList.RemoveAt(0);
+        private void Displacement(bool epsilon)
+        {      
+            stack.Push(Convert.ToInt32(Regex.Match(action, getnumbre).ToString()));                    
+            if(!epsilon){            
+                symbol.Push(tokensList[0].type);
+                tokensList.RemoveAt(0);
+            }else{
+                symbol.Push("Ɛ");
+            }            
         }
         private void Reduction( )
         {
@@ -93,11 +98,9 @@ namespace Clases
                 stack.Pop();
             }
             //quita la cantidad de elementos en los simbolos segun la cantidad de elementos en la produccion 
-            if(elemens[0]!="Ɛ"){
-                for (int i = 0; i < elemens.Count; i++)
-                {
-                    symbol.Pop();
-                }
+            for (int i = 0; i < elemens.Count; i++)
+            {
+                symbol.Pop();
             }
             //inserta la produccion 
             symbol.Push(production[0]);
@@ -109,12 +112,6 @@ namespace Clases
             string entrada = symbol.Peek();
             action = table[fila][entrada];
             stack.Push(Convert.ToInt32(action));
-        } 
-        /*private bool TryEpsilon(){                        
-            action = table[stack.Peek()]["Ɛ"];
-            switch(action[0]){
-                
-            }
-        } */      
+        }     
     }
 }
