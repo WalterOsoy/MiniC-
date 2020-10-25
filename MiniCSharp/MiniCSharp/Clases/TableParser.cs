@@ -32,11 +32,13 @@ namespace Clases
         public void parse()
         {
             bool end = false;
-            bool complete = false;
+            bool okey = false;
+            int fila;
+            Token entrada ;
             do
             {
-                int fila = stack.Peek();
-                Token entrada = tokensList[0];
+                fila = stack.Peek();
+                entrada = tokensList[0];
                 action = table[fila][entrada.type];
                 switch (action[0])
                 {
@@ -47,19 +49,31 @@ namespace Clases
                         Reduction();
                         break;
                     case 'a'://Aceptar
-                        complete = true;
+                        okey = true;
                         end = true;
                         break;
-                    case 'e'://error
-                        complete = false;
-                        end = true;
+                    case 'e'://error 
+                        action = table[stack.Peek()]["Ɛ"];
+                        switch (action[0])
+                        {
+                            case 's':
+                                Displacement();
+                                break;
+                            case 'r':
+                                Reduction();
+                                break;
+                            case 'e':
+                            end = true;
+                            okey= false;
+                                break;                                                 
+                        }
                         break;                    
                 }
             } while (end != true);
-            if(complete){//all okey
-                Console.WriteLine("");
+            if(okey){//all okey
+                Console.WriteLine("Parseo exitoso");
             }else{//error
-
+                Console.WriteLine("Error en el parse en: "+ tokensList[0].Value +" - > "+ fila+", "+entrada.type+", "+entrada.Value);
             }
         }
         private void Displacement()
@@ -68,7 +82,7 @@ namespace Clases
             symbol.Push(tokensList[0].type);
             tokensList.RemoveAt(0);
         }
-        private void Reduction()
+        private void Reduction( )
         {
             int num = Convert.ToInt32(Regex.Match(action, getnumbre).ToString());            
             List<string> production = new List<string>(grammar[num].Keys);
@@ -79,9 +93,11 @@ namespace Clases
                 stack.Pop();
             }
             //quita la cantidad de elementos en los simbolos segun la cantidad de elementos en la produccion 
-            for (int i = 0; i < elemens.Count; i++)
-            {
-                symbol.Pop();
+            if(elemens[0]!="Ɛ"){
+                for (int i = 0; i < elemens.Count; i++)
+                {
+                    symbol.Pop();
+                }
             }
             //inserta la produccion 
             symbol.Push(production[0]);
@@ -93,6 +109,12 @@ namespace Clases
             string entrada = symbol.Peek();
             action = table[fila][entrada];
             stack.Push(Convert.ToInt32(action));
-        }        
+        } 
+        /*private bool TryEpsilon(){                        
+            action = table[stack.Peek()]["Ɛ"];
+            switch(action[0]){
+                
+            }
+        } */      
     }
 }
