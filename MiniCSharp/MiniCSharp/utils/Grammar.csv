@@ -9,6 +9,10 @@ Decl,IntefaceDecl
 VariableDecl,Variable,;
 Variable,Type,ident
 ConstDecl,const,ConstType,ident,;
+ConstType,int
+ConstType,double
+ConstType,bool
+ConstType,string
 Type,int,Type'
 Type,double,Type'
 Type,bool,Type'
