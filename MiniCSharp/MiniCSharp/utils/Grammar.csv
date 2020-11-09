@@ -23,12 +23,12 @@ Type' ,[,],Type'
 Type',Ɛ
 FunctionDecl,Type,ident,(,Formals,),StmtBlock
 FunctionDecl,void,ident,(,Formals,),StmtBlock
-Formals,Variable,"","",Formals 
+Formals,Variable,",",Formals 
 Formals,Variable
 ClassDecl,class,ident,CD',CD'',{,CD''',}
 CD',:,ident
 CD',Ɛ
-CD'',"","",ident,CD''
+CD'',",",ident,CD''
 CD'',Ɛ
 CD''',Field,CD'''
 CD''',Ɛ
