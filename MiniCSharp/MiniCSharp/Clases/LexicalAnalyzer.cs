@@ -23,7 +23,7 @@ namespace Clases
         {
             "+",    "-",    "*",    "/" ,   "%",    "<" ,   "<=",   ">",   ">=",    "=",    "==",   "!=",
             "&&",   "||",   "!" ,   ";" ,   ",",    ".",    "[",    "]",    "(",    ")",    "{",    "}",
-            "[]",   "()",   "{}"
+            "[]",   "()",   "{}",   ":"  ,  "|",    "&"
         };
         Dictionary<string, Regex> MiniCSharpConstants = new Dictionary<string, Regex>(){
             {"identifier",  new Regex(@"^[a-zA-Z]+\w*")},
