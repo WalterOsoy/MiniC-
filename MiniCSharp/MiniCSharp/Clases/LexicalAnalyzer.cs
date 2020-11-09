@@ -244,19 +244,19 @@ namespace Clases
             if (hexa.Length > expo.Length && hexa.Length > digit.Length)
             {
                 fileManager.WriteMatch(hexa.Value, "Valor Hexadecimal", hexa.Value);
-                tokenslist.Add(new Token { type = "double", Value = hexa.Value });
+                tokenslist.Add(new Token { type = "doubleConstant", Value = hexa.Value });
                 word = word.Remove(0, hexa.Length);
             }
             else if (expo.Length > hexa.Length && expo.Length > digit.Length)
             {
                 fileManager.WriteMatch(expo.Value, "Valor Exponencial", expo.Value);
-                tokenslist.Add(new Token { type = "double", Value = expo.Value });
+                tokenslist.Add(new Token { type = "doubleConstant", Value = expo.Value });
                 word = word.Remove(0, expo.Length);
             }
             else
             {
                 fileManager.WriteMatch(digit.Value, "Valor Decimal", digit.Value);
-                tokenslist.Add(new Token { type = "int", Value = digit.Value });
+                tokenslist.Add(new Token { type = "intConstant", Value = digit.Value });
                 word = word.Remove(0, digit.Length);
             }
             return word;
@@ -360,7 +360,7 @@ namespace Clases
             if (MiniCSharpConstants["string"].IsMatch(word)==true)
             {
                 fileManager.WriteMatch(MiniCSharpConstants["string"].Match(word).Value, "Cadena de texto");
-                tokenslist.Add(new Token { type = "string", Value = MiniCSharpConstants["string"].Match(word).Value });
+                tokenslist.Add(new Token { type = "stringConstant", Value = MiniCSharpConstants["string"].Match(word).Value });
                 word = word.Remove(0, MiniCSharpConstants["string"].Match(word).Length);
             }
             else
