@@ -73,21 +73,21 @@ PrintStmt -> Console . Writeline ( PS' ) ;
 PS' -> Expr PS'
 PS' -> , Expr
 Expr -> Expr1 Expr'
-Expr' -> && Expr'
+Expr' -> && Expr1 Expr'
 Expr' -> Ɛ
 Expr1 -> Expr2 Expr1'
-Expr1' -> == Expr1'
+Expr1' -> == Expr2 Expr1'
 Expr1' -> Ɛ
 Expr2 -> Expr3 Expr2'
-Expr2' -> < Expr2'
-Expr2' -> <= Expr2'
+Expr2' -> < Expr3 Expr2'
+Expr2' -> <= Expr3 Expr2'
 Expr2' -> Ɛ
 Expr3 -> Expr4 Expr3'
-Expr3' -> + Expr3'
+Expr3' -> + Expr4 Expr3'
 Expr3' -> Ɛ
 Expr4 -> Expr5 Expr4'
-Expr4' -> * Expr4'
-Expr4' -> % Expr4'
+Expr4' -> * Expr5 Expr4'
+Expr4' -> % Expr5 Expr4'
 Expr4' -> Ɛ
 Expr5 -> LValue = Expr
 Expr5 -> Constant
@@ -96,7 +96,7 @@ Expr5 -> this
 Expr5 -> ( Expr )
 Expr5 -> - Expr
 Expr5 -> ! Expr
-Expr5 -> New ( dent )
+Expr5 -> New ( ident )
 LValue -> ident 
 LValue -> Expr . ident
 Constant -> intConstant
