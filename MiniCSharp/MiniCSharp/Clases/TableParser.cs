@@ -85,6 +85,7 @@ namespace Clases {
             int num = Convert.ToInt32 (Regex.Match (action, getnumbre).ToString ());
             List<string> production = new List<string> (grammar[num].Keys);
             List<string> elemens = new List<string> (grammar[num][production[0]]);
+            elemens.RemoveAll(x => x == "");
             //quita la cantidad de elementos en la pila segun la cantidad de elementos en la produccion 
             for (int i = 0; i < elemens.Count; i++) {
                 stack.Pop ();
