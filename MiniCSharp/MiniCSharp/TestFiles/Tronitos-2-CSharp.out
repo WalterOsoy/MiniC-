@@ -63,11 +63,9 @@ m2          encontrado en la linea 12, en el rango de columnas 9-10, de tipo Ide
 )           encontrado en la linea 12, en el rango de columnas 16-16, de tipo Operador
 )           encontrado en la linea 12, en el rango de columnas 17-17, de tipo Operador
 ;           encontrado en la linea 12, en el rango de columnas 18-18, de tipo Operador
-System      encontrado en la linea 12, en el rango de columnas 23-28, de tipo Identificador
-.           encontrado en la linea 12, en el rango de columnas 29-29, de tipo Operador
-out         encontrado en la linea 12, en el rango de columnas 30-32, de tipo Identificador
-.           encontrado en la linea 12, en el rango de columnas 33-33, de tipo Operador
-println     encontrado en la linea 12, en el rango de columnas 34-40, de tipo Identificador
+Console     encontrado en la linea 12, en el rango de columnas 23-29, de tipo Palabra reservada
+.           encontrado en la linea 12, en el rango de columnas 30-30, de tipo Operador
+Writeline   encontrado en la linea 12, en el rango de columnas 31-39, de tipo Identificador
 (           encontrado en la linea 12, en el rango de columnas 41-41, de tipo Operador
 m1          encontrado en la linea 12, en el rango de columnas 42-43, de tipo Identificador
 *           encontrado en la linea 12, en el rango de columnas 45-45, de tipo Operador
@@ -90,7 +88,7 @@ m2          encontrado en la linea 13, en el rango de columnas 20-21, de tipo Id
 )           encontrado en la linea 13, en el rango de columnas 22-22, de tipo Operador
 )           encontrado en la linea 13, en el rango de columnas 23-23, de tipo Operador
 {           encontrado en la linea 14, en el rango de columnas 4-4, de tipo Operador
-break       encontrado en la linea 15, en el rango de columnas 9-13, de tipo Identificador
+break       encontrado en la linea 15, en el rango de columnas 9-13, de tipo Palabra reservada
 ;           encontrado en la linea 15, en el rango de columnas 14-14, de tipo Operador
 }           encontrado en la linea 16, en el rango de columnas 4-4, de tipo Operador
 }           encontrado en la linea 17, en el rango de columnas 3-3, de tipo Operador
