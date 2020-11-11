@@ -8,5 +8,7 @@ namespace DataStructures
     {
         public string Value { get; set; }
         public string type { get; set; }
+        public string line { get; set; }
+        public string column { get; set;} 
     }
 }

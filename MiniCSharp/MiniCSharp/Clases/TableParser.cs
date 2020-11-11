@@ -69,7 +69,7 @@ namespace Clases {
             if (okey) { //all okey
                 Console.WriteLine ("Parseo exitoso");
             } else { //error
-                Console.WriteLine ("Error en el parse en: " + tokensList[0].Value + " - > " + fila + ", " + entrada.type + ", " + entrada.Value);
+                Console.WriteLine ("Error en el parse en: \n Token:" + tokensList[0].Value + " en la linea: "+tokensList[0].line +" columnas: " +tokensList[0].column);
             }
         }
         private void Displacement (bool epsilon) {            

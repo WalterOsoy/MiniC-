@@ -66,7 +66,7 @@ namespace Clases
                 if (MiniCSharpConstants["bool"].IsMatch(word) == true)
                 {
                     fileManager.WriteMatch(MiniCSharpConstants["bool"].Match(word).Value, "booleano");
-                    tokenslist.Add(new Token { type = "bool", Value = MiniCSharpConstants["bool"].Match(word).Value });
+                    tokenslist.Add(new Token { type = "bool", Value = MiniCSharpConstants["bool"].Match(word).Value , line = fileManager.LineInfo[0].ToString(),column = fileManager.LineInfo[1]+","+fileManager.LineInfo[2]});
                     word = word.Remove(0, MiniCSharpConstants["bool"].Match(word).Length);
                 }
                 else if (char.IsLetter(inicial))//inicia con un caracter entonces o es una reservada o un id
