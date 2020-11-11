@@ -1,8 +1,7 @@
 ﻿string      encontrado en la linea 1, en el rango de columnas 1-6, de tipo Palabra reservada
 My_String   encontrado en la linea 1, en el rango de columnas 8-16, de tipo Identificador
 ;           encontrado en la linea 1, en el rango de columnas 17-17, de tipo Operador
-int         encontrado en la linea 3, en el rango de columnas 1-3, de tipo Palabra reservada
-erface      encontrado en la linea 3, en el rango de columnas 4-9, de tipo Identificador
+interface   encontrado en la linea 3, en el rango de columnas 1-9, de tipo Palabra reservada
 Parser      encontrado en la linea 3, en el rango de columnas 11-16, de tipo Identificador
 {           encontrado en la linea 3, en el rango de columnas 18-18, de tipo Operador
 int         encontrado en la linea 4, en el rango de columnas 2-4, de tipo Palabra reservada

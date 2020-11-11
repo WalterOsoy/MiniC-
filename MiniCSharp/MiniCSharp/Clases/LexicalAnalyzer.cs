@@ -13,10 +13,10 @@ namespace Clases
     class LexicalAnalyzer
     {
         List<string> keywords = new List<string>(){
-          "void"     ,     "int"   ,      "double"   ,      "bool"    ,     "string" ,
-          "class"    ,     "const" ,      "interface",      "null"    ,     "this"   ,
-          "for"      ,     "while" ,      "foreach"  ,      "if"      ,     "else"   ,
-          "return"   ,     "break",       "New"      ,      "NewArray",     "Console",
+          "void"     ,     "interface",     "double"   ,      "bool"    ,     "string" ,
+          "class"    ,     "const"    ,     "int"      ,      "null"    ,     "this"   ,
+          "foreach"  ,     "while"    ,     "for"      ,      "if"      ,     "else"   ,
+          "return"   ,     "break"    ,     "NewArray" ,      "New"     ,     "Console",
           "Writeline",     "Print"
           };
         List<string> Operators = new List<string>()
