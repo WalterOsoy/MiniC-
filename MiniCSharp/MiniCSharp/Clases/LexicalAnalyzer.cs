@@ -113,7 +113,7 @@ namespace Clases
             if (keywords.Contains(word))
             {
                 fileManager.WriteMatch(word, "Palabra reservada");
-                tokenslist.Add(new Token { type = word, Value = word });
+                tokenslist.Add(new Token { type = word, Value = word , line = fileManager.LineInfo[0].ToString(),column = fileManager.LineInfo[1]+","+fileManager.LineInfo[2]});
                 word = "";
             }
             return word;
@@ -135,13 +135,13 @@ namespace Clases
                 if (id.Length>31)
                 {
                     fileManager.WriteMatch(id.Value.Substring(0,31)+" ", "Identificador");
-                    tokenslist.Add(new Token { type = "ident", Value = id.Value.Substring(0, 31) });
+                    tokenslist.Add(new Token { type = "ident", Value = id.Value.Substring(0, 31) , line = fileManager.LineInfo[0].ToString(),column = fileManager.LineInfo[1]+","+fileManager.LineInfo[2]});
                     fileManager.WriteError("identificador excede el largo permitido");                    
                 }
                 else
                 {
                     fileManager.WriteMatch(id.Value, "Identificador");
-                    tokenslist.Add(new Token { type = "ident", Value = id.Value});
+                    tokenslist.Add(new Token { type = "ident", Value = id.Value, line = fileManager.LineInfo[0].ToString(),column = fileManager.LineInfo[1]+","+fileManager.LineInfo[2]});
                 }                               
             }
             else
@@ -176,12 +176,12 @@ namespace Clases
                 if (key == true)
                 {
                     fileManager.WriteMatch(word.Substring(0, size - 1), "Palabra Reservada");
-                    tokenslist.Add(new Token { type = word.Substring(0, size - 1), Value = word.Substring(0, size - 1) });
+                    tokenslist.Add(new Token { type = word.Substring(0, size - 1), Value = word.Substring(0, size - 1), line = fileManager.LineInfo[0].ToString(),column = fileManager.LineInfo[1]+","+fileManager.LineInfo[2] });
                 }
                 else
                 {
                     fileManager.WriteMatch(word.Substring(0, size - 1), "Identificador");
-                    tokenslist.Add(new Token { type = "ident", Value = word.Substring(0, size - 1) });
+                    tokenslist.Add(new Token { type = "ident", Value = word.Substring(0, size - 1), line = fileManager.LineInfo[0].ToString(),column = fileManager.LineInfo[1]+","+fileManager.LineInfo[2] });
                 }
                 word = word.Substring(size - 1, word.Length - (size - 1));
             }
@@ -213,20 +213,20 @@ namespace Clases
                 else if (Operators.Contains(word.Substring(0, 2)) == true)
                 {
                     fileManager.WriteMatch(word.Substring(0, 2), "Operador");
-                    tokenslist.Add(new Token { type = word.Substring(0,2), Value = word.Substring(0,2)});
+                    tokenslist.Add(new Token { type = word.Substring(0,2), Value = word.Substring(0,2), line = fileManager.LineInfo[0].ToString(),column = fileManager.LineInfo[1]+","+fileManager.LineInfo[2]});
                     word = word.Remove(0, 2);
                 }
                 else
                 {
                     fileManager.WriteMatch(word.Substring(0, 1), "Operador");
-                    tokenslist.Add(new Token { type = word.Substring(0, 1), Value = word.Substring(0, 1) });
+                    tokenslist.Add(new Token { type = word.Substring(0, 1), Value = word.Substring(0, 1), line = fileManager.LineInfo[0].ToString(),column = fileManager.LineInfo[1]+","+fileManager.LineInfo[2] });
                     word = word.Remove(0, 1);
                 }
             }
             else
             {
                 fileManager.WriteMatch(word.Substring(0, 1), "Operador");
-                tokenslist.Add(new Token { type = word.Substring(0, 1), Value = word.Substring(0, 1) });
+                tokenslist.Add(new Token { type = word.Substring(0, 1), Value = word.Substring(0, 1), line = fileManager.LineInfo[0].ToString(),column = fileManager.LineInfo[1]+","+fileManager.LineInfo[2] });
                 word = word.Remove(0, 1);
             }
             return word;
@@ -244,19 +244,19 @@ namespace Clases
             if (hexa.Length > expo.Length && hexa.Length > digit.Length)
             {
                 fileManager.WriteMatch(hexa.Value, "Valor Hexadecimal", hexa.Value);
-                tokenslist.Add(new Token { type = "doubleConstant", Value = hexa.Value });
+                tokenslist.Add(new Token { type = "doubleConstant", Value = hexa.Value , line = fileManager.LineInfo[0].ToString(),column = fileManager.LineInfo[1]+","+fileManager.LineInfo[2]});
                 word = word.Remove(0, hexa.Length);
             }
             else if (expo.Length > hexa.Length && expo.Length > digit.Length)
             {
                 fileManager.WriteMatch(expo.Value, "Valor Exponencial", expo.Value);
-                tokenslist.Add(new Token { type = "doubleConstant", Value = expo.Value });
+                tokenslist.Add(new Token { type = "doubleConstant", Value = expo.Value , line = fileManager.LineInfo[0].ToString(),column = fileManager.LineInfo[1]+","+fileManager.LineInfo[2]});
                 word = word.Remove(0, expo.Length);
             }
             else
             {
                 fileManager.WriteMatch(digit.Value, "Valor Decimal", digit.Value);
-                tokenslist.Add(new Token { type = "intConstant", Value = digit.Value });
+                tokenslist.Add(new Token { type = "intConstant", Value = digit.Value , line = fileManager.LineInfo[0].ToString(),column = fileManager.LineInfo[1]+","+fileManager.LineInfo[2]});
                 word = word.Remove(0, digit.Length);
             }
             return word;
@@ -360,7 +360,7 @@ namespace Clases
             if (MiniCSharpConstants["string"].IsMatch(word)==true)
             {
                 fileManager.WriteMatch(MiniCSharpConstants["string"].Match(word).Value, "Cadena de texto");
-                tokenslist.Add(new Token { type = "stringConstant", Value = MiniCSharpConstants["string"].Match(word).Value });
+                tokenslist.Add(new Token { type = "stringConstant", Value = MiniCSharpConstants["string"].Match(word).Value , line = fileManager.LineInfo[0].ToString(),column = fileManager.LineInfo[1]+","+fileManager.LineInfo[2]});
                 word = word.Remove(0, MiniCSharpConstants["string"].Match(word).Length);
             }
             else
