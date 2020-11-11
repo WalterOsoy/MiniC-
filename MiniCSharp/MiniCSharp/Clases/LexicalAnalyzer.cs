@@ -28,6 +28,7 @@ namespace Clases
         Dictionary<string, Regex> MiniCSharpConstants = new Dictionary<string, Regex>(){
             {"identifier",  new Regex(@"^[a-zA-Z]+\w*")},
             {"boolean",     new Regex(@"true|false")},
+            {"int",      new Regex(@"^[0-9]+")},
             {"double",      new Regex(@"^[0-9]+[.]?[0-9]*")},
             {"hexadecimal", new Regex(@"^0([0-9]*)?[x|X]?[0-9|a-fA-F]*")},
             {"exponet",     new Regex(@"^([0-9]+[.]?[0-9]*(e|e[+-]|E[+-]|E)?[0-9]+)")},
@@ -252,6 +253,7 @@ namespace Clases
             var digit = MiniCSharpConstants["double"].Match(word);
             var hexa = MiniCSharpConstants["hexadecimal"].Match(word);
             var expo = MiniCSharpConstants["exponet"].Match(word);
+            var integer = MiniCSharpConstants["int"].Match(word);
             if (hexa.Length > expo.Length && hexa.Length > digit.Length)
             {
                 fileManager.WriteMatch(hexa.Value, "Valor Hexadecimal", hexa.Value);
@@ -264,11 +266,16 @@ namespace Clases
                 tokenslist.Add(new Token { type = "doubleConstant", Value = expo.Value , line = fileManager.LineInfo[0].ToString(),column = fileManager.LineInfo[1]+","+fileManager.LineInfo[2]});
                 word = word.Remove(0, expo.Length);
             }
-            else
+            else if(digit.Length > integer.Length)
             {
                 fileManager.WriteMatch(digit.Value, "Valor Decimal", digit.Value);
-                tokenslist.Add(new Token { type = "intConstant", Value = digit.Value , line = fileManager.LineInfo[0].ToString(),column = fileManager.LineInfo[1]+","+fileManager.LineInfo[2]});
+                tokenslist.Add(new Token { type = "doubleConstant", Value = digit.Value , line = fileManager.LineInfo[0].ToString(),column = fileManager.LineInfo[1]+","+fileManager.LineInfo[2]});
                 word = word.Remove(0, digit.Length);
+            }
+            else{
+                fileManager.WriteMatch(digit.Value, "Valor entero", digit.Value);
+                tokenslist.Add(new Token { type = "intConstant", Value = digit.Value , line = fileManager.LineInfo[0].ToString(),column = fileManager.LineInfo[1]+","+fileManager.LineInfo[2]});
+                word = word.Remove(0, integer.Length);
             }
             return word;
         }
