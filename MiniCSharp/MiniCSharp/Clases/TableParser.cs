@@ -60,9 +60,11 @@ namespace Clases {
                                 break;
                             case 'e':
                                 Console.WriteLine("Error en el parse en: \n Token:" + tokensList[0].Value + " en la linea: " + tokensList[0].line + " columnas: " + tokensList[0].column);
-                                if(tokensList.Count>0)
-                                    tokensList.RemoveAt(0);
-                                okey = false;
+                                stack.Clear();
+                                stack.Push(0);
+                                tokensList.RemoveAt(0);
+                                symbol.Clear();
+                                Console.WriteLine("empezando otra vez, intentaremos parsear el siguiente metodo");
                                 break;
                         }
                         break;
