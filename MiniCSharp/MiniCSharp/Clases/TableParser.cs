@@ -50,7 +50,7 @@ namespace Clases {
                         end = true;
                         break;
                     case 'e': //error 
-                        action = table[stack.Peek ()]["Ɛ"];
+                        action = table[stack.Peek()]["Ɛ"];
                         switch (action[0]) {
                             case 's':
                                 Displacement (true);
@@ -60,7 +60,8 @@ namespace Clases {
                                 break;
                             case 'e':
                                 Console.WriteLine("Error en el parse en: \n Token:" + tokensList[0].Value + " en la linea: " + tokensList[0].line + " columnas: " + tokensList[0].column);
-                                tokensList.RemoveAt(0);
+                                if(tokensList.Count>0)
+                                    tokensList.RemoveAt(0);
                                 okey = false;
                                 break;
                         }
