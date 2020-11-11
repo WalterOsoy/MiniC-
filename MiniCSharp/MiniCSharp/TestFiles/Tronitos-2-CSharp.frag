@@ -9,7 +9,7 @@ class Program {
 		m1.a1 = 3;
 		while (m1<10) {
 			for ((m2="3");m2=m2+1;(2)) ;
-				System.out.println(m1 * 2, m1.a1);
+				Console.Writeline (m1 * 2, m1.a1);
 			  if (!(m1*2 == m2))
 			{
 		    		break;

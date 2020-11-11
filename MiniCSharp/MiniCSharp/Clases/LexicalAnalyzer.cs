@@ -16,8 +16,8 @@ namespace Clases
           "void"     ,     "int"   ,      "double"   ,      "bool"    ,     "string" ,
           "class"    ,     "const" ,      "interface",      "null"    ,     "this"   ,
           "for"      ,     "while" ,      "foreach"  ,      "if"      ,     "else"   ,
-          "return"   ,     "break",      "New"      ,      "NewArray",     "Console",
-          "WriteLine",     "Print"
+          "return"   ,     "break",       "New"      ,      "NewArray",     "Console",
+          "Writeline",     "Print"
           };
         List<string> Operators = new List<string>()
         {
