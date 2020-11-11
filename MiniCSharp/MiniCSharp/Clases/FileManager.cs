@@ -15,7 +15,7 @@ namespace Clases
     public  StreamReader sr;
     private StreamWriter sw;
     private Dictionary<string, int> LastMatch;
-    public List<int[]> LineList = new List<int[]>();
+    public int[] LineInfo = new int[3];
 
 
     /// <summary>
@@ -95,12 +95,10 @@ namespace Clases
     /// <param name="MatchedString">String that was classified</param>
     /// <param name="Type">Type of the string that was classified</param>
     /// <returns>A formatted string with data</returns>
-    private string BuildMatchString(string MatchedString, string Type){
-      LineList.Add(new int[] { 
-        LastMatch["Line"], 
-        LastMatch["BeginingCol"],
-        LastMatch["BeginingCol"] + MatchedString.Length - 1,
-      });
+    private string BuildMatchString(string MatchedString, string Type){ 
+      LineInfo[0] = LastMatch["Line"];
+      LineInfo[1] = LastMatch["BeginingCol"];
+      LineInfo[2] = LastMatch["BeginingCol"] + MatchedString.Length - 1;
 
       return String.Format(
         "{0}encontrado en la linea {1}, en el rango de columnas {2}-{3}, de tipo {4}", 
