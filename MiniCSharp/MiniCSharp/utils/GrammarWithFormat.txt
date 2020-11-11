@@ -99,6 +99,7 @@ Expr5 -> ! Expr
 Expr5 -> New ( ident )
 LValue -> ident 
 LValue -> Expr . ident
+LValue -> ident . ident
 Constant -> intConstant
 Constant -> doubleConstant
 Constant -> boolConstant
