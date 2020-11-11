@@ -59,7 +59,7 @@ namespace Clases {
                                 Reduction ();
                                 break;
                             case 'e':
-                                Console.WriteLine("Error en el parse en: \n Token:" + tokensList[0].Value + " en la linea: " + tokensList[0].line + " columnas: " + tokensList[0].column);
+                                Console.WriteLine("Error en el parse en: \n Token: '" + tokensList[0].Value + "' en la linea: " + tokensList[0].line + " columnas: " + tokensList[0].column);
                                 stack.Clear();
                                 stack.Push(0);
                                 tokensList.RemoveAt(0);

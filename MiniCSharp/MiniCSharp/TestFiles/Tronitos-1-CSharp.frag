@@ -1,7 +1,4 @@
-string My_String;
-
 interface Parser {
-	int f1(int x, double y, string z);
 	void proc1(); { // Here's a syntactical error! Expected parameters
 	}	
 }

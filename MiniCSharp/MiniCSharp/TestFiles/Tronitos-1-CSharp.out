@@ -1,129 +1,114 @@
-﻿string      encontrado en la linea 1, en el rango de columnas 1-6, de tipo Palabra reservada
-My_String   encontrado en la linea 1, en el rango de columnas 8-16, de tipo Identificador
-;           encontrado en la linea 1, en el rango de columnas 17-17, de tipo Operador
-interface   encontrado en la linea 3, en el rango de columnas 1-9, de tipo Palabra reservada
-Parser      encontrado en la linea 3, en el rango de columnas 11-16, de tipo Identificador
-{           encontrado en la linea 3, en el rango de columnas 18-18, de tipo Operador
-int         encontrado en la linea 4, en el rango de columnas 2-4, de tipo Palabra reservada
-f1          encontrado en la linea 4, en el rango de columnas 6-7, de tipo Identificador
-(           encontrado en la linea 4, en el rango de columnas 8-8, de tipo Operador
-int         encontrado en la linea 4, en el rango de columnas 9-11, de tipo Palabra reservada
-x           encontrado en la linea 4, en el rango de columnas 13-13, de tipo Identificador
-,           encontrado en la linea 4, en el rango de columnas 14-14, de tipo Operador
-double      encontrado en la linea 4, en el rango de columnas 16-21, de tipo Palabra reservada
-y           encontrado en la linea 4, en el rango de columnas 23-23, de tipo Identificador
-,           encontrado en la linea 4, en el rango de columnas 24-24, de tipo Operador
-string      encontrado en la linea 4, en el rango de columnas 26-31, de tipo Palabra reservada
-z           encontrado en la linea 4, en el rango de columnas 33-33, de tipo Identificador
-)           encontrado en la linea 4, en el rango de columnas 34-34, de tipo Operador
-;           encontrado en la linea 4, en el rango de columnas 35-35, de tipo Operador
-void        encontrado en la linea 5, en el rango de columnas 2-5, de tipo Palabra reservada
-proc1       encontrado en la linea 5, en el rango de columnas 7-11, de tipo Identificador
-()          encontrado en la linea 5, en el rango de columnas 12-13, de tipo Operador
-;           encontrado en la linea 5, en el rango de columnas 14-14, de tipo Operador
-{           encontrado en la linea 5, en el rango de columnas 16-16, de tipo Operador
-}           encontrado en la linea 6, en el rango de columnas 2-2, de tipo Operador
-}           encontrado en la linea 7, en el rango de columnas 1-1, de tipo Operador
-void        encontrado en la linea 9, en el rango de columnas 1-4, de tipo Palabra reservada
-proc1       encontrado en la linea 9, en el rango de columnas 6-10, de tipo Identificador
-(           encontrado en la linea 9, en el rango de columnas 11-11, de tipo Operador
-double      encontrado en la linea 9, en el rango de columnas 12-17, de tipo Palabra reservada
-y           encontrado en la linea 9, en el rango de columnas 19-19, de tipo Identificador
-)           encontrado en la linea 9, en el rango de columnas 20-20, de tipo Operador
-{           encontrado en la linea 10, en el rango de columnas 2-2, de tipo Operador
-while       encontrado en la linea 11, en el rango de columnas 3-7, de tipo Palabra reservada
-(           encontrado en la linea 11, en el rango de columnas 9-9, de tipo Operador
-a1          encontrado en la linea 11, en el rango de columnas 10-11, de tipo Identificador
-<=          encontrado en la linea 11, en el rango de columnas 13-14, de tipo Operador
-y           encontrado en la linea 11, en el rango de columnas 16-16, de tipo Identificador
-)           encontrado en la linea 11, en el rango de columnas 17-17, de tipo Operador
-{           encontrado en la linea 11, en el rango de columnas 19-19, de tipo Operador
-a1          encontrado en la linea 12, en el rango de columnas 4-5, de tipo Identificador
-=           encontrado en la linea 12, en el rango de columnas 7-7, de tipo Operador
-a1          encontrado en la linea 12, en el rango de columnas 9-10, de tipo Identificador
-%           encontrado en la linea 12, en el rango de columnas 12-12, de tipo Operador
-00.0001     encontrado en la linea 12, en el rango de columnas 14-20, de tipo Valor Decimal (valor = 00.0001)
-;           encontrado en la linea 12, en el rango de columnas 21-21, de tipo Operador
-if          encontrado en la linea 13, en el rango de columnas 4-5, de tipo Palabra reservada
-(           encontrado en la linea 13, en el rango de columnas 7-7, de tipo Operador
-a1          encontrado en la linea 13, en el rango de columnas 8-9, de tipo Identificador
-==          encontrado en la linea 13, en el rango de columnas 11-12, de tipo Operador
-0           encontrado en la linea 13, en el rango de columnas 14-14, de tipo Valor Decimal (valor = 0)
-)           encontrado en la linea 13, en el rango de columnas 15-15, de tipo Operador
-break       encontrado en la linea 13, en el rango de columnas 17-21, de tipo Palabra reservada
-;           encontrado en la linea 13, en el rango de columnas 22-22, de tipo Operador
-}           encontrado en la linea 14, en el rango de columnas 3-3, de tipo Operador
-}           encontrado en la linea 15, en el rango de columnas 2-2, de tipo Operador
-void        encontrado en la linea 17, en el rango de columnas 1-4, de tipo Palabra reservada
-main        encontrado en la linea 17, en el rango de columnas 6-9, de tipo Identificador
-(           encontrado en la linea 17, en el rango de columnas 10-10, de tipo Operador
-int         encontrado en la linea 17, en el rango de columnas 11-13, de tipo Palabra reservada
-y           encontrado en la linea 17, en el rango de columnas 15-15, de tipo Identificador
-)           encontrado en la linea 17, en el rango de columnas 16-16, de tipo Operador
-{           encontrado en la linea 17, en el rango de columnas 17-17, de tipo Operador
-int         encontrado en la linea 18, en el rango de columnas 2-4, de tipo Palabra reservada
-m1          encontrado en la linea 18, en el rango de columnas 6-7, de tipo Identificador
-;           encontrado en la linea 18, en el rango de columnas 8-8, de tipo Operador
-int         encontrado en la linea 19, en el rango de columnas 2-4, de tipo Palabra reservada
-m2          encontrado en la linea 19, en el rango de columnas 6-7, de tipo Identificador
-;           encontrado en la linea 19, en el rango de columnas 8-8, de tipo Operador
-Parser      encontrado en la linea 20, en el rango de columnas 2-7, de tipo Identificador
-MyParser    encontrado en la linea 20, en el rango de columnas 9-16, de tipo Identificador
+﻿interface   encontrado en la linea 1, en el rango de columnas 1-9, de tipo Palabra reservada
+Parser      encontrado en la linea 1, en el rango de columnas 11-16, de tipo Identificador
+{           encontrado en la linea 1, en el rango de columnas 18-18, de tipo Operador
+void        encontrado en la linea 2, en el rango de columnas 2-5, de tipo Palabra reservada
+proc1       encontrado en la linea 2, en el rango de columnas 7-11, de tipo Identificador
+(           encontrado en la linea 2, en el rango de columnas 12-12, de tipo Operador
+)           encontrado en la linea 2, en el rango de columnas 13-13, de tipo Operador
+;           encontrado en la linea 2, en el rango de columnas 14-14, de tipo Operador
+{           encontrado en la linea 2, en el rango de columnas 16-16, de tipo Operador
+}           encontrado en la linea 3, en el rango de columnas 2-2, de tipo Operador
+}           encontrado en la linea 4, en el rango de columnas 1-1, de tipo Operador
+void        encontrado en la linea 6, en el rango de columnas 1-4, de tipo Palabra reservada
+proc1       encontrado en la linea 6, en el rango de columnas 6-10, de tipo Identificador
+(           encontrado en la linea 6, en el rango de columnas 11-11, de tipo Operador
+double      encontrado en la linea 6, en el rango de columnas 12-17, de tipo Palabra reservada
+y           encontrado en la linea 6, en el rango de columnas 19-19, de tipo Identificador
+)           encontrado en la linea 6, en el rango de columnas 20-20, de tipo Operador
+{           encontrado en la linea 7, en el rango de columnas 2-2, de tipo Operador
+while       encontrado en la linea 8, en el rango de columnas 3-7, de tipo Palabra reservada
+(           encontrado en la linea 8, en el rango de columnas 9-9, de tipo Operador
+a1          encontrado en la linea 8, en el rango de columnas 10-11, de tipo Identificador
+<=          encontrado en la linea 8, en el rango de columnas 13-14, de tipo Operador
+y           encontrado en la linea 8, en el rango de columnas 16-16, de tipo Identificador
+)           encontrado en la linea 8, en el rango de columnas 17-17, de tipo Operador
+{           encontrado en la linea 8, en el rango de columnas 19-19, de tipo Operador
+a1          encontrado en la linea 9, en el rango de columnas 4-5, de tipo Identificador
+=           encontrado en la linea 9, en el rango de columnas 7-7, de tipo Operador
+a1          encontrado en la linea 9, en el rango de columnas 9-10, de tipo Identificador
+%           encontrado en la linea 9, en el rango de columnas 12-12, de tipo Operador
+00.0001     encontrado en la linea 9, en el rango de columnas 14-20, de tipo Valor Decimal (valor = 00.0001)
+;           encontrado en la linea 9, en el rango de columnas 21-21, de tipo Operador
+if          encontrado en la linea 10, en el rango de columnas 4-5, de tipo Palabra reservada
+(           encontrado en la linea 10, en el rango de columnas 7-7, de tipo Operador
+a1          encontrado en la linea 10, en el rango de columnas 8-9, de tipo Identificador
+==          encontrado en la linea 10, en el rango de columnas 11-12, de tipo Operador
+0           encontrado en la linea 10, en el rango de columnas 14-14, de tipo Valor Decimal (valor = 0)
+)           encontrado en la linea 10, en el rango de columnas 15-15, de tipo Operador
+break       encontrado en la linea 10, en el rango de columnas 17-21, de tipo Palabra reservada
+;           encontrado en la linea 10, en el rango de columnas 22-22, de tipo Operador
+}           encontrado en la linea 11, en el rango de columnas 3-3, de tipo Operador
+}           encontrado en la linea 12, en el rango de columnas 2-2, de tipo Operador
+void        encontrado en la linea 14, en el rango de columnas 1-4, de tipo Palabra reservada
+main        encontrado en la linea 14, en el rango de columnas 6-9, de tipo Identificador
+(           encontrado en la linea 14, en el rango de columnas 10-10, de tipo Operador
+int         encontrado en la linea 14, en el rango de columnas 11-13, de tipo Palabra reservada
+y           encontrado en la linea 14, en el rango de columnas 15-15, de tipo Identificador
+)           encontrado en la linea 14, en el rango de columnas 16-16, de tipo Operador
+{           encontrado en la linea 14, en el rango de columnas 17-17, de tipo Operador
+int         encontrado en la linea 15, en el rango de columnas 2-4, de tipo Palabra reservada
+m1          encontrado en la linea 15, en el rango de columnas 6-7, de tipo Identificador
+;           encontrado en la linea 15, en el rango de columnas 8-8, de tipo Operador
+int         encontrado en la linea 16, en el rango de columnas 2-4, de tipo Palabra reservada
+m2          encontrado en la linea 16, en el rango de columnas 6-7, de tipo Identificador
+;           encontrado en la linea 16, en el rango de columnas 8-8, de tipo Operador
+Parser      encontrado en la linea 17, en el rango de columnas 2-7, de tipo Identificador
+MyParser    encontrado en la linea 17, en el rango de columnas 9-16, de tipo Identificador
+;           encontrado en la linea 17, en el rango de columnas 17-17, de tipo Operador
+double      encontrado en la linea 18, en el rango de columnas 2-7, de tipo Palabra reservada
+m3          encontrado en la linea 18, en el rango de columnas 9-10, de tipo Identificador
+;           encontrado en la linea 18, en el rango de columnas 11-11, de tipo Operador
+while       encontrado en la linea 19, en el rango de columnas 2-6, de tipo Palabra reservada
+(           encontrado en la linea 19, en el rango de columnas 8-8, de tipo Operador
+m1          encontrado en la linea 19, en el rango de columnas 9-10, de tipo Identificador
+<=          encontrado en la linea 19, en el rango de columnas 12-13, de tipo Operador
+20          encontrado en la linea 19, en el rango de columnas 15-16, de tipo Valor Decimal (valor = 20)
+)           encontrado en la linea 19, en el rango de columnas 17-17, de tipo Operador
+{           encontrado en la linea 19, en el rango de columnas 19-19, de tipo Operador
+for         encontrado en la linea 20, en el rango de columnas 3-5, de tipo Palabra reservada
+(           encontrado en la linea 20, en el rango de columnas 7-7, de tipo Operador
+m2          encontrado en la linea 20, en el rango de columnas 8-9, de tipo Identificador
+=           encontrado en la linea 20, en el rango de columnas 11-11, de tipo Operador
+(           encontrado en la linea 20, en el rango de columnas 13-13, de tipo Operador
+4           encontrado en la linea 20, en el rango de columnas 14-14, de tipo Valor Decimal (valor = 4)
+)           encontrado en la linea 20, en el rango de columnas 15-15, de tipo Operador
 ;           encontrado en la linea 20, en el rango de columnas 17-17, de tipo Operador
-double      encontrado en la linea 21, en el rango de columnas 2-7, de tipo Palabra reservada
-m3          encontrado en la linea 21, en el rango de columnas 9-10, de tipo Identificador
-;           encontrado en la linea 21, en el rango de columnas 11-11, de tipo Operador
-while       encontrado en la linea 22, en el rango de columnas 2-6, de tipo Palabra reservada
-(           encontrado en la linea 22, en el rango de columnas 8-8, de tipo Operador
-m1          encontrado en la linea 22, en el rango de columnas 9-10, de tipo Identificador
-<=          encontrado en la linea 22, en el rango de columnas 12-13, de tipo Operador
-20          encontrado en la linea 22, en el rango de columnas 15-16, de tipo Valor Decimal (valor = 20)
-)           encontrado en la linea 22, en el rango de columnas 17-17, de tipo Operador
-{           encontrado en la linea 22, en el rango de columnas 19-19, de tipo Operador
-for         encontrado en la linea 23, en el rango de columnas 3-5, de tipo Palabra reservada
-(           encontrado en la linea 23, en el rango de columnas 7-7, de tipo Operador
-m2          encontrado en la linea 23, en el rango de columnas 8-9, de tipo Identificador
-=           encontrado en la linea 23, en el rango de columnas 11-11, de tipo Operador
-(           encontrado en la linea 23, en el rango de columnas 13-13, de tipo Operador
-4           encontrado en la linea 23, en el rango de columnas 14-14, de tipo Valor Decimal (valor = 4)
-)           encontrado en la linea 23, en el rango de columnas 15-15, de tipo Operador
-;           encontrado en la linea 23, en el rango de columnas 17-17, de tipo Operador
-m2          encontrado en la linea 23, en el rango de columnas 19-20, de tipo Identificador
-=           encontrado en la linea 23, en el rango de columnas 21-21, de tipo Operador
-m2          encontrado en la linea 23, en el rango de columnas 22-23, de tipo Identificador
-+           encontrado en la linea 23, en el rango de columnas 24-24, de tipo Operador
-1           encontrado en la linea 23, en el rango de columnas 25-25, de tipo Valor Decimal (valor = 1)
-;           encontrado en la linea 23, en el rango de columnas 27-27, de tipo Operador
-(           encontrado en la linea 23, en el rango de columnas 29-29, de tipo Operador
-2           encontrado en la linea 23, en el rango de columnas 30-30, de tipo Valor Decimal (valor = 2)
-)           encontrado en la linea 23, en el rango de columnas 31-31, de tipo Operador
-)           encontrado en la linea 23, en el rango de columnas 32-32, de tipo Operador
-}           encontrado en la linea 24, en el rango de columnas 3-3, de tipo Operador
-Console     encontrado en la linea 25, en el rango de columnas 2-8, de tipo Palabra reservada
-.           encontrado en la linea 25, en el rango de columnas 9-9, de tipo Operador
-Writeline   encontrado en la linea 25, en el rango de columnas 10-18, de tipo Palabra reservada
-(           encontrado en la linea 25, en el rango de columnas 19-19, de tipo Operador
-m2          encontrado en la linea 25, en el rango de columnas 20-21, de tipo Identificador
-+           encontrado en la linea 25, en el rango de columnas 23-23, de tipo Operador
-10          encontrado en la linea 25, en el rango de columnas 25-26, de tipo Valor Decimal (valor = 10)
-)           encontrado en la linea 25, en el rango de columnas 27-27, de tipo Operador
-;           encontrado en la linea 25, en el rango de columnas 28-28, de tipo Operador
-if          encontrado en la linea 26, en el rango de columnas 2-3, de tipo Palabra reservada
-(           encontrado en la linea 26, en el rango de columnas 5-5, de tipo Operador
-m2          encontrado en la linea 26, en el rango de columnas 6-7, de tipo Identificador
-==          encontrado en la linea 26, en el rango de columnas 9-10, de tipo Operador
-m1          encontrado en la linea 26, en el rango de columnas 12-13, de tipo Identificador
-||          encontrado en la linea 26, en el rango de columnas 15-16, de tipo Operador
-false       encontrado en la linea 26, en el rango de columnas 18-22, de tipo booleano
-)           encontrado en la linea 26, en el rango de columnas 23-23, de tipo Operador
-{           encontrado en la linea 27, en el rango de columnas 3-3, de tipo Operador
-string      encontrado en la linea 28, en el rango de columnas 5-10, de tipo Palabra reservada
-p1          encontrado en la linea 28, en el rango de columnas 12-13, de tipo Identificador
-;           encontrado en la linea 28, en el rango de columnas 14-14, de tipo Operador
-p1          encontrado en la linea 29, en el rango de columnas 8-9, de tipo Identificador
-=           encontrado en la linea 29, en el rango de columnas 11-11, de tipo Operador
-"This is a string"encontrado en la linea 29, en el rango de columnas 16-33, de tipo Cadena de texto
-;           encontrado en la linea 29, en el rango de columnas 34-34, de tipo Operador
-}           encontrado en la linea 30, en el rango de columnas 3-3, de tipo Operador
-else        encontrado en la linea 31, en el rango de columnas 2-5, de tipo Palabra reservada
-}           encontrado en la linea 32, en el rango de columnas 1-1, de tipo Operador
+m2          encontrado en la linea 20, en el rango de columnas 19-20, de tipo Identificador
+=           encontrado en la linea 20, en el rango de columnas 21-21, de tipo Operador
+m2          encontrado en la linea 20, en el rango de columnas 22-23, de tipo Identificador
++           encontrado en la linea 20, en el rango de columnas 24-24, de tipo Operador
+1           encontrado en la linea 20, en el rango de columnas 25-25, de tipo Valor Decimal (valor = 1)
+;           encontrado en la linea 20, en el rango de columnas 27-27, de tipo Operador
+(           encontrado en la linea 20, en el rango de columnas 29-29, de tipo Operador
+2           encontrado en la linea 20, en el rango de columnas 30-30, de tipo Valor Decimal (valor = 2)
+)           encontrado en la linea 20, en el rango de columnas 31-31, de tipo Operador
+)           encontrado en la linea 20, en el rango de columnas 32-32, de tipo Operador
+}           encontrado en la linea 21, en el rango de columnas 3-3, de tipo Operador
+Console     encontrado en la linea 22, en el rango de columnas 2-8, de tipo Palabra reservada
+.           encontrado en la linea 22, en el rango de columnas 9-9, de tipo Operador
+Writeline   encontrado en la linea 22, en el rango de columnas 10-18, de tipo Palabra reservada
+(           encontrado en la linea 22, en el rango de columnas 19-19, de tipo Operador
+m2          encontrado en la linea 22, en el rango de columnas 20-21, de tipo Identificador
++           encontrado en la linea 22, en el rango de columnas 23-23, de tipo Operador
+10          encontrado en la linea 22, en el rango de columnas 25-26, de tipo Valor Decimal (valor = 10)
+)           encontrado en la linea 22, en el rango de columnas 27-27, de tipo Operador
+;           encontrado en la linea 22, en el rango de columnas 28-28, de tipo Operador
+if          encontrado en la linea 23, en el rango de columnas 2-3, de tipo Palabra reservada
+(           encontrado en la linea 23, en el rango de columnas 5-5, de tipo Operador
+m2          encontrado en la linea 23, en el rango de columnas 6-7, de tipo Identificador
+==          encontrado en la linea 23, en el rango de columnas 9-10, de tipo Operador
+m1          encontrado en la linea 23, en el rango de columnas 12-13, de tipo Identificador
+||          encontrado en la linea 23, en el rango de columnas 15-16, de tipo Operador
+false       encontrado en la linea 23, en el rango de columnas 18-22, de tipo booleano
+)           encontrado en la linea 23, en el rango de columnas 23-23, de tipo Operador
+{           encontrado en la linea 24, en el rango de columnas 3-3, de tipo Operador
+string      encontrado en la linea 25, en el rango de columnas 5-10, de tipo Palabra reservada
+p1          encontrado en la linea 25, en el rango de columnas 12-13, de tipo Identificador
+;           encontrado en la linea 25, en el rango de columnas 14-14, de tipo Operador
+p1          encontrado en la linea 26, en el rango de columnas 8-9, de tipo Identificador
+=           encontrado en la linea 26, en el rango de columnas 11-11, de tipo Operador
+"This is a string"encontrado en la linea 26, en el rango de columnas 16-33, de tipo Cadena de texto
+;           encontrado en la linea 26, en el rango de columnas 34-34, de tipo Operador
+}           encontrado en la linea 27, en el rango de columnas 3-3, de tipo Operador
+else        encontrado en la linea 28, en el rango de columnas 2-5, de tipo Palabra reservada
+}           encontrado en la linea 29, en el rango de columnas 1-1, de tipo Operador
