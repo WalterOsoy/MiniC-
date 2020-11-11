@@ -71,8 +71,11 @@ namespace Clases
                 }
                 else if (char.IsLetter(inicial))//inicia con un caracter entonces o es una reservada o un id
                 {
-                    word = PossibleKeyWord(word);
-                    if (word.Length != 0)
+                    string temp = PossibleKeyWord(word);
+                    if (temp !=word)
+                    {
+                        word = temp;
+                    }else if (word.Length != 0)
                     {
                         word = PossibleID(word);
                     }
@@ -110,11 +113,19 @@ namespace Clases
         /// <returns>retorna es sobrante de la plara que no hace match</returns>
         private string PossibleKeyWord(string word)
         {
-            if (keywords.Contains(word))
+
+            foreach (var item in keywords)
             {
-                fileManager.WriteMatch(word, "Palabra reservada");
-                tokenslist.Add(new Token { type = word, Value = word , line = fileManager.LineInfo[0].ToString(),column = fileManager.LineInfo[1]+","+fileManager.LineInfo[2]});
-                word = "";
+                if (word.Length < item.Length) 
+                    continue;
+                string tempo = word.Substring(0,item.Length);
+                if (item.Equals(tempo))
+                {
+                    fileManager.WriteMatch(tempo, "Palabra reservada");
+                    tokenslist.Add(new Token { type = tempo, Value = tempo , line = fileManager.LineInfo[0].ToString(),column = fileManager.LineInfo[1]+","+fileManager.LineInfo[2]});
+                    word = word.Substring(item.Length);
+                    break;
+                }
             }
             return word;
         }
