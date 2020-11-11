@@ -65,7 +65,7 @@ m2          encontrado en la linea 12, en el rango de columnas 9-10, de tipo Ide
 ;           encontrado en la linea 12, en el rango de columnas 18-18, de tipo Operador
 Console     encontrado en la linea 12, en el rango de columnas 23-29, de tipo Palabra reservada
 .           encontrado en la linea 12, en el rango de columnas 30-30, de tipo Operador
-Writeline   encontrado en la linea 12, en el rango de columnas 31-39, de tipo Identificador
+Writeline   encontrado en la linea 12, en el rango de columnas 31-39, de tipo Palabra reservada
 (           encontrado en la linea 12, en el rango de columnas 41-41, de tipo Operador
 m1          encontrado en la linea 12, en el rango de columnas 42-43, de tipo Identificador
 *           encontrado en la linea 12, en el rango de columnas 45-45, de tipo Operador
