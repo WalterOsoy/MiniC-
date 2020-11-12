@@ -1,15 +1,7 @@
-interface Parser {
-	void proc1(); { // Here's a syntactical error! Expected parameters
-	}	
+void tst(int x){
+	a1 = a1 % 00.0001;
+	if (a1 == 0) break;
 }
-
-void proc1(double y)
-	{
-		while (a1 <= y) {
-			a1 = a1 % 00.0001;
-			if (a1 == 0) break;
-		}
-	}
 
 void main(int y){
 	int m1;
@@ -25,5 +17,5 @@ void main(int y){
 		  string p1;
 		     p1 = "This is a string";		
 		}
-	else  // Here's a syntactical error! Expected Stmt 
+	else  // Expected Stmt 
 }
