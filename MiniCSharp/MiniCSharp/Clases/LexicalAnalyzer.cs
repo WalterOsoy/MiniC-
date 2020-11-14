@@ -226,7 +226,7 @@ namespace Clases
                 {
                     fileManager.WriteMatch(word.Substring(0, 2), "Operador");
                     tokenslist.Add(new Token { type = word.Substring(0,2), Value = word.Substring(0,2), line = fileManager.LineInfo[0].ToString(),column = fileManager.LineInfo[1]+","+fileManager.LineInfo[2]});
-                    word = word.Remove(0, 2);
+                    word = word.Remove(0, 2);                    
                 }
                 else
                 {
