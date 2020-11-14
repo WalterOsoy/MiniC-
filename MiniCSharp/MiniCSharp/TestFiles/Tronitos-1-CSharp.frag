@@ -9,8 +9,8 @@ void main(int y){
 	Parser MyParser;
 	double m3;
 	while (m1 <= 20) {
-		for (m2 = (4) ; m2=m2+1 ; (2))			
-		}
+		for (m2 = (4) ; m2=m2+1 ; (2))
+	}
 	Console.Writeline(m2 + 10);
 	if (m2 == m1 || false)
 		{

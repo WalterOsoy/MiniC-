@@ -35,13 +35,13 @@ m1          encontrado en la linea 9, en el rango de columnas 3-4, de tipo Ident
 .           encontrado en la linea 9, en el rango de columnas 5-5, de tipo Operador
 a1          encontrado en la linea 9, en el rango de columnas 6-7, de tipo Identificador
 =           encontrado en la linea 9, en el rango de columnas 9-9, de tipo Operador
-3           encontrado en la linea 9, en el rango de columnas 11-11, de tipo Valor Decimal (valor = 3)
+3           encontrado en la linea 9, en el rango de columnas 11-11, de tipo Valor entero (valor = 3)
 ;           encontrado en la linea 9, en el rango de columnas 12-12, de tipo Operador
 while       encontrado en la linea 10, en el rango de columnas 3-7, de tipo Palabra reservada
 (           encontrado en la linea 10, en el rango de columnas 9-9, de tipo Operador
 m1          encontrado en la linea 10, en el rango de columnas 10-11, de tipo Identificador
 <           encontrado en la linea 10, en el rango de columnas 12-12, de tipo Operador
-10          encontrado en la linea 10, en el rango de columnas 13-14, de tipo Valor Decimal (valor = 10)
+10          encontrado en la linea 10, en el rango de columnas 13-14, de tipo Valor entero (valor = 10)
 )           encontrado en la linea 10, en el rango de columnas 15-15, de tipo Operador
 {           encontrado en la linea 10, en el rango de columnas 17-17, de tipo Operador
 for         encontrado en la linea 11, en el rango de columnas 4-6, de tipo Palabra reservada
@@ -56,10 +56,10 @@ m2          encontrado en la linea 12, en el rango de columnas 6-7, de tipo Iden
 =           encontrado en la linea 12, en el rango de columnas 8-8, de tipo Operador
 m2          encontrado en la linea 12, en el rango de columnas 9-10, de tipo Identificador
 +           encontrado en la linea 12, en el rango de columnas 11-11, de tipo Operador
-1           encontrado en la linea 12, en el rango de columnas 12-12, de tipo Valor Decimal (valor = 1)
+1           encontrado en la linea 12, en el rango de columnas 12-12, de tipo Valor entero (valor = 1)
 ;           encontrado en la linea 12, en el rango de columnas 13-13, de tipo Operador
 (           encontrado en la linea 12, en el rango de columnas 14-14, de tipo Operador
-2           encontrado en la linea 12, en el rango de columnas 15-15, de tipo Valor Decimal (valor = 2)
+2           encontrado en la linea 12, en el rango de columnas 15-15, de tipo Valor entero (valor = 2)
 )           encontrado en la linea 12, en el rango de columnas 16-16, de tipo Operador
 )           encontrado en la linea 12, en el rango de columnas 17-17, de tipo Operador
 ;           encontrado en la linea 12, en el rango de columnas 18-18, de tipo Operador
@@ -69,7 +69,7 @@ Writeline   encontrado en la linea 12, en el rango de columnas 31-39, de tipo Pa
 (           encontrado en la linea 12, en el rango de columnas 41-41, de tipo Operador
 m1          encontrado en la linea 12, en el rango de columnas 42-43, de tipo Identificador
 *           encontrado en la linea 12, en el rango de columnas 45-45, de tipo Operador
-2           encontrado en la linea 12, en el rango de columnas 47-47, de tipo Valor Decimal (valor = 2)
+2           encontrado en la linea 12, en el rango de columnas 47-47, de tipo Valor entero (valor = 2)
 ,           encontrado en la linea 12, en el rango de columnas 48-48, de tipo Operador
 m1          encontrado en la linea 12, en el rango de columnas 50-51, de tipo Identificador
 .           encontrado en la linea 12, en el rango de columnas 52-52, de tipo Operador
@@ -82,7 +82,7 @@ if          encontrado en la linea 13, en el rango de columnas 6-7, de tipo Pala
 (           encontrado en la linea 13, en el rango de columnas 11-11, de tipo Operador
 m1          encontrado en la linea 13, en el rango de columnas 12-13, de tipo Identificador
 *           encontrado en la linea 13, en el rango de columnas 14-14, de tipo Operador
-2           encontrado en la linea 13, en el rango de columnas 15-15, de tipo Valor Decimal (valor = 2)
+2           encontrado en la linea 13, en el rango de columnas 15-15, de tipo Valor entero (valor = 2)
 ==          encontrado en la linea 13, en el rango de columnas 17-18, de tipo Operador
 m2          encontrado en la linea 13, en el rango de columnas 20-21, de tipo Identificador
 )           encontrado en la linea 13, en el rango de columnas 22-22, de tipo Operador
@@ -100,7 +100,7 @@ m3          encontrado en la linea 18, en el rango de columnas 11-12, de tipo Id
 )           encontrado en la linea 18, en el rango de columnas 13-13, de tipo Operador
 m1          encontrado en la linea 18, en el rango de columnas 15-16, de tipo Identificador
 =           encontrado en la linea 18, en el rango de columnas 17-17, de tipo Operador
-1           encontrado en la linea 18, en el rango de columnas 18-18, de tipo Valor Decimal (valor = 1)
+1           encontrado en la linea 18, en el rango de columnas 18-18, de tipo Valor entero (valor = 1)
 ;           encontrado en la linea 18, en el rango de columnas 19-19, de tipo Operador
 t           encontrado en la linea 20, en el rango de columnas 3-3, de tipo Identificador
 =           encontrado en la linea 20, en el rango de columnas 5-5, de tipo Operador

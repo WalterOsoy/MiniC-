@@ -1,0 +1,14 @@
+﻿void        encontrado en la linea 1, en el rango de columnas 1-4, de tipo Palabra reservada
+txt         encontrado en la linea 1, en el rango de columnas 6-8, de tipo Identificador
+(           encontrado en la linea 1, en el rango de columnas 9-9, de tipo Operador
+int         encontrado en la linea 1, en el rango de columnas 10-12, de tipo Palabra reservada
+x           encontrado en la linea 1, en el rango de columnas 14-14, de tipo Identificador
+)           encontrado en la linea 1, en el rango de columnas 15-15, de tipo Operador
+{           encontrado en la linea 1, en el rango de columnas 16-16, de tipo Operador
+a1          encontrado en la linea 2, en el rango de columnas 5-6, de tipo Identificador
+=           encontrado en la linea 2, en el rango de columnas 8-8, de tipo Operador
+a1          encontrado en la linea 2, en el rango de columnas 10-11, de tipo Identificador
+%           encontrado en la linea 2, en el rango de columnas 13-13, de tipo Operador
+00.0001     encontrado en la linea 2, en el rango de columnas 15-21, de tipo Valor Decimal (valor = 00.0001)
+;           encontrado en la linea 2, en el rango de columnas 22-22, de tipo Operador
+}           encontrado en la linea 3, en el rango de columnas 1-1, de tipo Operador

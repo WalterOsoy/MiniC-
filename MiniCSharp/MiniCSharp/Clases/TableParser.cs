@@ -11,6 +11,8 @@ namespace Clases {
         string action;
         Dictionary<int, Dictionary<string, string>> table;
         Dictionary<int, Dictionary<string, List<string>>> grammar;
+
+        List<string> TEST_ACTIONTRACK = new List<string>();
         string getnumbre = @"[0-9]+";
         public TableParser (ref List<Token> tokensList) {
             this.tokensList = tokensList;
@@ -32,6 +34,7 @@ namespace Clases {
                 fila = stack.Peek ();
                 entrada = tokensList[0];
                 action = table[fila][entrada.type];
+                TEST_ACTIONTRACK.Add(action);
                 switch (action[0]) {
                     case 's': //desplazamiento                        
                         Displacement (false);
@@ -45,6 +48,7 @@ namespace Clases {
                         break;
                     case 'e': //error 
                         action = table[stack.Peek()]["Ɛ"];
+                        TEST_ACTIONTRACK.Add(action);
                         switch (action[0]) {
                             case 's':
                                 Displacement (true);
@@ -100,6 +104,7 @@ namespace Clases {
             int fila = stack.Peek ();
             string entrada = symbol.Peek ();
             action = table[fila][entrada];
+            TEST_ACTIONTRACK.Add(action);
             stack.Push (Convert.ToInt32 (action));
         }
     }
