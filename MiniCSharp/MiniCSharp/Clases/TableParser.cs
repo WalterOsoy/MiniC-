@@ -1,15 +1,9 @@
-using System.Diagnostics.SymbolStore;
-using System.Collections;
 using System;
 using System.Collections.Generic;
-using System.IO;
-using System.Runtime.InteropServices;
 using System.Text.RegularExpressions;
-using System.Windows.Forms;
 using DataStructures;
 
 namespace Clases {
-
     class TableParser {
         List<Token> tokensList;
         Stack<int> stack;
