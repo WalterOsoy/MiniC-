@@ -1,0 +1,11 @@
+﻿void        encontrado en la linea 1, en el rango de columnas 1-4, de tipo Palabra reservada
+bestCar     encontrado en la linea 1, en el rango de columnas 6-12, de tipo Identificador
+(           encontrado en la linea 1, en el rango de columnas 13-13, de tipo Operador
+int         encontrado en la linea 1, en el rango de columnas 14-16, de tipo Palabra reservada
+x           encontrado en la linea 1, en el rango de columnas 18-18, de tipo Identificador
+)           encontrado en la linea 1, en el rango de columnas 19-19, de tipo Operador
+{           encontrado en la linea 1, en el rango de columnas 20-20, de tipo Operador
+Carro       encontrado en la linea 2, en el rango de columnas 5-9, de tipo Identificador
+HyundaiAccentencontrado en la linea 2, en el rango de columnas 11-23, de tipo Identificador
+;           encontrado en la linea 2, en el rango de columnas 24-24, de tipo Operador
+}           encontrado en la linea 3, en el rango de columnas 1-1, de tipo Operador
