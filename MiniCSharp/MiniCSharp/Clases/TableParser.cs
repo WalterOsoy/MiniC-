@@ -57,6 +57,11 @@ namespace Clases {
                                 Reduction ();
                                 break;
                             case 'e':
+                                if(tokensList[0].type.Equals("$")){
+                                  end = true;
+                                  break;
+                                }
+
                                 Console.WriteLine("Error en el parse en: \n Token: '" + tokensList[0].Value + "' en la linea: " + tokensList[0].line + " columnas: " + tokensList[0].column);
                                 stack.Clear();
                                 stack.Push(0);

@@ -24,8 +24,8 @@ FunctionDecl -> Type ident ( Formals ) StmtBlock
 FunctionDecl -> void ident ( Formals ) StmtBlock
 Formals -> Variable , Formals
 Formals -> Variable
-ClassDecl -> class ident CD' CD'' {​​ CD''' }
-CD' -> : ident
+ClassDecl -> class ident CD' { CD''' }
+CD' -> : ident CD''
 CD' -> Ɛ
 CD'' -> , ident CD''
 CD'' -> Ɛ
@@ -39,13 +39,11 @@ ID' -> Prototype ID'
 ID' -> Ɛ
 Prototype -> Type ident ( Formals ) ;
 Prototype -> void ident ( Formals ) ;
-StmtBlock -> { SB' SB'' SB''' }
+StmtBlock -> { SB' }
 SB' -> VariableDecl SB'
+SB' -> ConstDecl SB'
+SB' -> Stmt SB'
 SB' -> Ɛ
-SB'' -> ConstDecl SB''
-SB'' -> Ɛ
-SB''' -> Stmt SB'''
-SB''' -> Ɛ
 Stmt -> Stmt' ;
 Stmt -> IfStmt
 Stmt -> WhileStmt

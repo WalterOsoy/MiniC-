@@ -5,16 +5,22 @@ int         encontrado en la linea 1, en el rango de columnas 10-12, de tipo Pal
 x           encontrado en la linea 1, en el rango de columnas 14-14, de tipo Identificador
 )           encontrado en la linea 1, en el rango de columnas 15-15, de tipo Operador
 {           encontrado en la linea 1, en el rango de columnas 16-16, de tipo Operador
-const       encontrado en la linea 2, en el rango de columnas 5-9, de tipo Palabra reservada
-int         encontrado en la linea 2, en el rango de columnas 11-13, de tipo Palabra reservada
-myConstant  encontrado en la linea 2, en el rango de columnas 15-24, de tipo Identificador
-;           encontrado en la linea 2, en el rango de columnas 25-25, de tipo Operador
-a1          encontrado en la linea 3, en el rango de columnas 5-6, de tipo Identificador
-.           encontrado en la linea 3, en el rango de columnas 7-7, de tipo Operador
-a2          encontrado en la linea 3, en el rango de columnas 8-9, de tipo Identificador
-=           encontrado en la linea 3, en el rango de columnas 11-11, de tipo Operador
-a1          encontrado en la linea 3, en el rango de columnas 13-14, de tipo Identificador
-%           encontrado en la linea 3, en el rango de columnas 16-16, de tipo Operador
-00.0001     encontrado en la linea 3, en el rango de columnas 18-24, de tipo Valor Decimal (valor = 00.0001)
-;           encontrado en la linea 3, en el rango de columnas 25-25, de tipo Operador
-}           encontrado en la linea 4, en el rango de columnas 1-1, de tipo Operador
+Carro       encontrado en la linea 2, en el rango de columnas 5-9, de tipo Identificador
+HyundaiAccentencontrado en la linea 2, en el rango de columnas 11-23, de tipo Identificador
+;           encontrado en la linea 2, en el rango de columnas 24-24, de tipo Operador
+HyundaiAccentencontrado en la linea 3, en el rango de columnas 5-17, de tipo Identificador
+.           encontrado en la linea 3, en el rango de columnas 18-18, de tipo Operador
+Color       encontrado en la linea 3, en el rango de columnas 19-23, de tipo Identificador
+=           encontrado en la linea 3, en el rango de columnas 25-25, de tipo Operador
+"rojo"      encontrado en la linea 4, en el rango de columnas 1-6, de tipo Cadena de texto
+;           encontrado en la linea 4, en el rango de columnas 7-7, de tipo Operador
+Carro       encontrado en la linea 4, en el rango de columnas 12-16, de tipo Identificador
+MitsubishiLancerencontrado en la linea 4, en el rango de columnas 18-33, de tipo Identificador
+;           encontrado en la linea 4, en el rango de columnas 34-34, de tipo Operador
+MitsubishiLancerencontrado en la linea 5, en el rango de columnas 5-20, de tipo Identificador
+.           encontrado en la linea 5, en el rango de columnas 21-21, de tipo Operador
+Color       encontrado en la linea 5, en el rango de columnas 22-26, de tipo Identificador
+=           encontrado en la linea 5, en el rango de columnas 28-28, de tipo Operador
+"Azul Pavo" encontrado en la linea 5, en el rango de columnas 31-41, de tipo Cadena de texto
+;           encontrado en la linea 5, en el rango de columnas 42-42, de tipo Operador
+}           encontrado en la linea 6, en el rango de columnas 1-1, de tipo Operador
