@@ -24,7 +24,7 @@ FunctionDecl,Type,ident,(,Formals,),StmtBlock
 FunctionDecl,void,ident,(,Formals,),StmtBlock
 Formals,Variable,",",Formals
 Formals,Variable
-ClassDecl,class,ident,CD',CD'',{​​,CD''',}​​
+ClassDecl,class,ident,CD',CD'',{​​,CD''',}
 CD',:,ident
 CD',Ɛ
 CD'',",",ident,CD''
@@ -34,12 +34,12 @@ CD''',Ɛ
 Field,VariableDecl
 Field,FunctionDecl
 Field,ConstDecl
-InterfaceDecl,interface,ident,{​​,ID',}​​
+InterfaceDecl,interface,ident,{,ID',}
 ID',Prototype,ID'
 ID',Ɛ
 Prototype,Type,ident,(,Formals,),;
 Prototype,void,ident,(,Formals,),;
-StmtBlock,{​​,SB',SB'',SB''',}​​
+StmtBlock,{,SB',SB'',SB''',}
 SB',VariableDecl,SB'
 SB',Ɛ
 SB'',ConstDecl,SB''
@@ -96,10 +96,8 @@ Expr5,(,Expr,)
 Expr5,-,Expr
 Expr5,!,Expr
 Expr5,New,(,ident,)
-LValue,ident,LV'
+LValue,ident
 LValue,Expr,.,ident
-LV',.,ident
-LV',Ɛ
 Constant,intConstant
 Constant,doubleConstant
 Constant,boolConstant

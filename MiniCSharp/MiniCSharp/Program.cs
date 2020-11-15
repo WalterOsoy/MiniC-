@@ -11,6 +11,13 @@ namespace MiniCSharp
     {
       new MainMenu().Run();
 
+      MainMenu myMenu;
+      /*Some constant value*/
+      myMenu = new MainMenu();
+
+
+
+
       // User for testing grammar loader
       // Dictionary<int, Dictionary<string, string>> table = new Dictionary<int, Dictionary<string, string>>();
       // Dictionary<int, Dictionary<string, List<string>>> grammar = new Dictionary<int, Dictionary<string, List<string>>>();
