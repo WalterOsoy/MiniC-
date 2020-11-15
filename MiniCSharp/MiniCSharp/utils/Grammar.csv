@@ -55,8 +55,7 @@ Stmt,ReturnStmt
 Stmt,PrintStmt
 Stmt,StmtBlock
 Stmt,CallStmt
-CallStmt,ident,(,Actuals,)
-CallStmt,ident,.,ident,(,Actuals,)
+CallStmt,IDENT,(,Actuals,)
 Actuals,Expr,",",Actuals
 Actuals,Expr
 Stmt',Expr
@@ -96,8 +95,10 @@ Expr5,(,Expr,)
 Expr5,-,Expr
 Expr5,!,Expr
 Expr5,New,(,ident,)
-LValue,ident
-LValue,Expr,.,ident
+LValue,IDENT
+LValue,Expr,.,IDENT
+IDENT,ident
+IDENT,ident,.,IDENT
 Constant,intConstant
 Constant,doubleConstant
 Constant,boolConstant
