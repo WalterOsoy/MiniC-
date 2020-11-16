@@ -39,7 +39,8 @@ Field,ConstDecl
 Decl,InterfaceDecl
 InterfaceDecl,InterfaceHeader,InterfaceBody
 InterfaceHeader,interface,ident,
-InterfaceBody,{,Prototype,IB',}
+InterfaceBody,{,IB',}
+IB',Prototype,IB'
 IB',Ɛ
 Prototype,Type,ident,(,Formals,),;
 Prototype,void,ident,(,Formals,),;

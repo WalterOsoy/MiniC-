@@ -11,7 +11,7 @@ namespace Clases {
         string action;
         Dictionary<int, Dictionary<string, string>> table;
         Dictionary<int, Dictionary<string, List<string>>> grammar;
-        List<TrackItem> StackSymbolTrack = new List<TrackItem>(){ new TrackItem(){ symbol = "Inicio Lista", stackNumber = 0 } };
+        Stack<TrackItem> StackSymbolTrack = new Stack<TrackItem>();
 
         
         string getnumbre = @"[0-9]+";
@@ -24,6 +24,7 @@ namespace Clases {
             symbol = new Stack<string> ();
             stack.Push (0);
             action = "";
+            StackSymbolTrack.Push(new TrackItem(){ symbol = "Inicio Lista", stackNumber = 0, accepted = true });
             tokensList.Add (new Token { type = "$", Value = "$" });
         }
         public void parse () {
@@ -60,11 +61,16 @@ namespace Clases {
                                   end = true;
                                   break;
                                 }
+
                                 Console.WriteLine("Error en el parse en: \n Token: '" + tokensList[0].Value + "' en la linea: " + tokensList[0].line + " columnas: " + tokensList[0].column);
-                                stack.Clear();
-                                stack.Push(0);
+                                while (!StackSymbolTrack.Peek().accepted)
+                                {
+                                  stack.Pop();
+                                  symbol.Pop();
+                                  StackSymbolTrack.Pop();
+                                }
+                                
                                 tokensList.RemoveAt(0);
-                                symbol.Clear();
                                 Console.WriteLine("empezando otra vez, intentaremos parsear el siguiente metodo");
                                 break;
                         }
@@ -91,9 +97,10 @@ namespace Clases {
               symbol.Push (newSymbol);
             }
 
-            StackSymbolTrack.Add(new TrackItem(){
+            StackSymbolTrack.Push(new TrackItem(){
               stackNumber = newStackNumber,
-              symbol = newSymbol
+              symbol = newSymbol,
+              accepted = (newSymbol == "{" || newSymbol == "}")
             });
         }
         private void Reduction () {
@@ -105,13 +112,15 @@ namespace Clases {
             for (int i = 0; i < elemens.Count; i++) {
                 stack.Pop();
                 symbol.Pop();
-                StackSymbolTrack.RemoveAt(StackSymbolTrack.Count - 1);
+                StackSymbolTrack.Pop();
             }
             //inserta la produccion 
             symbol.Push (production[0]);
             GoTo (production[0]);
         }
         private void GoTo (string newTrackSymbol) {
+          List<string> checkpoints = new List<string>(){"Program","Decl","VariableDecl","Variable","ConstDecl","FunctionDecl","FunctionType","FunctionType","StmtBlock","ClassDecl","ClassHeader","Field","InterfaceDecl","InterfaceHeader","Prototype","Stmt","IfHeader","WhileHeader","ForHeader" };
+
             int fila = stack.Peek ();
             string entrada = symbol.Peek ();
             action = table[fila][entrada];
@@ -119,9 +128,10 @@ namespace Clases {
             int newStackItem = Convert.ToInt32 (action);
             stack.Push (newStackItem);
 
-            StackSymbolTrack.Add(new TrackItem(){
+            StackSymbolTrack.Push(new TrackItem(){
               stackNumber = newStackItem,
-              symbol = newTrackSymbol
+              symbol = newTrackSymbol,
+              accepted = checkpoints.Contains(newTrackSymbol)
             });
         }
     }

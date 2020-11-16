@@ -6,5 +6,6 @@ namespace DataStructures {
   class TrackItem {
     public string symbol { get; set; }
     public int stackNumber { get; set; }
+    public bool accepted = false;
   }
 }

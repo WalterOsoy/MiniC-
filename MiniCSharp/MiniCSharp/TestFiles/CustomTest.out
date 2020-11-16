@@ -8,19 +8,29 @@ x           encontrado en la linea 1, en el rango de columnas 14-14, de tipo Ide
 Carro       encontrado en la linea 2, en el rango de columnas 5-9, de tipo Identificador
 HyundaiAccentencontrado en la linea 2, en el rango de columnas 11-23, de tipo Identificador
 ;           encontrado en la linea 2, en el rango de columnas 24-24, de tipo Operador
-HyundaiAccentencontrado en la linea 3, en el rango de columnas 5-17, de tipo Identificador
-.           encontrado en la linea 3, en el rango de columnas 18-18, de tipo Operador
-Color       encontrado en la linea 3, en el rango de columnas 19-23, de tipo Identificador
-=           encontrado en la linea 3, en el rango de columnas 25-25, de tipo Operador
-"rojo"      encontrado en la linea 4, en el rango de columnas 1-6, de tipo Cadena de texto
-;           encontrado en la linea 4, en el rango de columnas 7-7, de tipo Operador
-Carro       encontrado en la linea 4, en el rango de columnas 12-16, de tipo Identificador
-MitsubishiLancerencontrado en la linea 4, en el rango de columnas 18-33, de tipo Identificador
-;           encontrado en la linea 4, en el rango de columnas 34-34, de tipo Operador
-MitsubishiLancerencontrado en la linea 5, en el rango de columnas 5-20, de tipo Identificador
-.           encontrado en la linea 5, en el rango de columnas 21-21, de tipo Operador
-Color       encontrado en la linea 5, en el rango de columnas 22-26, de tipo Identificador
-=           encontrado en la linea 5, en el rango de columnas 28-28, de tipo Operador
-"Azul Pavo" encontrado en la linea 5, en el rango de columnas 31-41, de tipo Cadena de texto
-;           encontrado en la linea 5, en el rango de columnas 42-42, de tipo Operador
-}           encontrado en la linea 6, en el rango de columnas 1-1, de tipo Operador
+Esta        encontrado en la linea 3, en el rango de columnas 5-8, de tipo Identificador
+es          encontrado en la linea 3, en el rango de columnas 10-11, de tipo Identificador
+una         encontrado en la linea 3, en el rango de columnas 13-15, de tipo Identificador
+linea       encontrado en la linea 3, en el rango de columnas 17-21, de tipo Identificador
+que         encontrado en la linea 3, en el rango de columnas 23-25, de tipo Identificador
+debe        encontrado en la linea 3, en el rango de columnas 27-30, de tipo Identificador
+tirar       encontrado en la linea 3, en el rango de columnas 32-36, de tipo Identificador
+error       encontrado en la linea 3, en el rango de columnas 38-42, de tipo Identificador
+juas        encontrado en la linea 3, en el rango de columnas 44-47, de tipo Identificador
+juas        encontrado en la linea 3, en el rango de columnas 49-52, de tipo Identificador
+HyundaiAccentencontrado en la linea 4, en el rango de columnas 5-17, de tipo Identificador
+.           encontrado en la linea 4, en el rango de columnas 18-18, de tipo Operador
+Color       encontrado en la linea 4, en el rango de columnas 19-23, de tipo Identificador
+=           encontrado en la linea 4, en el rango de columnas 25-25, de tipo Operador
+"rojo"      encontrado en la linea 5, en el rango de columnas 1-6, de tipo Cadena de texto
+;           encontrado en la linea 5, en el rango de columnas 7-7, de tipo Operador
+Carro       encontrado en la linea 5, en el rango de columnas 12-16, de tipo Identificador
+MitsubishiLancerencontrado en la linea 5, en el rango de columnas 18-33, de tipo Identificador
+;           encontrado en la linea 5, en el rango de columnas 34-34, de tipo Operador
+MitsubishiLancerencontrado en la linea 6, en el rango de columnas 5-20, de tipo Identificador
+.           encontrado en la linea 6, en el rango de columnas 21-21, de tipo Operador
+Color       encontrado en la linea 6, en el rango de columnas 22-26, de tipo Identificador
+=           encontrado en la linea 6, en el rango de columnas 28-28, de tipo Operador
+"Azul Pavo" encontrado en la linea 6, en el rango de columnas 31-41, de tipo Cadena de texto
+;           encontrado en la linea 6, en el rango de columnas 42-42, de tipo Operador
+}           encontrado en la linea 7, en el rango de columnas 1-1, de tipo Operador
