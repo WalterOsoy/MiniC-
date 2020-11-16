@@ -2,17 +2,8 @@ Program' -> Program
 Program -> Decl Program
 Program -> Decl
 Decl -> VariableDecl
-Decl -> FunctionDecl
-Decl -> ConstDecl
-Decl -> ClassDecl
-Decl -> InterfaceDecl
 VariableDecl -> Variable ;
 Variable -> Type ident
-ConstDecl -> const ConstType ident ;
-ConstType -> int
-ConstType -> double
-ConstType -> bool
-ConstType -> string
 Type -> int Type'
 Type -> double Type'
 Type -> bool Type'
@@ -20,23 +11,36 @@ Type -> string Type'
 Type -> ident Type'
 Type' -> [ ] Type'
 Type' -> Ɛ
-FunctionDecl -> Type ident ( Formals ) StmtBlock
-FunctionDecl -> void ident ( Formals ) StmtBlock
+Decl -> ConstDecl
+ConstDecl -> const ConstType ident ;
+ConstType -> int
+ConstType -> double
+ConstType -> bool
+ConstType -> string
+Decl -> FunctionDecl
+FunctionDecl -> FunctionType StmtBlock
+FunctionType -> Type ident ( Formals )
+FunctionType -> void ident ( Formals )
 Formals -> Variable , Formals
 Formals -> Variable
-ClassDecl -> class ident CD' { CD''' }
-CD' -> : ident CD''
-CD' -> Ɛ
-CD'' -> , ident CD''
-CD'' -> Ɛ
-CD''' -> Field CD'''
-CD''' -> Ɛ
+Decl -> ClassDecl
+ClassDecl -> ClassHeader ClassBody
+ClassHeader ->  class ident CH' 
+CH' -> : ident CH''
+CH' -> Ɛ
+CH'' -> , ident CH''
+CH'' -> Ɛ
+ClassBody -> { CB' }
+CB' -> Field CB'
+CB' -> Ɛ
 Field -> VariableDecl
 Field -> FunctionDecl
 Field -> ConstDecl
-InterfaceDecl -> interface ident { ID' }
-ID' -> Prototype ID'
-ID' -> Ɛ
+Decl -> InterfaceDecl
+InterfaceDecl -> InterfaceHeader InterfaceBody
+InterfaceHeader -> interface ident 
+InterfaceBody -> { Prototype IB' }
+IB' -> Ɛ
 Prototype -> Type ident ( Formals ) ;
 Prototype -> void ident ( Formals ) ;
 StmtBlock -> { SB' }
@@ -44,7 +48,6 @@ SB' -> VariableDecl SB'
 SB' -> ConstDecl SB'
 SB' -> Stmt SB'
 SB' -> Ɛ
-Stmt -> Stmt' ;
 Stmt -> IfStmt
 Stmt -> WhileStmt
 Stmt -> ForStmt
@@ -53,16 +56,20 @@ Stmt -> ReturnStmt
 Stmt -> PrintStmt
 Stmt -> StmtBlock
 Stmt -> CallStmt
+Stmt -> Stmt' ;
+Stmt' -> Expr
+Stmt' -> Ɛ
 CallStmt -> IDENT ( Actuals )
 Actuals -> Expr , Actuals
 Actuals -> Expr
-Stmt' -> Expr
-Stmt' -> Ɛ
-IfStmt -> if ( Expr ) Stmt IS'
+IfStmt -> IfHeader Stmt IS'
+IfHeader -> if ( Expr )
 IS' -> else Stmt
 IS' -> Ɛ
-WhileStmt -> while ( Expr ) Stmt
-ForStmt -> for ( Expr ; Expr ; Expr ) Stmt
+WhileStmt -> WhileHeader Stmt
+WhileHeader -> while ( Expr )
+ForStmt -> ForHeader Stmt
+ForHeader -> for ( Expr ; Expr ; Expr )
 ReturnStmt -> return Expr ;
 BreakStmt -> break ;
 PrintStmt -> Console . Writeline ( PS' ) ;

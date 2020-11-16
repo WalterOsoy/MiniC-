@@ -11,8 +11,9 @@ namespace Clases {
         string action;
         Dictionary<int, Dictionary<string, string>> table;
         Dictionary<int, Dictionary<string, List<string>>> grammar;
+        List<TrackItem> StackSymbolTrack = new List<TrackItem>(){ new TrackItem(){ symbol = "Inicio Lista", stackNumber = 0 } };
 
-        List<string> TEST_ACTIONTRACK = new List<string>();
+        
         string getnumbre = @"[0-9]+";
         public TableParser (ref List<Token> tokensList) {
             this.tokensList = tokensList;
@@ -34,7 +35,6 @@ namespace Clases {
                 fila = stack.Peek ();
                 entrada = tokensList[0];
                 action = table[fila][entrada.type];
-                TEST_ACTIONTRACK.Add(action);
                 switch (action[0]) {
                     case 's': //desplazamiento                        
                         Displacement (false);
@@ -48,7 +48,6 @@ namespace Clases {
                         break;
                     case 'e': //error 
                         action = table[stack.Peek()]["Ɛ"];
-                        TEST_ACTIONTRACK.Add(action);
                         switch (action[0]) {
                             case 's':
                                 Displacement (true);
@@ -61,7 +60,6 @@ namespace Clases {
                                   end = true;
                                   break;
                                 }
-
                                 Console.WriteLine("Error en el parse en: \n Token: '" + tokensList[0].Value + "' en la linea: " + tokensList[0].line + " columnas: " + tokensList[0].column);
                                 stack.Clear();
                                 stack.Push(0);
@@ -80,13 +78,23 @@ namespace Clases {
             }
         }
         private void Displacement (bool epsilon) {            
-            stack.Push (Convert.ToInt32 (Regex.Match (action, getnumbre).ToString ()));
+            int newStackNumber = Convert.ToInt32 (Regex.Match (action, getnumbre).ToString ());
+            string newSymbol = "";
+
+            stack.Push (newStackNumber);
             if (!epsilon) {
-                symbol.Push (tokensList[0].type);
+              newSymbol = tokensList[0].type;
+                symbol.Push(newSymbol);
                 tokensList.RemoveAt (0);
             } else {
-                symbol.Push ("Ɛ");
+              newSymbol = "Ɛ";
+              symbol.Push (newSymbol);
             }
+
+            StackSymbolTrack.Add(new TrackItem(){
+              stackNumber = newStackNumber,
+              symbol = newSymbol
+            });
         }
         private void Reduction () {
             int num = Convert.ToInt32 (Regex.Match (action, getnumbre).ToString ());
@@ -95,22 +103,26 @@ namespace Clases {
             elemens.RemoveAll(x => x == "");
             //quita la cantidad de elementos en la pila segun la cantidad de elementos en la produccion 
             for (int i = 0; i < elemens.Count; i++) {
-                stack.Pop ();
-            }
-            //quita la cantidad de elementos en los simbolos segun la cantidad de elementos en la produccion 
-            for (int i = 0; i < elemens.Count; i++) {
-                symbol.Pop ();
+                stack.Pop();
+                symbol.Pop();
+                StackSymbolTrack.RemoveAt(StackSymbolTrack.Count - 1);
             }
             //inserta la produccion 
             symbol.Push (production[0]);
-            GoTo ();
+            GoTo (production[0]);
         }
-        private void GoTo () {
+        private void GoTo (string newTrackSymbol) {
             int fila = stack.Peek ();
             string entrada = symbol.Peek ();
             action = table[fila][entrada];
-            TEST_ACTIONTRACK.Add(action);
-            stack.Push (Convert.ToInt32 (action));
+
+            int newStackItem = Convert.ToInt32 (action);
+            stack.Push (newStackItem);
+
+            StackSymbolTrack.Add(new TrackItem(){
+              stackNumber = newStackItem,
+              symbol = newTrackSymbol
+            });
         }
     }
 }
