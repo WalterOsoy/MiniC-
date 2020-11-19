@@ -10,5 +10,9 @@ namespace DataStructures
         public string type { get; set; }
         public string line { get; set; }
         public string column { get; set;} 
+
+        public override string ToString() {
+          return Value;
+        }
     }
 }
