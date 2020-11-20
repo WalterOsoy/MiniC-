@@ -6,7 +6,8 @@ namespace Clases {
   class SymbolTable {
     List<SymbolToken> table;
     List<Variable> tempFormals;
-    ExprManager exprM;
+    public List<string> tempActuals;
+    public ExprManager exprM;
 
     public SymbolTable(){
       table = new List<SymbolToken>();
@@ -64,16 +65,12 @@ namespace Clases {
       tempFormals.Add(lastVar);
     }
 
-    public void InsertExpresion(/*Data*/){
-      exprM.inset()
-    }
 
-      
   }
 
   class ExprManager{
     public readonly List<SymbolToken> table;
-    // private List<ExprNode> Expresion;
+    private List<ExprNode> Expresion;
 
     public ExprManager(List<SymbolToken> table){
       this.table = table;
@@ -93,6 +90,7 @@ namespace Clases {
   }
 
   class ExprNode {
-    string val { get; set; }
+    public string val { get; set; }
+    public string type { get; set; }
   }
 }

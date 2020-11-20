@@ -108,6 +108,7 @@ namespace Clases {
 
       UpdateScope(production[0]);
       AddToSimTable(production[0]);
+      checkMethodAttributes(production[0]);
 
 
       //quita la cantidad de elementos en la pila segun la cantidad de elementos en la produccion
@@ -258,6 +259,21 @@ namespace Clases {
           symbolTable.AddFormals();
           break;
         }
+
+        default: return;
+      }
+    }
+  
+    private void checkMethodAttributes(string reductionType) {
+      switch (reductionType) {
+        case "Actuals":
+
+          symbolTable.tempActuals.Insert(0, symbolTable.exprM.);
+          break;
+
+        case "CallStmt":
+          Scope.RemoveAt(Scope.Count -1);
+          break;
 
         default: return;
       }
