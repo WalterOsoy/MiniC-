@@ -108,7 +108,11 @@ namespace Clases {
 
       UpdateScope(production[0]);
       AddToSimTable(production[0]);
-
+      if(production[0].Contains("IDENT")|| production[0].Contains("Constant") || production[0].Contains("Expr") ){
+        List<TrackItem> tempo = new List<TrackItem>();
+        tempo.AddRange(StackSymbolTrack.Take(elemens.Count()));
+        symbolTable.exprM.AddExpr(production, elemens, tempo);
+      }
 
       //quita la cantidad de elementos en la pila segun la cantidad de elementos en la produccion
       string type = "";

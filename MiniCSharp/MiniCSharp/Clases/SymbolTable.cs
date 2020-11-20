@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using DataStructures;
@@ -6,7 +7,7 @@ namespace Clases {
   class SymbolTable {
     List<SymbolToken> table;
     List<Variable> tempFormals;
-    ExprManager exprM;
+    public ExprManager exprM;
 
     public SymbolTable(){
       table = new List<SymbolToken>();
@@ -64,23 +65,32 @@ namespace Clases {
       tempFormals.Add(lastVar);
     }
 
-    public void InsertExpresion(/*Data*/){
-      exprM.inset()
-    }
 
       
   }
 
   class ExprManager{
-    public readonly List<SymbolToken> table;
-    // private List<ExprNode> Expresion;
 
+    public readonly List<SymbolToken> table;
+    private List<ExprNode> ExpresionAcumulated;
     public ExprManager(List<SymbolToken> table){
       this.table = table;
-      Expresion = new List<ExprNode>();
+      ExpresionAcumulated = new List<ExprNode>();
     }
-
-
+    //                                                 Symbol             Aux                 
+    public void AddExpr(List<string> production, List<string> elemens, List<TrackItem> Track){
+      List<ExprNode> toInsert = new List<ExprNode>();
+      foreach(var item in elemens){
+        if(item != "Ɛ" || !item.Contains("Expr"))
+            toInsert.Add(new ExprNode(){val= Track[0].aux, type = elemens[0] });
+        else break;
+      }
+      ExpresionAcumulated.AddRange(toInsert);
+    }    
+    /*ToDo*/
+    List<string> getExpresionType (){
+      return null;
+    }
 
 
 
@@ -92,7 +102,8 @@ namespace Clases {
 
   }
 
-  class ExprNode {
-    string val { get; set; }
+  public class ExprNode {
+    public string val { get; set; }//identificador,isgayandres=true
+    public string type { get; set; }//int,bool
   }
 }
