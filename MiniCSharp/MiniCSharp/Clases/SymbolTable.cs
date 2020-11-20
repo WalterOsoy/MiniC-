@@ -4,9 +4,15 @@ using DataStructures;
 
 namespace Clases {
   class SymbolTable {
-    List<SymbolToken> table = new List<SymbolToken>();
-    List<Variable> tempFormals = new List<Variable>();
-    string nextExpr = "";
+    List<SymbolToken> table;
+    List<Variable> tempFormals;
+    ExprManager exprM;
+
+    public SymbolTable(){
+      table = new List<SymbolToken>();
+      tempFormals = new List<Variable>();
+      exprM = new ExprManager(table);
+    }
 
 
     public SymbolToken Insert(SymbolToken newToken, List<string> scope, string type) {
@@ -17,7 +23,7 @@ namespace Clases {
         
         table.AddRange(tempFormals);
         tempFormals = new List<Variable>();
-        // TODO: Limpear la lista
+
         if (type == "Function")  ((Function)newToken).arguments = tempFormals;
         if (type == "Prototype") ((Prototype)newToken).arguments = tempFormals;
 
@@ -42,7 +48,6 @@ namespace Clases {
       return table.FirstOrDefault(x => x.id == ID && x.Scope == scopestrg);
     }
 
-
     public int Delete(SymbolToken newToken, List<string> scope) {
       string newScope = string.Join('-', scope);
       newToken.Scope = newScope;
@@ -59,9 +64,35 @@ namespace Clases {
       tempFormals.Add(lastVar);
     }
 
-
-    public int SaveToFile() {
-      return 1;
+    public void InsertExpresion(/*Data*/){
+      exprM.inset()
     }
+
+      
+  }
+
+  class ExprManager{
+    public readonly List<SymbolToken> table;
+    // private List<ExprNode> Expresion;
+
+    public ExprManager(List<SymbolToken> table){
+      this.table = table;
+      Expresion = new List<ExprNode>();
+    }
+
+
+
+
+
+
+
+
+
+
+
+  }
+
+  class ExprNode {
+    string val { get; set; }
   }
 }
