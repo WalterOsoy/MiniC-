@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using DataStructures;
@@ -69,15 +70,27 @@ namespace Clases {
   }
 
   class ExprManager{
-    public readonly List<SymbolToken> table;
-    private List<ExprNode> Expresion;
 
+    public readonly List<SymbolToken> table;
+    private List<ExprNode> ExpresionAcumulated;
     public ExprManager(List<SymbolToken> table){
       this.table = table;
-      Expresion = new List<ExprNode>();
+      ExpresionAcumulated = new List<ExprNode>();
     }
-
-
+    //                                                 Symbol             Aux                 
+    public void AddExpr(List<string> production, List<string> elemens, List<TrackItem> Track){
+      List<ExprNode> toInsert = new List<ExprNode>();
+      foreach(var item in elemens){
+        if(item != "Ɛ" || !item.Contains("Expr"))
+            toInsert.Add(new ExprNode(){val= Track[0].aux, type = elemens[0] });
+        else break;
+      }
+      ExpresionAcumulated.AddRange(toInsert);
+    }    
+    /*ToDo*/
+    List<string> getExpresionType (){
+      return null;
+    }
 
 
 
@@ -89,8 +102,8 @@ namespace Clases {
 
   }
 
-  class ExprNode {
-    public string val { get; set; }
-    public string type { get; set; }
+  public class ExprNode {
+    public string val { get; set; }//identificador,isgayandres=true
+    public string type { get; set; }//int,bool
   }
 }

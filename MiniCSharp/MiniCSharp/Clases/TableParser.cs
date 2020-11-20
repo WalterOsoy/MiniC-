@@ -110,6 +110,11 @@ namespace Clases {
       AddToSimTable(production[0]);
       checkMethodAttributes(production[0]);
 
+      if(production[0].Contains("IDENT")|| production[0].Contains("Constant") || production[0].Contains("Expr") ){
+        List<TrackItem> tempo = new List<TrackItem>();
+        tempo.AddRange(StackSymbolTrack.Take(elemens.Count()));
+        symbolTable.exprM.AddExpr(production, elemens, tempo);
+      }
 
       //quita la cantidad de elementos en la pila segun la cantidad de elementos en la produccion
       string type = "";
@@ -268,7 +273,7 @@ namespace Clases {
       switch (reductionType) {
         case "Actuals":
 
-          symbolTable.tempActuals.Insert(0, symbolTable.exprM.);
+          // symbolTable.tempActuals.Insert(0, symbolTable.exprM.);
           break;
 
         case "CallStmt":
