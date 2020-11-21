@@ -1,7 +1,8 @@
 class Carro {
-  const string WalterPto;
-  string getPlaca(int x){
-    WalterPto = 3 == tresEnVariable;
+  string getPlaca(string tresEnVariable){
+    // tresEnVariable = 5;
+    const int WalterPto;
+    WalterPto = 10 * WalterEsGayConfirmadisimo;
   }
 }
 

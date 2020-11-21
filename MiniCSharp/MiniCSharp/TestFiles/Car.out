@@ -1,0 +1,68 @@
+﻿class       encontrado en la linea 1, en el rango de columnas 1-5, de tipo Palabra reservada
+Program     encontrado en la linea 1, en el rango de columnas 7-13, de tipo Identificador
+{           encontrado en la linea 1, en el rango de columnas 15-15, de tipo Operador
+int         encontrado en la linea 2, en el rango de columnas 3-5, de tipo Palabra reservada
+f1          encontrado en la linea 2, en el rango de columnas 7-8, de tipo Identificador
+(           encontrado en la linea 2, en el rango de columnas 9-9, de tipo Operador
+int         encontrado en la linea 2, en el rango de columnas 10-12, de tipo Palabra reservada
+a           encontrado en la linea 2, en el rango de columnas 14-14, de tipo Identificador
+,           encontrado en la linea 2, en el rango de columnas 15-15, de tipo Operador
+int         encontrado en la linea 2, en el rango de columnas 17-19, de tipo Palabra reservada
+b           encontrado en la linea 2, en el rango de columnas 21-21, de tipo Identificador
+,           encontrado en la linea 2, en el rango de columnas 22-22, de tipo Operador
+int         encontrado en la linea 2, en el rango de columnas 24-26, de tipo Palabra reservada
+c           encontrado en la linea 2, en el rango de columnas 28-28, de tipo Identificador
+)           encontrado en la linea 2, en el rango de columnas 29-29, de tipo Operador
+{           encontrado en la linea 2, en el rango de columnas 30-30, de tipo Operador
+if          encontrado en la linea 3, en el rango de columnas 5-6, de tipo Palabra reservada
+(           encontrado en la linea 3, en el rango de columnas 8-8, de tipo Operador
+a           encontrado en la linea 3, en el rango de columnas 9-9, de tipo Identificador
+<           encontrado en la linea 3, en el rango de columnas 10-10, de tipo Operador
+b           encontrado en la linea 3, en el rango de columnas 11-11, de tipo Identificador
+)           encontrado en la linea 3, en el rango de columnas 12-12, de tipo Operador
+c           encontrado en la linea 3, en el rango de columnas 14-14, de tipo Identificador
+=           encontrado en la linea 3, en el rango de columnas 15-15, de tipo Operador
+2           encontrado en la linea 3, en el rango de columnas 16-16, de tipo Valor entero (valor = 2)
+;           encontrado en la linea 3, en el rango de columnas 17-17, de tipo Operador
+else        encontrado en la linea 3, en el rango de columnas 19-22, de tipo Palabra reservada
+c           encontrado en la linea 3, en el rango de columnas 24-24, de tipo Identificador
+=           encontrado en la linea 3, en el rango de columnas 25-25, de tipo Operador
+3           encontrado en la linea 3, en el rango de columnas 26-26, de tipo Valor entero (valor = 3)
+;           encontrado en la linea 3, en el rango de columnas 27-27, de tipo Operador
+}           encontrado en la linea 4, en el rango de columnas 3-3, de tipo Operador
+void        encontrado en la linea 6, en el rango de columnas 3-6, de tipo Palabra reservada
+main        encontrado en la linea 6, en el rango de columnas 8-11, de tipo Identificador
+(           encontrado en la linea 6, en el rango de columnas 12-12, de tipo Operador
+int         encontrado en la linea 6, en el rango de columnas 13-15, de tipo Palabra reservada
+x           encontrado en la linea 6, en el rango de columnas 17-17, de tipo Identificador
+)           encontrado en la linea 6, en el rango de columnas 18-18, de tipo Operador
+{           encontrado en la linea 6, en el rango de columnas 19-19, de tipo Operador
+int         encontrado en la linea 7, en el rango de columnas 5-7, de tipo Palabra reservada
+m1          encontrado en la linea 7, en el rango de columnas 9-10, de tipo Identificador
+;           encontrado en la linea 7, en el rango de columnas 11-11, de tipo Operador
+int         encontrado en la linea 8, en el rango de columnas 5-7, de tipo Palabra reservada
+m2          encontrado en la linea 8, en el rango de columnas 9-10, de tipo Identificador
+;           encontrado en la linea 8, en el rango de columnas 11-11, de tipo Operador
+int         encontrado en la linea 9, en el rango de columnas 5-7, de tipo Palabra reservada
+m3          encontrado en la linea 9, en el rango de columnas 9-10, de tipo Identificador
+;           encontrado en la linea 9, en el rango de columnas 11-11, de tipo Operador
+f1          encontrado en la linea 10, en el rango de columnas 5-6, de tipo Identificador
+(           encontrado en la linea 10, en el rango de columnas 7-7, de tipo Operador
+1           encontrado en la linea 10, en el rango de columnas 8-8, de tipo Valor entero (valor = 1)
+,           encontrado en la linea 10, en el rango de columnas 9-9, de tipo Operador
+2           encontrado en la linea 10, en el rango de columnas 10-10, de tipo Valor entero (valor = 2)
+,           encontrado en la linea 10, en el rango de columnas 11-11, de tipo Operador
+m3          encontrado en la linea 10, en el rango de columnas 12-13, de tipo Identificador
+)           encontrado en la linea 10, en el rango de columnas 14-14, de tipo Operador
+;           encontrado en la linea 10, en el rango de columnas 15-15, de tipo Operador
+f1          encontrado en la linea 11, en el rango de columnas 5-6, de tipo Identificador
+(           encontrado en la linea 11, en el rango de columnas 7-7, de tipo Operador
+1           encontrado en la linea 11, en el rango de columnas 8-8, de tipo Valor entero (valor = 1)
+,           encontrado en la linea 11, en el rango de columnas 9-9, de tipo Operador
+"2.2"       encontrado en la linea 12, en el rango de columnas 1-5, de tipo Cadena de texto
+,           encontrado en la linea 12, en el rango de columnas 6-6, de tipo Operador
+m3          encontrado en la linea 12, en el rango de columnas 7-8, de tipo Identificador
+)           encontrado en la linea 12, en el rango de columnas 9-9, de tipo Operador
+;           encontrado en la linea 12, en el rango de columnas 10-10, de tipo Operador
+}           encontrado en la linea 12, en el rango de columnas 13-13, de tipo Operador
+}           encontrado en la linea 13, en el rango de columnas 1-1, de tipo Operador

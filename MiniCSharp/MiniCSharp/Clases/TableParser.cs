@@ -16,7 +16,7 @@ namespace Clases {
     List<string> Scope = new List<string>();
     SymbolTable symbolTable = new SymbolTable();
 
-    dataPrinter VERBOSE = new dataPrinter();
+    // dataPrinter VERBOSE = new dataPrinter();
     string getnumbre = @"[0-9]+";
     public TableParser (ref List<Token> tokensList) {
       this.tokensList = tokensList;
@@ -42,26 +42,27 @@ namespace Clases {
         action = LR1table[fila][entrada.type];
         mainSwitch(ref end);
       } while (end != true);
+      symbolTable.printTable();
     }
     private void mainSwitch(ref bool end){
       switch (action[0]) {
 
         case 's': //desplazamiento                        
-        VERBOSE.print( new Stack<TrackItem>(StackSymbolTrack),  new Stack<int>(stack), new Stack<string>(symbol), action, new List<Token>(tokensList));
+        // VERBOSE.print( new Stack<TrackItem>(StackSymbolTrack),  new Stack<int>(stack), new Stack<string>(symbol), action, new List<Token>(tokensList));
           Displacement (false);
           break;
        case 'r': //reduccion 
-        VERBOSE.print( new Stack<TrackItem>(StackSymbolTrack),  new Stack<int>(stack), new Stack<string>(symbol), action, new List<Token>(tokensList));
+        // VERBOSE.print( new Stack<TrackItem>(StackSymbolTrack),  new Stack<int>(stack), new Stack<string>(symbol), action, new List<Token>(tokensList));
           Reduction ();
           break;
         case 'a': //Aceptar
-        VERBOSE.print( new Stack<TrackItem>(StackSymbolTrack),  new Stack<int>(stack), new Stack<string>(symbol), action, new List<Token>(tokensList));
+        // VERBOSE.print( new Stack<TrackItem>(StackSymbolTrack),  new Stack<int>(stack), new Stack<string>(symbol), action, new List<Token>(tokensList));
           end = true;
           break;
         case 'e': //error 
           action = LR1table[stack.Peek()]["Ɛ"];
 
-          VERBOSE.print( new Stack<TrackItem>(StackSymbolTrack),  new Stack<int>(stack), new Stack<string>(symbol), action, new List<Token>(tokensList));
+          // VERBOSE.print( new Stack<TrackItem>(StackSymbolTrack),  new Stack<int>(stack), new Stack<string>(symbol), action, new List<Token>(tokensList));
           switch (action[0]) {
             case 's':
               Displacement (true);
@@ -109,12 +110,7 @@ namespace Clases {
       UpdateScope(production[0]);
       AddToSimTable(production[0]);
       checkMethodAttributes(production[0]);
-
-      if(production[0].Contains("IDENT")|| production[0].Contains("Constant") || production[0].Contains("Expr") ){
-        List<TrackItem> tempo = new List<TrackItem>();
-        tempo.AddRange(StackSymbolTrack.Take(elemens.Count()));
-        symbolTable.exprM.AddExpr(production, elemens, tempo);
-      }
+      checkExpr(num);
 
       //quita la cantidad de elementos en la pila segun la cantidad de elementos en la produccion
       string type = "";
@@ -135,7 +131,7 @@ namespace Clases {
       int fila = stack.Peek ();
       string entrada = symbol.Peek ();
       action = LR1table[fila][entrada];
-                VERBOSE.print( new Stack<TrackItem>(StackSymbolTrack),  new Stack<int>(stack), new Stack<string>(symbol), action, new List<Token>(tokensList));
+                // VERBOSE.print( new Stack<TrackItem>(StackSymbolTrack),  new Stack<int>(stack), new Stack<string>(symbol), action, new List<Token>(tokensList));
 
       int newStackItem = Convert.ToInt32 (action);
       stack.Push (newStackItem);
@@ -272,16 +268,44 @@ namespace Clases {
     private void checkMethodAttributes(string reductionType) {
       switch (reductionType) {
         case "Actuals":
-
+          /*Logica implementada en seccion de limpiar abajo*/
           // symbolTable.tempActuals.Insert(0, symbolTable.exprM.);
           break;
 
         case "CallStmt":
-          Scope.RemoveAt(Scope.Count -1);
+          string functionName = StackSymbolTrack.Skip(3).First().aux;
+          string line = tokensList.First().line;
+          symbolTable.compareActuals(functionName, Scope, line);
+          // Scope.RemoveAt(Scope.Count -1);
           break;
 
         default: return;
       }
     }
+    private void checkExpr(int reductionID){
+      try {
+        symbolTable.exprM.evaluateNewExpr(reductionID, Scope, StackSymbolTrack);
+      }
+      catch (System.Exception EX) {
+        Console.WriteLine("Error en la linea :" + tokensList.First().line + " " + EX.Message);
+      }
+      checkCleanExpr(reductionID);
+    }
+
+
+    private void checkCleanExpr(int reductionID){
+      if (reductionID == 60 || 
+          reductionID == 66 || 
+          reductionID == 70 || 
+          reductionID == 73) {
+          symbolTable.exprM.cleanExpr();
+      }
+      if (reductionID == 64) {
+        string exprtype = symbolTable.exprM.ExpresionAcumulated.First().Type;
+        symbolTable.tempActuals.Add(exprtype);
+        symbolTable.exprM.ExpresionAcumulated.Pop();
+      }
+    }
+  
   }
 }

@@ -1,37 +1,37 @@
 ﻿class       encontrado en la linea 1, en el rango de columnas 1-5, de tipo Palabra reservada
 Carro       encontrado en la linea 1, en el rango de columnas 7-11, de tipo Identificador
 {           encontrado en la linea 1, en el rango de columnas 13-13, de tipo Operador
-const       encontrado en la linea 2, en el rango de columnas 3-7, de tipo Palabra reservada
-string      encontrado en la linea 2, en el rango de columnas 9-14, de tipo Palabra reservada
-WalterPto   encontrado en la linea 2, en el rango de columnas 16-24, de tipo Identificador
-;           encontrado en la linea 2, en el rango de columnas 25-25, de tipo Operador
-string      encontrado en la linea 3, en el rango de columnas 3-8, de tipo Palabra reservada
-getPlaca    encontrado en la linea 3, en el rango de columnas 10-17, de tipo Identificador
-(           encontrado en la linea 3, en el rango de columnas 18-18, de tipo Operador
-int         encontrado en la linea 3, en el rango de columnas 19-21, de tipo Palabra reservada
-x           encontrado en la linea 3, en el rango de columnas 23-23, de tipo Identificador
-)           encontrado en la linea 3, en el rango de columnas 24-24, de tipo Operador
-{           encontrado en la linea 3, en el rango de columnas 25-25, de tipo Operador
-WalterPto   encontrado en la linea 4, en el rango de columnas 5-13, de tipo Identificador
-=           encontrado en la linea 4, en el rango de columnas 15-15, de tipo Operador
-3           encontrado en la linea 4, en el rango de columnas 17-17, de tipo Valor entero (valor = 3)
-==          encontrado en la linea 4, en el rango de columnas 19-20, de tipo Operador
-tresEnVariableencontrado en la linea 4, en el rango de columnas 22-35, de tipo Identificador
-;           encontrado en la linea 4, en el rango de columnas 36-36, de tipo Operador
-}           encontrado en la linea 5, en el rango de columnas 3-3, de tipo Operador
-}           encontrado en la linea 6, en el rango de columnas 1-1, de tipo Operador
-class       encontrado en la linea 8, en el rango de columnas 1-5, de tipo Palabra reservada
-avion       encontrado en la linea 8, en el rango de columnas 7-11, de tipo Identificador
-{           encontrado en la linea 8, en el rango de columnas 13-13, de tipo Operador
-string      encontrado en la linea 9, en el rango de columnas 3-8, de tipo Palabra reservada
-getPlaca    encontrado en la linea 9, en el rango de columnas 10-17, de tipo Identificador
-(           encontrado en la linea 9, en el rango de columnas 18-18, de tipo Operador
-int         encontrado en la linea 9, en el rango de columnas 19-21, de tipo Palabra reservada
-x           encontrado en la linea 9, en el rango de columnas 23-23, de tipo Identificador
-)           encontrado en la linea 9, en el rango de columnas 24-24, de tipo Operador
-{           encontrado en la linea 9, en el rango de columnas 25-25, de tipo Operador
-return      encontrado en la linea 10, en el rango de columnas 5-10, de tipo Palabra reservada
-"54321"     encontrado en la linea 11, en el rango de columnas 1-7, de tipo Cadena de texto
-;           encontrado en la linea 11, en el rango de columnas 8-8, de tipo Operador
-}           encontrado en la linea 11, en el rango de columnas 11-11, de tipo Operador
-}           encontrado en la linea 12, en el rango de columnas 1-1, de tipo Operador
+string      encontrado en la linea 2, en el rango de columnas 3-8, de tipo Palabra reservada
+getPlaca    encontrado en la linea 2, en el rango de columnas 10-17, de tipo Identificador
+(           encontrado en la linea 2, en el rango de columnas 18-18, de tipo Operador
+string      encontrado en la linea 2, en el rango de columnas 19-24, de tipo Palabra reservada
+tresEnVariableencontrado en la linea 2, en el rango de columnas 26-39, de tipo Identificador
+)           encontrado en la linea 2, en el rango de columnas 40-40, de tipo Operador
+{           encontrado en la linea 2, en el rango de columnas 41-41, de tipo Operador
+const       encontrado en la linea 4, en el rango de columnas 5-9, de tipo Palabra reservada
+int         encontrado en la linea 4, en el rango de columnas 11-13, de tipo Palabra reservada
+WalterPto   encontrado en la linea 4, en el rango de columnas 15-23, de tipo Identificador
+;           encontrado en la linea 4, en el rango de columnas 24-24, de tipo Operador
+WalterPto   encontrado en la linea 5, en el rango de columnas 5-13, de tipo Identificador
+=           encontrado en la linea 5, en el rango de columnas 15-15, de tipo Operador
+10          encontrado en la linea 5, en el rango de columnas 17-18, de tipo Valor entero (valor = 10)
+*           encontrado en la linea 5, en el rango de columnas 20-20, de tipo Operador
+WalterEsGayConfirmadisimoencontrado en la linea 5, en el rango de columnas 22-46, de tipo Identificador
+;           encontrado en la linea 5, en el rango de columnas 47-47, de tipo Operador
+}           encontrado en la linea 6, en el rango de columnas 3-3, de tipo Operador
+}           encontrado en la linea 7, en el rango de columnas 1-1, de tipo Operador
+class       encontrado en la linea 9, en el rango de columnas 1-5, de tipo Palabra reservada
+avion       encontrado en la linea 9, en el rango de columnas 7-11, de tipo Identificador
+{           encontrado en la linea 9, en el rango de columnas 13-13, de tipo Operador
+string      encontrado en la linea 10, en el rango de columnas 3-8, de tipo Palabra reservada
+getPlaca    encontrado en la linea 10, en el rango de columnas 10-17, de tipo Identificador
+(           encontrado en la linea 10, en el rango de columnas 18-18, de tipo Operador
+int         encontrado en la linea 10, en el rango de columnas 19-21, de tipo Palabra reservada
+x           encontrado en la linea 10, en el rango de columnas 23-23, de tipo Identificador
+)           encontrado en la linea 10, en el rango de columnas 24-24, de tipo Operador
+{           encontrado en la linea 10, en el rango de columnas 25-25, de tipo Operador
+return      encontrado en la linea 11, en el rango de columnas 5-10, de tipo Palabra reservada
+"54321"     encontrado en la linea 12, en el rango de columnas 1-7, de tipo Cadena de texto
+;           encontrado en la linea 12, en el rango de columnas 8-8, de tipo Operador
+}           encontrado en la linea 12, en el rango de columnas 11-11, de tipo Operador
+}           encontrado en la linea 13, en el rango de columnas 1-1, de tipo Operador
