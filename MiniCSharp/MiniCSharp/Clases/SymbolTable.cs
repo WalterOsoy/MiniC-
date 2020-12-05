@@ -38,8 +38,8 @@ namespace Clases {
         
         table.AddRange(tempFormals);
 
-        if (type == "Function")  ((Function)newToken).arguments = tempFormals;
-        if (type == "Prototype") ((Prototype)newToken).arguments = tempFormals;
+        if (type == "Function")  ((Function)newToken).arguments = new List<Variable>(tempFormals);
+        if (type == "Prototype") ((Prototype)newToken).arguments = new List<Variable>(tempFormals);
 
         tempFormals = new List<Variable>();
       }
@@ -238,7 +238,7 @@ namespace Clases {
         else tempVar.value = new DataTable().Compute(tempNode.Value, null).ToString();
       } catch (System.Exception EX) {
         tempVar.value = "Undefined";
-        System.Console.WriteLine("Log from inside: " + EX.Message); 
+        System.Console.WriteLine("**** Just for dev **** " + EX.Message); 
       }
     }
 
