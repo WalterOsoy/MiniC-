@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.IO;
 using System.Linq;
+using System.Text.RegularExpressions;
 using DataStructures;
 
 namespace Clases {
@@ -20,32 +21,28 @@ namespace Clases {
     }
 
 
-    public SymbolToken Insert(SymbolToken newToken, List<string> scope, string type) {
-      
+    public void Insert(SymbolToken newToken, string type, string line) {
+      bool exists = (table.Exists(x => x.id == newToken.id && x.Scope == newToken.Scope));
+      if (!exists) {
+        table.Add(newToken);
+        AddFormals( newToken, ( newToken.Scope + '-' + newToken.id ) , type );
+      }
+      else 
+        Console.WriteLine("Error en la linea :{0} Uso de elemento ya existente \"{1}\"", line, newToken.id);
+    }
+
+    private void AddFormals(SymbolToken newToken, string scope, string type){
       if (type == "Function" || type == "Prototype") {
         for (int i = 0; i < tempFormals.Count; i++)
-          tempFormals[i].Scope = string.Join('-', scope);
+          tempFormals[i].Scope = scope;
         
         table.AddRange(tempFormals);
-        tempFormals = new List<Variable>();
 
         if (type == "Function")  ((Function)newToken).arguments = tempFormals;
         if (type == "Prototype") ((Prototype)newToken).arguments = tempFormals;
 
-        scope.RemoveAt(scope.Count - 1);
+        tempFormals = new List<Variable>();
       }
-
-
-
-      string newScope = string.Join('-', scope);
-      newToken.Scope = newScope;
-      bool exists = (table.Exists(x => x.id == newToken.id && x.Scope == newScope));
-
-      if (!exists) {
-        table.Add(newToken);
-        return newToken;
-      }
-      else return null;
     }
 
     public SymbolToken Search(string ID, List<string> scope){
@@ -86,11 +83,11 @@ namespace Clases {
       string path = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
       path += @"\Tabla de simbolos.txt";
       System.Console.WriteLine(path);
-      string text = "";
+      string text = "".PadLeft(147, '-') + "\r\n";
       foreach (var item in table) text += item + "\r\n";
+      text += "".PadLeft(147, '-');
       File.WriteAllText(path, text);
     }
-
   }
 
   class ExprManager{
@@ -146,7 +143,6 @@ namespace Clases {
 
           default: return;
       }
-
     }
 
     private void ignoreExpr(int exprid, List<string> scopelist, Stack<TrackItem> StackSymbolTrack){
@@ -206,29 +202,22 @@ namespace Clases {
     }
 
     private void concatExpr(int exprid, List<string> scopelist, Stack<TrackItem> StackSymbolTrack){
-      if (exprid == 99) {  //   Expr5 -> ( Expr )
-        ExprNode tmp  = ExpresionAcumulated.Skip(1).First();
-        ExpresionAcumulated.Pop();
+      ExprNode tmp  = ExpresionAcumulated.First();
+      ExpresionAcumulated.Pop();
+      
+      string val = 
+      (exprid == 99) 
+        //   Expr5 -> ( Expr )
+        ? "(" + tmp.Value + ")"
+        // Expr5 -> - Expr  || Expr5 -> ! Expr
+        : ((exprid == 100) ? "-" : "!") + tmp.Value;
         
-        ExpresionAcumulated.Push(new ExprNode(){
-          varName = "",
-          Scope = string.Join("-", scopelist),
-          Type = tmp.Type,
-          Value = "(" + tmp.Value + ")"
-        });
-        
-      } else { // Expr5 -> - Expr  || Expr5 -> ! Expr
-        ExprNode tmp  = ExpresionAcumulated.Peek();
-        ExpresionAcumulated.Pop();
-        
-        ExpresionAcumulated.Push(new ExprNode(){
-          varName = "",
-          Scope = string.Join("-", scopelist),
-          Type = tmp.Type,
-          Value = ((exprid == 100) ? "-" : "!") + tmp.Value
-        });
-        
-      }
+      ExpresionAcumulated.Push(new ExprNode(){
+        varName = "",
+        Scope = string.Join("-", scopelist),
+        Type = tmp.Type,
+        Value = val
+      });
     }
 
     private void evaluateExpr(int exprid, List<string> scopelist, Stack<TrackItem> StackSymbolTrack){
@@ -239,13 +228,43 @@ namespace Clases {
 
 
       //Logica gruesa de validacion de tipos
-      if (tempVar.type != tempNode.Type)
+      if ( tempVar.type != tempNode.Type )
         if ( !(tempVar.type == "double" && tempNode.Type == "int") )
-          if ( !(tempNode.Type.Contains(tempVar.type) || tempVar.type.Contains(tempNode.Type)))
+          if ( !(tempNode.Type.Contains(tempVar.type) || tempVar.type.Contains(tempNode.Type)) )
             throw new Exception("Los tipos no son compatibles");
       
-      tempVar.value = new DataTable().Compute(tempNode.Value, null).ToString();
+      try {
+        if (tempVar.type == "string") tempVar.value = concatStrings(tempNode.Value);
+        else tempVar.value = new DataTable().Compute(tempNode.Value, null).ToString();
+      } catch (System.Exception EX) {
+        tempVar.value = "Undefined";
+        System.Console.WriteLine("Log from inside: " + EX.Message); 
+      }
     }
+
+
+
+
+    /// <summary>
+    /// Recives a string concatenation in just one string and returns the concatenation
+    ///   Example:
+    ///     srtg = "Hello"+" World!"
+    ///     returns "Hello World!"
+    /// </summary>
+    /// <param name="strg">String to concatenate</param>
+    /// <returns>Simulation of string concatenation</returns>
+    string concatStrings(string strg){
+      List<string> strings = Regex.Split(strg, @"\s*[+]\s*").ToList();
+
+      strings = strings.Select(x => {
+        if (x[0] == '\"') x = x.Substring(1);
+        if (x[x.Length -1] == '\"') x = x.Remove(x.Length -1);
+        return x;
+      }).ToList();
+      return '\"' + string.Join("", strings) + '\"';
+    }
+
+
 
     private void evaluatePrimas(int exprid, List<string> scopelist, Stack<TrackItem> StackSymbolTrack){
       var item = ExpresionAcumulated.Skip(1).First();
@@ -263,9 +282,6 @@ namespace Clases {
         Type = item.Type,
         Value = newValue
       });
-
-
-
     }
 
     private void evaluateDobles(int exprid, List<string> scopelist, Stack<TrackItem> StackSymbolTrack){
@@ -276,11 +292,25 @@ namespace Clases {
 
       string newValue = item.Value + itemPrim.Value;
 
+      // Just allows auto casting from (double = [ double | int ] [+ - * /] [ double | int ])
+      List<string> compatibleTypes = new List<string>(){ "double", "doubleConstant", "int", "intConstant" };
+      bool isOperable = ( 
+        (  item.Type == itemPrim.Type )                               || 
+        (  itemPrim.Type == "eps" )                                   ||
+        (  compatibleTypes.Contains(item.Type)  
+        && compatibleTypes.Contains(itemPrim.Type) )
+      );
+
+      bool isDouble = item.Type.Contains("double") || itemPrim.Type.Contains("double");
+
+
 
       ExpresionAcumulated.Push(new ExprNode(){
         varName = "",
         Scope = string.Join("-", scopelist),
-        Type = item.Type,
+        Type = (isOperable) 
+          ? ((isDouble) ? "double" : item.Type)  
+          : "Error en tipos",
         Value = newValue
       });
     }

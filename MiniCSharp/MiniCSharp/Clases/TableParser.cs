@@ -17,7 +17,8 @@ namespace Clases {
     SymbolTable symbolTable = new SymbolTable();
 
     // dataPrinter VERBOSE = new dataPrinter();
-    string getnumbre = @"[0-9]+";
+
+    string getNumber = @"[0-9]+";
     public TableParser (ref List<Token> tokensList) {
       this.tokensList = tokensList;
       LR1table = new Dictionary<int, Dictionary<string, string>> ();
@@ -32,6 +33,8 @@ namespace Clases {
       Scope = new List<string>(){ "Program" };
       symbolTable = new SymbolTable();
     }
+
+
     public void parse () {
       bool end = false;
       int fila;
@@ -44,6 +47,8 @@ namespace Clases {
       } while (end != true);
       symbolTable.printTable();
     }
+
+
     private void mainSwitch(ref bool end){
       switch (action[0]) {
 
@@ -77,8 +82,10 @@ namespace Clases {
           break;
       }
     }
+
+
     private void Displacement (bool epsilon) {
-      int newStackNumber = Convert.ToInt32 (Regex.Match (action, getnumbre).ToString ());
+      int newStackNumber = Convert.ToInt32 (Regex.Match (action, getNumber).ToString ());
       string newSymbol = "";
       string aux = "";
 
@@ -101,8 +108,10 @@ namespace Clases {
 
       addToStackSymbolTrack(newStackNumber, newSymbol,(newSymbol == "{" || newSymbol == "}"), aux);
     }
+
+
     private void Reduction () {
-      int num = Convert.ToInt32 (Regex.Match (action, getnumbre).ToString ());
+      int num = Convert.ToInt32 (Regex.Match (action, getNumber).ToString ());
       List<string> production = new List<string> (grammar[num].Keys);
       List<string> elemens = new List<string> (grammar[num][production[0]]);
       elemens.RemoveAll(x => x == "");
@@ -125,6 +134,8 @@ namespace Clases {
       symbol.Push(production[0]);
       GoTo (production[0], type);
     }
+
+
     private void GoTo (string newTrackSymbol, string type) {
       List<string> checkpoints = new List<string>(){"Program","Decl","VariableDecl","ConstDecl","FunctionDecl","FunctionType","StmtBlock","ClassDecl","ClassHeader","Field","InterfaceDecl","InterfaceHeader","Prototype","Stmt","IfHeader","WhileHeader","ForHeader" };
 
@@ -138,6 +149,8 @@ namespace Clases {
 
       addToStackSymbolTrack(newStackItem, newTrackSymbol, checkpoints.Contains(newTrackSymbol), type);
     }
+
+
     private void ManageError(ref bool end){
       if(tokensList[0].type.Equals("$")){
         end = true;
@@ -153,6 +166,8 @@ namespace Clases {
       tokensList.RemoveAt(0);
       Console.WriteLine("empezando otra vez, intentaremos parsear el siguiente metodo");
     }
+
+
     private void addToStackSymbolTrack(int newStackItem, string newTrackSymbol, bool accepted, string aux){
       StackSymbolTrack.Push(new TrackItem(){
         stackNumber = newStackItem,
@@ -161,6 +176,8 @@ namespace Clases {
         aux = aux
       });
     }
+
+
     private void UpdateScope(string reductionType){
       switch (reductionType) {
         case "ClassDecl":
@@ -176,6 +193,8 @@ namespace Clases {
         default: return;
       }
     }
+
+
     private void AddToSimTable(string reductionType){
       switch (reductionType) {
 
@@ -185,10 +204,11 @@ namespace Clases {
               id = StackSymbolTrack.Peek().aux,
               isConstant = false,
               type = StackSymbolTrack.Skip(1).First().aux,
+              Scope = string.Join('-', Scope), 
               value = ""
             }
-          , Scope
-          , "Variable"
+            , "Variable"
+            , tokensList.First().line
           );
           break;
         }
@@ -199,10 +219,11 @@ namespace Clases {
               id = StackSymbolTrack.Skip(1).Take(1).First().aux,
               isConstant = true,
               type = StackSymbolTrack.Skip(2).Take(1).First().aux,
+              Scope = string.Join('-', Scope) ,
               value = ""
             }
-            , Scope
             , "ConstDecl"
+            , tokensList.First().line
           );
           break;
         }
@@ -213,10 +234,11 @@ namespace Clases {
             new Function(){
               id = id,
               type = StackSymbolTrack.Skip(4).Take(1).First().aux,
+              Scope = string.Join('-', Scope),
               Return = ""
             }
-            , new List<string>(Scope){ id }
             , "Function"
+            , tokensList.First().line
           );
           Scope.Add(id);
           break;
@@ -225,9 +247,12 @@ namespace Clases {
         case "ClassHeader": {
           string id = StackSymbolTrack.Skip(1).Take(1).First().aux; 
           symbolTable.Insert(
-            new Class(){ id = id }
-            , Scope
+            new Class(){ 
+              id = id,
+              Scope = string.Join('-', Scope) 
+            }
             , "Class"
+            , tokensList.First().line
           );
           Scope.Add(id);
           break;
@@ -236,9 +261,12 @@ namespace Clases {
         case "InterfaceHeader":{
           string id = StackSymbolTrack.Peek().aux;
           symbolTable.Insert(
-            new Interface(){ id = id }
-            , Scope
+            new Interface(){
+              id = id,
+              Scope = string.Join('-', Scope) 
+            }
             , "Interface"
+            , tokensList.First().line
           );
           Scope.Add(id);
           break;
@@ -248,10 +276,11 @@ namespace Clases {
           symbolTable.Insert(
             new Prototype(){
               id = StackSymbolTrack.Skip(4).First().aux,
-              type = StackSymbolTrack.Skip(5).First().aux
+              type = StackSymbolTrack.Skip(5).First().aux,
+              Scope = string.Join('-', Scope) 
             }
-            , new List<string>(Scope){ StackSymbolTrack.Skip(4).First().aux }
             , "Prototype"
+            , tokensList.First().line
           );
           break;
         }
@@ -265,6 +294,8 @@ namespace Clases {
       }
     }
   
+
+
     private void checkMethodAttributes(string reductionType) {
       switch (reductionType) {
         case "Actuals":
@@ -282,12 +313,15 @@ namespace Clases {
         default: return;
       }
     }
+
+
     private void checkExpr(int reductionID){
       try {
         symbolTable.exprM.evaluateNewExpr(reductionID, Scope, StackSymbolTrack);
       }
       catch (System.Exception EX) {
         Console.WriteLine("Error en la linea :" + tokensList.First().line + " " + EX.Message);
+        // symbolTable.exprM.cleanExpr();
       }
       checkCleanExpr(reductionID);
     }
