@@ -10,14 +10,14 @@ namespace Clases {
   class SymbolTable {
     List<SymbolToken> table;
     List<Variable> tempFormals;
-    public List<string> tempActuals;
+    public List<Variable> tempActuals;
     public ExprManager exprM;
 
     public SymbolTable(){
       table = new List<SymbolToken>();
       tempFormals = new List<Variable>();
-      exprM = new ExprManager(table);
-      tempActuals = new List<string>();
+      exprM = new ExprManager(this);
+      tempActuals = new List<Variable>();
     }
 
 
@@ -28,8 +28,75 @@ namespace Clases {
     }
 
     public SymbolToken Search(string ID, List<string> scope){
-      string scopestrg = string.Join('-', scope);
-      return table.FirstOrDefault(x => x.id == ID && x.Scope == scopestrg);
+      List<string> editableList = new List<string>(scope);
+      List<string> baseScope = new List<string>();
+      SymbolToken baseItem = new SymbolToken();
+
+      //Creates the base scope that exists on the table ex (class.method.objectInstance)
+      Func<SymbolToken, string, bool> searchCondition = (x, id) => x.id == id && x.Scope == string.Join("-", baseScope);
+      
+      for(int i = 0; i < editableList.Count; i++ ) {
+        baseScope.Add(editableList[i]);
+        string tempId = ( i < editableList.Count - 1) ? editableList[i + 1] : ID;  
+        
+        if (table.Count(x => searchCondition(x, tempId)) > 0)
+          baseItem = table.First(x => searchCondition(x, tempId));
+        else { 
+          if (tempId == ID)
+            baseScope.Remove(editableList[i]);
+          break;
+        }
+      }
+
+      foreach (var item in baseScope) 
+        editableList.Remove(item);
+      
+      if (editableList.Count == 0) return baseItem;
+
+      baseScope.Add(editableList[0]);
+      editableList.RemoveAt(0);
+      editableList.Add(ID);
+
+
+      while (editableList.Count != 0) {
+        string tempID = editableList[0];
+
+        if (baseItem is Class) {
+          Class classItem = (Class)baseItem;
+          if (classItem.variables.Count(x => searchCondition(x, tempID)) > 0)
+            baseItem = classItem.variables.First(x => searchCondition(x, tempID));
+          else if (classItem.functions.Count(x => searchCondition(x, tempID)) > 0)
+            baseItem = classItem.functions.First(x => searchCondition(x, tempID));
+          else return null;
+        }
+
+        else if (baseItem is Objeto){
+          Objeto ObjetoItem = (Objeto)baseItem;
+          if (ObjetoItem.variables.Count(x => searchCondition(x, tempID)) > 0)
+            baseItem = ObjetoItem.variables.First(x => searchCondition(x, tempID));
+          else if (ObjetoItem.functions.Count(x => searchCondition(x, tempID)) > 0)
+            baseItem = ObjetoItem.functions.First(x => searchCondition(x, tempID));
+          else return null;
+        }
+
+        else if (baseItem is Function){
+          Function functionItem = (Function)baseItem;
+          if (functionItem.arguments.Count(x => searchCondition(x, tempID)) > 0)
+            baseItem = functionItem.arguments.First(x => searchCondition(x, tempID));
+          else return null;
+        }
+
+        else if (baseItem is Prototype){
+          Prototype prototypeItem = (Prototype)baseItem;
+          if (prototypeItem.arguments.Count(x => searchCondition(x, tempID)) > 0)
+            baseItem = prototypeItem.arguments.First(x => searchCondition(x, tempID));
+          else return null;
+        }
+
+        baseScope.Add(editableList[0]);
+        editableList.RemoveAt(0);
+      }
+      return baseItem;
     }
 
     public Class getClass(string name, List<string> scope, string line){
@@ -37,7 +104,7 @@ namespace Clases {
         return (Class)table.First(x => x.id == name && x.Scope == scope[0] );
       else {
         Console.WriteLine("Error en la linea :" + line + ". No existe deficinicon para la clase " + name);
-        return new Class();
+        return new Class(){ id = "undefinedClass"};
       }
     }
 
@@ -53,6 +120,16 @@ namespace Clases {
 
     public void AddFormals(){
       Variable lastVar = (Variable)table[table.Count -1];
+      string id = lastVar.id;
+      List<string> scope = lastVar.Scope.Split('-').ToList();
+
+      string fatherClass = scope[scope.Count() - 1];
+      scope.Remove(fatherClass);
+
+      var father = Search(fatherClass, scope);
+      if (father is Class)
+        ((Class)father).variables.RemoveAll(x => x.id == id && x.Scope == string.Join("-", scope) + "-" + fatherClass);
+
       table.RemoveAt(table.Count -1);
       tempFormals.Add(lastVar);
     }
@@ -85,18 +162,18 @@ namespace Clases {
       string path = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
       path += @"\Tabla de simbolos.txt";
       System.Console.WriteLine(path);
-      string text = "".PadLeft(152, '-') + "\r\n";
+      string text = "".PadLeft(157, '-') + "\r\n";
       foreach (var item in table) text += item + "\r\n";
-      text += "".PadLeft(152, '-');
+      text += "".PadLeft(157, '-');
       File.WriteAllText(path, text);
     }
   }
 
   class ExprManager{
-    public readonly List<SymbolToken> table;
+    public readonly SymbolTable table;
     public Stack<ExprNode> ExpresionAcumulated = new Stack<ExprNode>();
 
-    public ExprManager(List<SymbolToken> table){
+    public ExprManager(SymbolTable table){
       this.table = table;
     }
 
@@ -157,36 +234,38 @@ namespace Clases {
     }
 
     private void heritage(int exprid, List<string> scopelist, Stack<TrackItem> StackSymbolTrack){
+      string ID;
 
-      string scope;
       if (exprid == 104 || exprid == 106) { //LValue -> Expr . IDENT || IDENT -> ident . IDENT
-        string pastID = StackSymbolTrack.Skip(2).First().aux;
-        scope = string.Join("-", new List<string>(scopelist){ pastID });
+        ID = ExpresionAcumulated.Peek().varName;
+        scopelist.Add(StackSymbolTrack.Skip(2).First().aux);
+
         ExpresionAcumulated.Pop();
 
-      } else { // Expr5 -> New ( ident ) || LValue -> IDENT || IDENT -> ident
-        scope = string.Join("-", scopelist);
+      } else { // (103) Expr5 -> New ( ident ) || (103) LValue -> IDENT || (105) IDENT -> ident
         if (exprid == 103) return;
+        ID = StackSymbolTrack.Peek().aux;
       }
 
-
-      string ID = StackSymbolTrack.Peek().aux;
-      Variable tempVar = (Variable)table.FirstOrDefault(x => x.id == ID && x.Scope == scope);
+      //Fix search method
+      Variable tempVar = (Variable)table.Search(ID, scopelist);
       if (tempVar == null) {
         ExpresionAcumulated.Push(new ExprNode(){
           varName = ID,
-          Scope = scope,
+          Scope = string.Join('-', scopelist),
           Type = "",
           Value = "" 
         });
-        throw new Exception("Uso de variable sin declarar \"" + ID + "\"");
+        if (StackSymbolTrack.Skip(1).First().symbol != ".")
+          throw new Exception("Uso de variable sin declarar \"" + ID + "\"");
+        return;
       }
 
       ExpresionAcumulated.Push(new ExprNode(){
         varName = ID,
-        Scope = tempVar.Scope,
-        Type = tempVar.type,
-        Value = tempVar.value
+        Scope   = tempVar.Scope,
+        Type    = tempVar.type ,
+        Value   = tempVar.value
       });
     }
 
@@ -223,9 +302,9 @@ namespace Clases {
     }
 
     private void evaluateExpr(int exprid, List<string> scopelist, Stack<TrackItem> StackSymbolTrack){
-      string scope = string.Join("-", scopelist);
       string ID = ExpresionAcumulated.Skip(1).First().varName;
-      Variable tempVar = (Variable)table.FirstOrDefault(x => x.id == ID && x.Scope == scope);
+      List<string> scope = ExpresionAcumulated.Skip(1).First().Scope.Split("-").ToList();
+      Variable tempVar = (Variable)table.Search(ID, scope);
       ExprNode tempNode = ExpresionAcumulated.Peek();
 
 
@@ -297,10 +376,12 @@ namespace Clases {
       // Just allows auto casting from (double = [ double | int ] [+ - * /] [ double | int ])
       List<string> compatibleTypes = new List<string>(){ "double", "doubleConstant", "int", "intConstant" };
       bool isOperable = ( 
-        (  item.Type == itemPrim.Type )                               || 
-        (  itemPrim.Type == "eps" )                                   ||
-        (  compatibleTypes.Contains(item.Type)  
-        && compatibleTypes.Contains(itemPrim.Type) )
+        (  item.Type == itemPrim.Type )               ||
+        (  item.Type.Contains(itemPrim.Type))         ||
+        (  itemPrim.Type.Contains(item.Type))         ||
+        (  itemPrim.Type == "eps" )                   ||
+        (  compatibleTypes.Contains(item.Type)        &&
+        (  compatibleTypes.Contains(itemPrim.Type) ) )
       );
 
       bool isDouble = item.Type.Contains("double") || itemPrim.Type.Contains("double");

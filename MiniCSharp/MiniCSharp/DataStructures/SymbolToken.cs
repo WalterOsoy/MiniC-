@@ -23,6 +23,7 @@ namespace DataStructures {
     }
   }
 
+
   class Class : SymbolToken {
 
     public Class(){
@@ -41,11 +42,12 @@ namespace DataStructures {
 
     public override string ToString() {
       string idStrg = "id: " + id.PadRight(20);
-      string scopeStrg = "in scope: " + Scope.PadRight(35);
+      string scopeStrg = "in scope: " + Scope.PadRight(40);
       return string.Format("| Class     || {0} | {1} |", idStrg, scopeStrg);
     }
   }
   
+
   class Interface : SymbolToken {
     public Interface(){}
     
@@ -56,10 +58,11 @@ namespace DataStructures {
 
     public override string ToString() {
       string idStrg = "id: " + id.PadRight(20);
-      string scopeStrg = "in scope: " + Scope.PadRight(35);
+      string scopeStrg = "in scope: " + Scope.PadRight(40);
       return string.Format("| Interface || {0} | {1} |", idStrg, scopeStrg);
     }
   }
+
 
   class Variable : SymbolToken {
 
@@ -80,12 +83,13 @@ namespace DataStructures {
     public override string ToString() {
       string varOrConst = (isConstant) ? "Constant" : "Variable";
       string idStrg     = "id: "         + id.PadRight(20);
-      string scopeStrg  = "in scope: "   + Scope.PadRight(35);
+      string scopeStrg  = "in scope: "   + Scope.PadRight(40);
       string typeStrg   = "of type:  "   + type.PadRight(10);
       string valueStrg  = "with value: " + ((value != "") ? value.PadRight(25) : "Undefined".PadRight(25));
       return string.Format("| {0}  || {1} | {2} | {3} | {4} |", varOrConst, idStrg, scopeStrg, typeStrg, valueStrg);
     }
   }
+
 
   class Objeto : Variable {
 
@@ -96,17 +100,17 @@ namespace DataStructures {
       type       = newItem.type;
       value      = newItem.value;
       isConstant = newItem.isConstant;
-      variables  = new List<Variable>(newItem.variables);
-      functions  = new List<Function>(newItem.functions);
+      variables  = newItem.variables.Select(x => (x is Objeto) ? new Objeto((Objeto)x) : new Variable(x)).ToList();
+      functions  = newItem.functions.Select(x => new Function(x)).ToList();
     }
     public Objeto(Variable baseVar, Class baseClass){
-      id = baseVar.id;
-      Scope = baseVar.Scope;
-      type = baseVar.type;
-      value = baseVar.value;
+      id         = baseVar.id;
+      Scope      = baseVar.Scope;
+      type       = baseVar.type;
+      value      = (baseClass.id != "undefinedClass") ? baseClass.id : baseVar.value;
       isConstant = baseVar.isConstant;
-      variables = baseClass.variables.Select(x => new Variable(x)).ToList();
-      functions = baseClass.functions.Select(x => new Function(x)).ToList();
+      variables  = baseClass.variables.Select(x => (x is Objeto) ? new Objeto((Objeto)x) : new Variable(x)).ToList();
+      functions  = baseClass.functions.Select(x => new Function(x)).ToList();
 
       string objectScope = Scope + '-' + id;
       variables = variables.Select(x => {
@@ -125,13 +129,16 @@ namespace DataStructures {
 
     public override string ToString() {
       string idStrg     = "id: " + id.PadRight(20);
-      string scopeStrg  = "in scope: " + Scope.PadRight(35);
+      string scopeStrg  = "in scope: " + Scope.PadRight(40);
       string typeStrg   = "of type:  "  + type.PadRight(10);
       string valueStrg  = "with value: " + ((value != "") ? value.PadRight(25) : "Undefined".PadRight(25));
       string obj        = string.Format("| Object    || {0} | {1} | {2} | {3} |", idStrg, scopeStrg, typeStrg, valueStrg);
       string vars       = string.Join("\r\n", variables);
       string funcs      = string.Join("\r\n", functions);
-      return string.Join("\r\n", obj, vars, funcs);
+      
+      return obj + 
+        ((variables.Count > 0) ? "\r\n" + vars : "") +
+        ((functions.Count > 0) ? "\r\n" + funcs : "");
     }
   }
 
@@ -152,11 +159,12 @@ namespace DataStructures {
 
     public override string ToString() {
       string idStrg     = "id: "         + id.PadRight(20);
-      string scopeStrg  = "in scope: "   + Scope.PadRight(35);
+      string scopeStrg  = "in scope: "   + Scope.PadRight(40);
       string typeStrg   = "of type:  "   + type.PadRight(10);
       return string.Format("| Prototype || {0} | {1} | {2} |", idStrg, scopeStrg, typeStrg);
     }
   }
+
 
   class Function : Prototype {
 
@@ -174,7 +182,7 @@ namespace DataStructures {
     public string Return { get; set; }
     public override string ToString() {
       string idStrg     = "id: "         + id.PadRight(20);
-      string scopeStrg  = "in scope: "   + Scope.PadRight(35);
+      string scopeStrg  = "in scope: "   + Scope.PadRight(40);
       string typeStrg   = "of type:  "   + type.PadRight(10);
       return string.Format("| Function  || {0} | {1} | {2} |", idStrg, scopeStrg, typeStrg);
     }

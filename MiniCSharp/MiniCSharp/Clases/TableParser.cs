@@ -228,11 +228,7 @@ namespace Clases {
       newVar = new Objeto( newVar, 
         symbolTable.getClass(newVar.type, Scope, tokensList.Skip(1).First().line) );
 
-    CheckFatherForClass(
-      (newVar is Objeto) 
-        ? new Objeto((Objeto)newVar) 
-        : new Variable(newVar)
-    );
+    CheckFatherForClass(newVar);
 
     symbolTable.Insert(newVar, tokensList.First().line);
   }
@@ -259,6 +255,7 @@ namespace Clases {
 
 
   private void CheckFatherForClass(Variable newVar){
+    newVar = (newVar is Objeto) ? new Objeto((Objeto)newVar) : new Variable(newVar);
     string scopeTop = Scope[Scope.Count() - 1];
     Scope.Remove(scopeTop);
 
@@ -356,7 +353,7 @@ namespace Clases {
 
     private void checkExpr(int reductionID){
       try {
-        symbolTable.exprM.evaluateNewExpr(reductionID, Scope, StackSymbolTrack);
+        symbolTable.exprM.evaluateNewExpr(reductionID, new List<string>(Scope), StackSymbolTrack);
       }
       catch (System.Exception EX) {
         Console.WriteLine("Error en la linea :" + tokensList.First().line + " " + EX.Message);
