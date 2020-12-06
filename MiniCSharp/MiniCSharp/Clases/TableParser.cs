@@ -178,151 +178,38 @@ namespace Clases {
     private void UpdateScope(string reductionType){
       switch (reductionType) {
         case "ClassDecl":
-          Scope.RemoveAt(Scope.Count -1);
-          break;
         case "FunctionDecl":
-          Scope.RemoveAt(Scope.Count -1);
-          break;
         case "InterfaceDecl":
           Scope.RemoveAt(Scope.Count -1);
           break;
-        
         default: return;
       }
     }
 
+#region AddToSimTableFunctions
 
     private void AddToSimTable(string reductionType){
       switch (reductionType) {
 
-
-
-        case "Variable":{
-          Variable newVar = new Variable(){
-            id = StackSymbolTrack.Peek().aux,
-            isConstant = false,
-            type = StackSymbolTrack.Skip(1).First().aux,
-            Scope = string.Join('-', Scope), 
-            value = ""
-          };
-
-          string scopeTop = Scope[Scope.Count() - 1];
-          Scope.Remove(scopeTop);
-          var father = symbolTable.Search(scopeTop, Scope);
-          if (father is Class)
-            ((Class)father).variables.Add(new Variable(newVar));
-          Scope.Add(scopeTop);
-
-          symbolTable.Insert(new Variable(newVar), "Variable", tokensList.First().line);
+        case "Variable": case "ConstDecl":
+          AddToSimTableVariable(reductionType);
           break;
-        }
 
-
-
-
-        case "ConstDecl": {
-          Variable newConst = new Variable(){
-            id = StackSymbolTrack.Skip(1).Take(1).First().aux,
-            isConstant = true,
-            type = StackSymbolTrack.Skip(2).Take(1).First().aux,
-            Scope = string.Join('-', Scope) ,
-            value = ""
-          };
-
-          string scopeTop = Scope[Scope.Count() - 1];
-          Scope.Remove(scopeTop);
-          var father = symbolTable.Search(scopeTop, Scope);
-          if (father is Class)
-            ((Class)father).variables.Add(new Variable(newConst));
-          Scope.Add(scopeTop);
-
-          symbolTable.Insert(new Variable(newConst), "ConstDecl", tokensList.First().line);
+        case "FunctionType": 
+          AddToSimTableFunction();
           break;
-        }
 
-
-
-
-
-        case "FunctionType": {
-          string id = StackSymbolTrack.Skip(3).Take(1).First().aux;
-          Function newFucn = new Function(){
-            id = id,
-            type = StackSymbolTrack.Skip(4).Take(1).First().aux,
-            Scope = string.Join('-', Scope),
-            Return = ""
-          };
-
-          string scopeTop = Scope[Scope.Count() - 1];
-          Scope.Remove(scopeTop);
-          var father = symbolTable.Search(scopeTop, Scope);
-          if (father is Class)
-            ((Class)father).functions.Add(new Function(newFucn));
-            Scope.Add(scopeTop);
-
-
-          symbolTable.Insert(new Function(newFucn), "Function", tokensList.First().line);
-          Scope.Add(id);
+        case "ClassHeader":
+          AddToSimTableClass();
           break;
-        }
 
-
-
-
-
-        case "ClassHeader": {
-          string id = StackSymbolTrack.Skip(1).Take(1).First().aux; 
-          symbolTable.Insert(
-            new Class(){ 
-              id = id,
-              Scope = string.Join('-', Scope) ,
-              variables = new List<Variable>(),
-              functions = new List<Function>()
-            }
-            , "Class"
-            , tokensList.First().line
-          );
-          Scope.Add(id);
+        case "InterfaceHeader":
+          AddToSimTableInterface();
           break;
-        }
 
-
-
-
-
-        case "InterfaceHeader":{
-          string id = StackSymbolTrack.Peek().aux;
-          symbolTable.Insert(
-            new Interface(){
-              id = id,
-              Scope = string.Join('-', Scope) 
-            }
-            , "Interface"
-            , tokensList.First().line
-          );
-          Scope.Add(id);
+        case "Prototype":
+          AddToSimTablePrototype();
           break;
-        }
-
-
-
-
-
-        case "Prototype":{
-          symbolTable.Insert(
-            new Prototype(){
-              id = StackSymbolTrack.Skip(4).First().aux,
-              type = StackSymbolTrack.Skip(5).First().aux,
-              Scope = string.Join('-', Scope) 
-            }
-            , "Prototype"
-            , tokensList.First().line
-          );
-          break;
-        }
-
-
-
 
         case "Formals":{
           symbolTable.AddFormals();
@@ -333,6 +220,119 @@ namespace Clases {
       }
     }
   
+
+  private void AddToSimTableVariable(string type){
+    Variable newVar = (type == "Variable") ? newVariable() : newConstant();
+
+    if (!new string[]{ "int","double","bool","string"}.Contains(newVar.type))
+      newVar = new Objeto( newVar, 
+        symbolTable.getClass(newVar.type, Scope, tokensList.Skip(1).First().line) );
+
+    CheckFatherForClass(
+      (newVar is Objeto) 
+        ? new Objeto((Objeto)newVar) 
+        : new Variable(newVar)
+    );
+
+    symbolTable.Insert(newVar, tokensList.First().line);
+  }
+
+  private Variable newVariable(){
+    return new Variable(){
+      id = StackSymbolTrack.Peek().aux,
+      isConstant = false,
+      type = StackSymbolTrack.Skip(1).First().aux,
+      Scope = string.Join('-', Scope),
+      value = ""
+    };
+  }
+
+  private Variable newConstant(){
+    return new Variable(){
+      id = StackSymbolTrack.Skip(1).Take(1).First().aux,
+      isConstant = true,
+      type = StackSymbolTrack.Skip(2).Take(1).First().aux,
+      Scope = string.Join('-', Scope),
+      value = ""
+    };
+  }
+
+
+  private void CheckFatherForClass(Variable newVar){
+    string scopeTop = Scope[Scope.Count() - 1];
+    Scope.Remove(scopeTop);
+
+    // TODO: Aqui por error se agregan los parametros de las funciones a las clases
+    var father = symbolTable.Search(scopeTop, Scope);
+    if (father is Class)
+      ((Class)father).variables.Add(newVar);
+    Scope.Add(scopeTop);
+  }
+
+  private void AddToSimTableFunction(){
+    string id = StackSymbolTrack.Skip(3).Take(1).First().aux;
+    Function newFucn = new Function(){
+      id = id,
+      type = StackSymbolTrack.Skip(4).Take(1).First().aux,
+      Scope = string.Join('-', Scope),
+      Return = ""
+    };
+
+    string scopeTop = Scope[Scope.Count() - 1];
+    Scope.Remove(scopeTop);
+
+    var father = symbolTable.Search(scopeTop, Scope);
+    if (father is Class)
+      ((Class)father).functions.Add(new Function(newFucn));
+    
+    Scope.Add(scopeTop);
+
+
+    symbolTable.Insert(newFucn, tokensList.First().line);
+    symbolTable.AddFormals(newFucn, string.Join("-", Scope) + "-" + id);
+    Scope.Add(id);
+  }
+
+  private void AddToSimTableClass(){
+    string id = StackSymbolTrack.Skip(1).Take(1).First().aux; 
+    symbolTable.Insert(
+      new Class(){ 
+        id = id,
+        Scope = string.Join('-', Scope) ,
+        variables = new List<Variable>(),
+        functions = new List<Function>()
+      }
+      , tokensList.First().line
+    );
+    Scope.Add(id);
+  }
+
+  private void AddToSimTableInterface(){
+    string id = StackSymbolTrack.Peek().aux;
+    symbolTable.Insert(
+      new Interface(){
+        id = id,
+        Scope = string.Join('-', Scope) 
+      }
+      , tokensList.First().line
+    );
+    Scope.Add(id);
+  }
+
+  private void AddToSimTablePrototype(){
+    Prototype newPr = new Prototype(){
+      id = StackSymbolTrack.Skip(4).First().aux,
+      type = StackSymbolTrack.Skip(5).First().aux,
+      Scope = string.Join('-', Scope) 
+    }; 
+
+    symbolTable.Insert(newPr, tokensList.First().line);
+    symbolTable.AddFormals(newPr, string.Join("-", Scope) + "-" + newPr.id);
+
+  }
+
+
+#endregion
 
 
     private void checkMethodAttributes(string reductionType) {
@@ -379,6 +379,5 @@ namespace Clases {
         symbolTable.exprM.ExpresionAcumulated.Pop();
       }
     }
-  
   }
 }

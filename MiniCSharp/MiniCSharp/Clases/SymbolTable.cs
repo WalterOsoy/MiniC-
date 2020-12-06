@@ -21,33 +21,24 @@ namespace Clases {
     }
 
 
-    public void Insert(SymbolToken newToken, string type, string line) {
+    public void Insert(SymbolToken newToken, string line) {
       bool exists = (table.Exists(x => x.id == newToken.id && x.Scope == newToken.Scope));
-      if (!exists) {
-        table.Add(newToken);
-        AddFormals( newToken, ( newToken.Scope + '-' + newToken.id ) , type );
-      }
-      else 
-        Console.WriteLine("Error en la linea :{0} Uso de elemento ya existente \"{1}\"", line, newToken.id);
-    }
-
-    private void AddFormals(SymbolToken newToken, string scope, string type){
-      if (type == "Function" || type == "Prototype") {
-        for (int i = 0; i < tempFormals.Count; i++)
-          tempFormals[i].Scope = scope;
-        
-        table.AddRange(tempFormals);
-
-        if (type == "Function")  ((Function)newToken).arguments = new List<Variable>(tempFormals);
-        if (type == "Prototype") ((Prototype)newToken).arguments = new List<Variable>(tempFormals);
-
-        tempFormals = new List<Variable>();
-      }
+      if (exists) Console.WriteLine("Error en la linea :{0} Uso de elemento ya existente \"{1}\"", line, newToken.id);
+      else table.Add(newToken);
     }
 
     public SymbolToken Search(string ID, List<string> scope){
       string scopestrg = string.Join('-', scope);
       return table.FirstOrDefault(x => x.id == ID && x.Scope == scopestrg);
+    }
+
+    public Class getClass(string name, List<string> scope, string line){
+      if ( table.Count(x => x.id == name && x.Scope == scope[0] && x is Class) > 0 ) 
+        return (Class)table.First(x => x.id == name && x.Scope == scope[0] );
+      else {
+        Console.WriteLine("Error en la linea :" + line + ". No existe deficinicon para la clase " + name);
+        return new Class();
+      }
     }
 
     public int Delete(SymbolToken newToken, List<string> scope) {
@@ -64,6 +55,17 @@ namespace Clases {
       Variable lastVar = (Variable)table[table.Count -1];
       table.RemoveAt(table.Count -1);
       tempFormals.Add(lastVar);
+    }
+
+    public void AddFormals(SymbolToken newToken, string scope){
+      for (int i = 0; i < tempFormals.Count; i++)
+        tempFormals[i].Scope = scope;
+      
+      table.AddRange(tempFormals);
+
+      if (newToken is Function)  ((Function)newToken ).arguments = new List<Variable>(tempFormals);
+      if (newToken is Prototype) ((Prototype)newToken).arguments = new List<Variable>(tempFormals);
+      tempFormals = new List<Variable>();
     }
 
     public void compareActuals(string functName, List<string> scopeList, string line){
@@ -83,9 +85,9 @@ namespace Clases {
       string path = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
       path += @"\Tabla de simbolos.txt";
       System.Console.WriteLine(path);
-      string text = "".PadLeft(147, '-') + "\r\n";
+      string text = "".PadLeft(152, '-') + "\r\n";
       foreach (var item in table) text += item + "\r\n";
-      text += "".PadLeft(147, '-');
+      text += "".PadLeft(152, '-');
       File.WriteAllText(path, text);
     }
   }
