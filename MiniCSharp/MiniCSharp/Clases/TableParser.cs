@@ -153,7 +153,7 @@ namespace Clases {
         end = true;
         return;
       }
-      Console.WriteLine("Error en el parse en: \n Token: '" + tokensList[0].Value + "' en la linea: " + tokensList[0].line + " columnas: " + tokensList[0].column);
+      Console.WriteLine("Error en el parse en: Token: '" + tokensList[0].Value + "' en la linea: " + tokensList[0].line + " columnas: " + tokensList[0].column);
       while (!StackSymbolTrack.Peek().accepted) {
         stack.Pop();
         symbol.Pop();
@@ -276,17 +276,18 @@ namespace Clases {
     };
 
     string scopeTop = Scope[Scope.Count() - 1];
-    Scope.Remove(scopeTop);
+    symbolTable.AddFormals(newFucn, string.Join("-", Scope) + "-" + id);
 
+
+    Scope.Remove(scopeTop);
     var father = symbolTable.Search(scopeTop, Scope);
     if (father is Class)
       ((Class)father).functions.Add(new Function(newFucn));
-    
     Scope.Add(scopeTop);
+    
 
 
     symbolTable.Insert(newFucn, tokensList.First().line);
-    symbolTable.AddFormals(newFucn, string.Join("-", Scope) + "-" + id);
     Scope.Add(id);
   }
 
@@ -335,15 +336,30 @@ namespace Clases {
     private void checkMethodAttributes(string reductionType) {
       switch (reductionType) {
         case "Actuals":
-          /*Logica implementada en seccion de limpiar abajo*/
-          // symbolTable.tempActuals.Insert(0, symbolTable.exprM.);
-          /* Missing insert logic in Actuals */
+          string ID =    symbolTable.exprM.ExpresionAcumulated.First().varName;
+          string scope = symbolTable.exprM.ExpresionAcumulated.First().Scope;
+          string value = symbolTable.exprM.ExpresionAcumulated.First().Value;
+          string type = symbolTable.exprM.ExpresionAcumulated.First().Type;
+
+          symbolTable.tempActuals.Insert( 0,
+            new Variable(){
+              id = ID,
+              type = type,
+              Scope = scope,
+              value = value
+            }
+          );
+          symbolTable.exprM.ExpresionAcumulated.Pop();
           break;
 
         case "CallStmt":
-          string functionName = StackSymbolTrack.Skip(3).First().aux;
           string line = tokensList.First().line;
-          symbolTable.compareActuals(functionName, Scope, line);
+          try {
+            symbolTable.compareActuals(line);
+            symbolTable.exprM.cleanExpr();
+          } catch (System.Exception EX) {
+            Console.WriteLine("Error en la linea: " + line + EX.Message);
+          }
           break;
 
         default: return;
@@ -356,7 +372,7 @@ namespace Clases {
         symbolTable.exprM.evaluateNewExpr(reductionID, new List<string>(Scope), StackSymbolTrack);
       }
       catch (System.Exception EX) {
-        Console.WriteLine("Error en la linea :" + tokensList.First().line + " " + EX.Message);
+        Console.WriteLine("Error en la linea: " + tokensList.First().line + " " + EX.Message);
         // symbolTable.exprM.cleanExpr();
       }
       checkCleanExpr(reductionID);
@@ -369,11 +385,6 @@ namespace Clases {
           reductionID == 70 || 
           reductionID == 73) {
           symbolTable.exprM.cleanExpr();
-      }
-      if (reductionID == 64) {
-        string exprtype = symbolTable.exprM.ExpresionAcumulated.First().Type;
-        symbolTable.tempActuals.Add(exprtype);
-        symbolTable.exprM.ExpresionAcumulated.Pop();
       }
     }
   }

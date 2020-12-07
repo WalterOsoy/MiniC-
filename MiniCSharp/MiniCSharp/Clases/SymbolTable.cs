@@ -23,7 +23,7 @@ namespace Clases {
 
     public void Insert(SymbolToken newToken, string line) {
       bool exists = (table.Exists(x => x.id == newToken.id && x.Scope == newToken.Scope));
-      if (exists) Console.WriteLine("Error en la linea :{0} Uso de elemento ya existente \"{1}\"", line, newToken.id);
+      if (exists) Console.WriteLine("Error en la linea: {0} Uso de elemento ya existente \"{1}\"", line, newToken.id);
       else table.Add(newToken);
     }
 
@@ -103,7 +103,7 @@ namespace Clases {
       if ( table.Count(x => x.id == name && x.Scope == scope[0] && x is Class) > 0 ) 
         return (Class)table.First(x => x.id == name && x.Scope == scope[0] );
       else {
-        Console.WriteLine("Error en la linea :" + line + ". No existe deficinicon para la clase " + name);
+        Console.WriteLine("Error en la linea: " + line + ". No existe deficinicon para la clase " + name);
         return new Class(){ id = "undefinedClass"};
       }
     }
@@ -145,26 +145,55 @@ namespace Clases {
       tempFormals = new List<Variable>();
     }
 
-    public void compareActuals(string functName, List<string> scopeList, string line){
-      Function function = (Function)this.Search(functName, scopeList);
+    public void compareActuals(string line){
+      string ID = this.exprM.ExpresionAcumulated.First().varName;
+      List<string> scope = this.exprM.ExpresionAcumulated.First().Scope.Split("-").ToList();
+      Function function = (Function)this.Search(ID, scope);
+
       if (function != null) {
+        if (tempActuals.Count() != function.arguments.Count()){
+          Console.WriteLine(
+            "Error en la linea: {0} Cantidad de argumentos incorrecta" +
+            " en la funcion{1}().", line, function.id );
+          return;
+        }
+  
         for (int i = 0; i < tempActuals.Count(); i++) {
-          if (tempActuals[i] != function.arguments[0].type) {
-            Console.WriteLine("Error en la linea :" + line + "Tipo de argumento invalido en la funcion" +
-            " " + function.id + " Argumento #" + (i + 1) + " no corresponde al tipo");
+          string type1 = tempActuals[i].type;
+          string type2 = function.arguments[i].type;
+
+          bool isOperable =
+            ( type1 == type2 )               ||
+            ( type1.Contains(type2))         ||
+            ( type2.Contains(type1));
+          
+
+          bool isCasteable = 
+            (type1 == "int" || type1 == "intConstant") && 
+            (type2 == "double" || type2 == "doubleConstant");
+
+          if (!(isOperable || isCasteable)) {
+            Console.WriteLine(
+              "Error en la linea: {0} Argumento {1} invalido en" +
+              " {2}(). Tipo \"{3}\" no casteable a \"{4}\"",
+              line, (i + 1), function.id, type1, type2
+            );
           }
         }
+      } else{
+        tempActuals = new List<Variable>();
+        throw new Exception(" Uso de funcion sin declarar \"" + ID + "\"");
       }
-      tempActuals = new List<string>();
+      tempActuals = new List<Variable>();
     }
 
     public void printTable(){
       string path = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
       path += @"\Tabla de simbolos.txt";
       System.Console.WriteLine(path);
-      string text = "".PadLeft(157, '-') + "\r\n";
+      string text = "".PadLeft(162, '-') + "\r\n";
       foreach (var item in table) text += item + "\r\n";
-      text += "".PadLeft(157, '-');
+      text += "".PadLeft(162, '-');
       File.WriteAllText(path, text);
     }
   }
@@ -248,8 +277,8 @@ namespace Clases {
       }
 
       //Fix search method
-      Variable tempVar = (Variable)table.Search(ID, scopelist);
-      if (tempVar == null) {
+      SymbolToken tempItem = table.Search(ID, scopelist);
+      if (tempItem == null) {
         ExpresionAcumulated.Push(new ExprNode(){
           varName = ID,
           Scope = string.Join('-', scopelist),
@@ -261,12 +290,21 @@ namespace Clases {
         return;
       }
 
-      ExpresionAcumulated.Push(new ExprNode(){
-        varName = ID,
-        Scope   = tempVar.Scope,
-        Type    = tempVar.type ,
-        Value   = tempVar.value
-      });
+      if (tempItem is Variable) {
+        ExpresionAcumulated.Push(new ExprNode(){
+          varName = ID,
+          Scope   = ((Variable)tempItem).Scope,
+          Type    = ((Variable)tempItem).type ,
+          Value   = ((Variable)tempItem).value
+        });
+      } else if (tempItem is Function) {
+        ExpresionAcumulated.Push(new ExprNode(){
+          varName = ID,
+          Scope   = ((Function)tempItem).Scope,
+          Type    = "Function",
+          Value   = ""
+        });
+      }
     }
 
     private void saveConstant(int exprid, List<string> scopelist, Stack<TrackItem> StackSymbolTrack) {
@@ -305,21 +343,30 @@ namespace Clases {
       string ID = ExpresionAcumulated.Skip(1).First().varName;
       List<string> scope = ExpresionAcumulated.Skip(1).First().Scope.Split("-").ToList();
       Variable tempVar = (Variable)table.Search(ID, scope);
+      if (tempVar == null) return;
       ExprNode tempNode = ExpresionAcumulated.Peek();
 
 
       //Logica gruesa de validacion de tipos
       if ( tempVar.type != tempNode.Type )
-        if ( !(tempVar.type == "double" && tempNode.Type == "int") )
+        if ( !(tempVar.type.Contains("double") && tempNode.Type.Contains("int") ) )
           if ( !(tempNode.Type.Contains(tempVar.type) || tempVar.type.Contains(tempNode.Type)) )
             throw new Exception("Los tipos no son compatibles");
       
       try {
         if (tempVar.type == "string") tempVar.value = concatStrings(tempNode.Value);
-        else tempVar.value = new DataTable().Compute(tempNode.Value, null).ToString();
+        else if (!tempVar.type.Contains("bool")) tempVar.value = new DataTable().Compute(tempNode.Value, null).ToString();
+        else {
+          // Special logic because && is unsuported by DataTable
+          List<string> exprs = tempNode.Value.Split("&&").ToList();
+          bool res = true;
+          foreach (var item in exprs)
+            res = res && (new DataTable().Compute(item, null).ToString() == "True");
+          tempVar.value = res.ToString();
+        }
       } catch (System.Exception EX) {
         tempVar.value = "Undefined";
-        System.Console.WriteLine("**** Just for dev **** " + EX.Message); 
+        // System.Console.WriteLine("**** Just for dev **** " + EX.Message); 
       }
     }
 
@@ -384,16 +431,24 @@ namespace Clases {
         (  compatibleTypes.Contains(itemPrim.Type) ) )
       );
 
+
       bool isDouble = item.Type.Contains("double") || itemPrim.Type.Contains("double");
-
-
+      bool isComparation =
+        (itemPrim.Value != "")
+          ? (itemPrim.Value.Length >= 2)
+            ? (itemPrim.Value.Substring(0, 2) == "==") || (itemPrim.Value.Substring(0, 2) == "<=") || (itemPrim.Value[0] == '<')
+            : (itemPrim.Value[0] == '<')
+          : false;
 
       ExpresionAcumulated.Push(new ExprNode(){
         varName = "",
         Scope = string.Join("-", scopelist),
-        Type = (isOperable) 
-          ? ((isDouble) ? "double" : item.Type)  
-          : "Error en tipos",
+        Type = 
+          (isOperable)
+            ? (isComparation)
+              ? "bool"
+              : ((isDouble) ? "double" : item.Type)  
+            : "Error en tipos",
         Value = newValue
       });
     }
